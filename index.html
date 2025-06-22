@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🎓 LearnX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- page logo -->
+  <link rel="icon"  href="assets/images/learnx-logo-img.png">
+
+  <!-- Font Awesome Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- link css file -->
+   <link rel="stylesheet" href="assets/css/home.css">
+
+   <!-- Other tags like meta, title, etc. -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+</head>
+<body>
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid px-4">
+
+    <!-- Brand -->
+    <a class="navbar-brand" href="#">LearnX</a>
+
+    <!-- Toggle Button for Mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCentered">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible Content -->
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCentered">
+
+      <!-- Nav Links and Search -->
+      <div class="d-flex align-items-center flex-column flex-lg-row">
+        <ul class="navbar-nav d-flex">
+          <li class="nav-item"><a class="nav-link" href="categories.html">Categories</a></li>
+          <li class="nav-item"><a class="nav-link" href="courses.html">Courses</a></li>
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              Program
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Skill Programs</a></li>
+              <li><a class="dropdown-item" href="#">Certifications</a></li>
+              <li><a class="dropdown-item" href="#">Career Tracks</a></li>
+            </ul>
+          </li> -->
+          <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        </ul>
+
+        <!-- Search Box -->
+        <form class="d-flex align-items-center mt-3 mt-lg-0" role="search">
+          <div class="search-wrapper">
+            <input type="text" class="search-input" placeholder="Search courses..." />
+            <button class="search-button" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Icons and Auth Buttons -->
+      <div class="navbar-icons d-flex align-items-center mt-3 mt-lg-0">
+        <a href="dashboard.html"><i class="fas fa-user"></i></a>
+        <a href="sign-in.html" class="btn btn-outline-light btn-sm ms-3">Login</a>
+        <a href="sign-up.html" class="btn btn-warning btn-sm ms-2">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- Navbar End -->
+  
+
+<!-- start home section -->
+<section class="home" id="home">
+  <div class="home-text">
+    <h6>Best Online Learning Platform</h6>
+    <h1>Learn Anytime, Anywhere <br> With <span>LearnX</span></h1>
+    <p>Master in-demand skills with our expert-led courses and interactive projects. Join thousands of learners upgrading their careers with LearnX!</p>
+    <ul class="features">
+      <li><i class="fas fa-check-circle"></i> 100+ Free & Premium Courses</li>
+      <li><i class="fas fa-check-circle"></i> Expert Instructors</li>
+      <li><i class="fas fa-check-circle"></i> Certificates & Career Boost</li>
+    </ul>
+    <div class="latter">
+      <form>
+        <input type="email" placeholder="Enter your email" required>
+        <input type="submit" value="Let's Start" required>
+      </form>
+    </div>
+  </div>
+  <div class="home-img">
+    <img src="assets/images/home-img.webp" alt="Online Learning Illustration">
+  </div>
+</section>
+
+<!-- Trusted by Corporations Section -->
+<section class="trusted-section">
+  <div class="container text-center">
+    <h2 class="section-title">Trusted by Corporations and Public Authorities</h2>
+    <p class="section-subtitle">Our platform is trusted by leading companies and public institutions worldwide.</p>
+
+    <!-- Scrolling logos -->
+    <div class="logo-marquee-wrapper">
+      <div class="logo-marquee">
+        <img src="assets/images/tcs.webp" alt="TCS">
+        <img src="assets/images/infosys.jfif" alt="Infosys">
+        <img src="assets/images/microsoft.jfif" alt="Microsoft">
+        <img src="assets/images/google.jfif" alt="Google">
+        <img src="assets/images/accenture.jfif" alt="Accenture">
+        <img src="assets/images/oracle.jfif" alt="Oracle">
+        <img src="assets/images/capgemini.jfif" alt="Capgemini">
+        <img src="assets/images/nasscom.jfif" alt="NASSCOM">
+        <img src="assets/images/wipro.png" alt="Wipro">
+        <!-- Duplicate for seamless scroll -->
+        <img src="assets/images/tcs.webp" alt="TCS">
+        <img src="assets/images/infosys.jfif" alt="Infosys">
+        <img src="assets/images/microsoft.jfif" alt="Microsoft">
+        <img src="assets/images/google.jfif" alt="Google">
+        <img src="assets/images/accenture.jfif" alt="Accenture">
+      </div>
+    </div>
+  </div>
+</section>
+
+   <!-- Why Learning Section -->
+  <section class="why-section">
+    <div class="container text-center">
+      <h2 class="mb-4 fw-bold">Why Choose LearnX?</h2>
+      <p class="mb-5 text-muted">Discover the benefits that make LearnX the most preferred online learning platform.</p>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="p-4 card-box h-100">
+            <div class="icon-circle icon-primary"><i class="bi bi-laptop"></i></div>
+            <h5 class="mt-3 fw-semibold">Flexible Learning</h5>
+            <p class="text-muted">Access content anytime, anywhere with self-paced learning modules and live classes.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-4 card-box h-100">
+            <div class="icon-circle icon-success"><i class="bi bi-award"></i></div>
+            <h5 class="mt-3 fw-semibold">Certified Programs</h5>
+            <p class="text-muted">Earn industry-recognized certificates from top instructors and institutions.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-4 card-box h-100">
+            <div class="icon-circle icon-danger"><i class="bi bi-people"></i></div>
+            <h5 class="mt-3 fw-semibold">Expert Instructors</h5>
+            <p class="text-muted">Learn from industry professionals with years of teaching and hands-on experience.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-4 card-box h-100">
+            <div class="icon-circle icon-warning"><i class="bi bi-briefcase"></i></div>
+            <h5 class="mt-3 fw-semibold">Career Support</h5>
+            <p class="text-muted">Get resume help, mock interviews, and job opportunities with placement partners.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-4 card-box h-100">
+            <div class="icon-circle icon-info"><i class="bi bi-graph-up-arrow"></i></div>
+            <h5 class="mt-3 fw-semibold">Skill Growth</h5>
+            <p class="text-muted">Stay ahead with courses in trending technologies and tools used by companies.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-4 card-box h-100">
+            <div class="icon-circle icon-secondary"><i class="bi bi-lightbulb"></i></div>
+            <h5 class="mt-3 fw-semibold">Real Projects</h5>
+            <p class="text-muted">Gain hands-on experience with real-world projects and case studies.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Start Categories Section -->
+<!-- Top Categories Section -->
+<section class="categories py-5" id="categories" style="background: linear-gradient(to right, #e0f7fa, #f1f8ff);">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h5 class="text-primary fw-bold text-uppercase">Explore Categories</h5>
+        <h2 class="fw-bold display-5">What Do You Want to Learn Today?</h2>
+        <p class="text-muted fs-5">From development to data, grow your skills with top-rated categories.</p>
+      </div>
+  
+      <div class="row g-4">
+        <!-- Category Card -->
+        <div class="col-md-6 col-lg-3">
+          <div class="bg-white border rounded-4 p-4 text-center shadow-sm h-100 hover-shadow transition">
+            <img src="assets/images/Angular.png" alt="Angular" class="img-fluid mb-3" style="height: 64px;">
+            <h5 class="fw-semibold mb-2">Angular Development</h5>
+            <p class="text-muted mb-0">5 Courses</p>
+          </div>
+        </div>
+  
+        <div class="col-md-6 col-lg-3">
+          <div class="bg-white border rounded-4 p-4 text-center shadow-sm h-100 hover-shadow transition">
+            <img src="assets/images/webDev.webp" alt="Web Dev" class="img-fluid mb-3" style="height: 64px;">
+            <h5 class="fw-semibold mb-2">Web Development</h5>
+            <p class="text-muted mb-0">12 Courses</p>
+          </div>
+        </div>
+  
+        <div class="col-md-6 col-lg-3">
+          <div class="bg-white border rounded-4 p-4 text-center shadow-sm h-100 hover-shadow transition">
+            <img src="assets/images/cybersecurity.webp" alt="Cybersecurity" class="img-fluid mb-3" style="height: 64px;">
+            <h5 class="fw-semibold mb-2">Cybersecurity</h5>
+            <p class="text-muted mb-0">8 Courses</p>
+          </div>
+        </div>
+  
+        <div class="col-md-6 col-lg-3">
+          <div class="bg-white border rounded-4 p-4 text-center shadow-sm h-100 hover-shadow transition">
+            <img src="assets/images/dataAna.jpg" alt="Data Analytics" class="img-fluid mb-3" style="height: 64px;">
+            <h5 class="fw-semibold mb-2">Data Analytics</h5>
+            <p class="text-muted mb-0">10 Courses</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="text-center mt-5">
+        <a href="categories.html" class="btn btn-outline-primary px-4 py-2 rounded-pill">Browse All Categories <i class="bx bx-chevron-right"></i></a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Start Course Section -->
+<section class="courses py-5" id="courses" style="background-color: #f5fff7;">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h5 class="text-success fw-bold">FEATURED COURSES</h5>
+        <h2 class="fw-bold display-6">Expand Your Knowledge</h2>
+        <p class="text-muted">Master trending technologies with our curated learning paths and crash courses.</p>
+      </div>
+  
+      <div class="row g-4">
+        <!-- Course 1 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border-0 rounded-4 shadow-sm hover-shadow course-card">
+            <img src="assets/images/group-study.jpg" class="card-img-top rounded-top-4" alt="HTML CSS JS Course"
+              style="height: 200px; object-fit: cover;">
+            <div class="card-body d-flex flex-column">
+              <h6 class="text-primary mb-2">Free</h6>
+              <h5 class="fw-bold flex-grow-1">The Complete HTML CSS JS Course 2025</h5>
+              <p class="text-muted">Duration: 05h 15m</p>
+              <div class="d-flex align-items-center mt-auto">
+                <div class="me-2 text-warning">
+                  <i class="bx bxs-star"></i><i class="bx bxs-star"></i>
+                  <i class="bx bxs-star"></i><i class="bx bxs-star"></i>
+                  <i class="bx bxs-star"></i>
+                </div>
+                <p class="mb-0 text-muted">(5 Reviews)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Course 2 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border-0 rounded-4 shadow-sm hover-shadow course-card">
+            <img src="assets/images/python.png" class="card-img-top rounded-top-4" alt="Python Course"
+              style="height: 200px; object-fit: contain;">
+            <div class="card-body d-flex flex-column">
+              <h6 class="text-primary mb-2">Free</h6>
+              <h5 class="fw-bold flex-grow-1">Python Programming for Beginners</h5>
+              <p class="text-muted">Duration: 08h 30m</p>
+              <div class="d-flex align-items-center mt-auto">
+                <div class="me-2 text-warning">
+                  <i class="bx bxs-star"></i><i class="bx bxs-star"></i>
+                  <i class="bx bxs-star"></i><i class="bx bxs-star"></i>
+                  <i class="bx bx-star"></i>
+                </div>
+                <p class="mb-0 text-muted">(4 Reviews)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Course 3 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border-0 rounded-4 shadow-sm hover-shadow course-card">
+            <img src="assets/images/react.jfif" class="card-img-top rounded-top-4" alt="React Course"
+              style="height: 200px; object-fit: contain;">
+            <div class="card-body d-flex flex-column">
+              <h6 class="text-primary mb-2">Free</h6>
+              <h5 class="fw-bold flex-grow-1">React JS Crash Course</h5>
+              <p class="text-muted">Duration: 06h 10m</p>
+              <div class="d-flex align-items-center mt-auto">
+                <div class="me-2 text-warning">
+                  <i class="bx bxs-star"></i><i class="bx bxs-star"></i>
+                  <i class="bx bxs-star"></i><i class="bx bxs-star-half"></i>
+                  <i class="bx bx-star"></i>
+                </div>
+                <p class="mb-0 text-muted">(3 Reviews)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- More Courses Button -->
+      <div class="text-center mt-5">
+        <a href="courses.html" class="btn btn-success px-4 py-2 rounded-pill">
+          More Courses <i class="bx bx-chevron-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+<!-- Trusted By Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-header">
+      <h5>💼 Trusted by Global Institutions</h5>
+      <h2>Empowering Learners with World-Class Partners</h2>
+      <p>At LearnX, we partner with leading universities and tech companies to deliver future-ready, industry-relevant education.</p>
+    </div>
+
+    <div class="cta-logos">
+      <div class="logo-box">
+        <div class="logo-img">
+          <img src="assets/images/TCS_Logo.jpg" alt="TCS Logo" />
+        </div>
+        <p>Tata Consultancy Services</p>
+      </div>
+
+      <div class="logo-box">
+        <div class="logo-img">
+          <img src="assets/images/google-logo.png" alt="Google Logo" />
+        </div>
+        <p>Google Cloud Training Partner</p>
+      </div>
+
+      <div class="logo-box">
+        <div class="logo-img">
+          <img src="assets/images/pasitech-logo.png" alt="Pasitech Logo" />
+        </div>
+        <p>Pasitech Edutech Solutions</p>
+      </div>
+
+      <div class="logo-box">
+        <div class="logo-img">
+          <img src="assets/images/spike-3.jpg" alt="Spike Logo" />
+        </div>
+        <p>Spike AI Bootcamp</p>
+      </div>
+
+      <div class="logo-box">
+        <div class="logo-img">
+          <img src="assets/images/university-of-oxford.jpg" alt="Oxford Logo" />
+        </div>
+        <p>University of Oxford Research</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Start About Section -->
+<section class="about" id="about">
+  <div class="about-img">
+    <img src="assets/images/stu-about.jpg" alt="LearnX Mentor Program">
+  </div>
+
+  <div class="about-text">
+    <h2>Become a Mentor & Empower the Next Generation</h2>
+    <p>
+      At LearnX, we believe in the power of sharing knowledge. Join a passionate community of industry professionals and educators who are transforming the way students learn. As a mentor, you'll get the opportunity to create high-quality video lessons, guide learners in real time, and impact careers globally.
+    </p>
+
+    <div class="about-features">
+      <h4>🎓 Teach Industry-Relevant Skills</h4>
+      <h4>🌍 Reach Thousands of Learners Worldwide</h4>
+      <h4>💼 Build Your Personal Brand & Portfolio</h4>
+    </div>
+
+    <a href="mentor.html" class="btn">Join as Mentor</a>
+  </div>
+</section>
+
+
+<!-- Start Questions Section -->
+  <section class="ask-questions">
+    <div class="faq-container">
+        <h2 class="faq-heading">Frequently Asked Questions</h2>
+
+        <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="q1">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a1">
+                What is included in your online courses?
+            </button>
+            </h2>
+            <div id="a1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                All our courses include video lectures, quizzes, downloadable resources, and certification after completion.
+            </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="q2">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2">
+                Do I get a certificate after completing a course?
+            </button>
+            </h2>
+            <div id="a2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                Yes! Every course offers a certificate of completion that you can download and share on LinkedIn or your resume.
+            </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="q3">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3">
+                Are your courses beginner-friendly?
+            </button>
+            </h2>
+            <div id="a3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                Absolutely! We offer courses for beginners, intermediates, and advanced learners across various domains.
+            </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="q4">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a4">
+                How can I access the courses after enrolling?
+            </button>
+            </h2>
+            <div id="a4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                Just log in to your account. Your enrolled courses will be available anytime under the "My Courses" section.
+            </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="q5">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a5">
+                Can I access the courses on mobile?
+            </button>
+            </h2>
+            <div id="a5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                Yes, our platform is mobile-friendly. You can learn on any device, anytime, anywhere.
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="support-link">
+        Have some other questions? <a href="#">Visit our support page</a>
+        </div>
+
+        <div class="text-center">
+        <a href="#" class="btn btn-success subscribe-btn">Subscribe for $14.99/month</a>
+        </div>
+
+        <p class="cancel-note">Cancel anytime.</p>
+    </div>
+</section>
+
+
+<!-- footer contact -->
+<footer class="learnx-footer">
+    <div class="footer-header">
+      <div class="footer-logo">
+        <img src="assets/images/learnx-logo-img.png" alt="LearnX Logo">
+        <span>LearnX</span>
+      </div>
+      <div class="footer-nav">
+        <a href="#">Courses</a>
+        <a href="#">Projects</a>
+        <a href="#">Certifications</a>
+        <a href="#">For Students</a>
+        <a href="#">For Business</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+
+    <!-- Middle section -->
+    <div class="footer-content">
+      <!-- Tutorials -->
+      <div class="footer-col">
+        <h4>Top Tutorials</h4>
+        <ul>
+          <li><a href="#">HTML Tutorial</a></li>
+          <li><a href="#">CSS Tutorial</a></li>
+          <li><a href="#">JavaScript Tutorial</a></li>
+          <li><a href="#">Python Tutorial</a></li>
+          <li><a href="#">SQL Tutorial</a></li>
+          <li><a href="#">Java Tutorial</a></li>
+          <li><a href="#">C++ Tutorial</a></li>
+          <li><a href="#">Bootstrap Tutorial</a></li>
+        </ul>
+      </div>
+
+      <!-- References -->
+      <div class="footer-col">
+        <h4>Top References</h4>
+        <ul>
+          <li><a href="#">HTML Reference</a></li>
+          <li><a href="#">CSS Reference</a></li>
+          <li><a href="#">JavaScript Reference</a></li>
+          <li><a href="#">Python Reference</a></li>
+          <li><a href="#">SQL Reference</a></li>
+          <li><a href="#">DSA Reference</a></li>
+          <li><a href="#">React Reference</a></li>
+          <li><a href="#">MySQL Reference</a></li>
+        </ul>
+      </div>
+
+      <!-- Examples -->
+      <div class="footer-col">
+        <h4>Top Examples</h4>
+        <ul>
+          <li><a href="#">HTML Examples</a></li>
+          <li><a href="#">CSS Examples</a></li>
+          <li><a href="#">JavaScript Projects</a></li>
+          <li><a href="#">Python Snippets</a></li>
+          <li><a href="#">SQL Queries</a></li>
+          <li><a href="#">React Projects</a></li>
+          <li><a href="#">DSA Solutions</a></li>
+        </ul>
+      </div>
+
+      <!-- Certifications -->
+      <div class="footer-col">
+        <h4>Get Certified</h4>
+        <ul>
+          <li><a href="#">Frontend Certificate</a></li>
+          <li><a href="#">DSA Certificate</a></li>
+          <li><a href="#">Java Certificate</a></li>
+          <li><a href="#">Python Certificate</a></li>
+          <li><a href="#">SQL Certificate</a></li>
+          <li><a href="#">AI/ML Certificate</a></li>
+          <li><a href="#">Full Stack Certificate</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom section -->
+    <div class="footer-bottom">
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+      <p>&copy; 2025 LearnX. Built with ❤️ by Nitish Pathak. | <a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
+    </div>
+    </footer>
+
+
+
+  
+    
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

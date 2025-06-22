@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnX - Student Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --primary-dark: #3730a3;
+            --secondary: #0ea5e9;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 300px;
+            background: var(--white);
+            height: 100vh;
+            position: fixed;
+            box-shadow: var(--shadow-lg);
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .brand {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .profile {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            background: var(--light);
+            margin: 1rem;
+            border-radius: 12px;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            padding: 4px;
+            margin-bottom: 1rem;
+            background: var(--white);
+        }
+
+        .quick-stats {
+            padding: 1rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .stat-widget {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            background: var(--primary-light);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .nav-menu {
+            padding: 1rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            margin: 0.3rem 0;
+            border-radius: 8px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 300px;
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .header {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 2rem;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .main-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .side-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Course Cards */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--white);
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Activity Chart */
+        .activity-chart {
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            padding: 1rem 0;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--primary), var(--primary-light));
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s ease;
+        }
+
+        /* Achievements */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: var(--light);
+            border-radius: 20px;
+            margin: 0.3rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Tasks */
+        .task-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .status-progress {
+            background: var(--warning);
+            color: var(--white);
+        }
+
+        /* Notifications */
+        .notification-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--light);
+            transition: background 0.3s ease;
+        }
+
+        .notification-item:hover {
+            background: var(--light);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .footer-link {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <h1>LearnX</h1>
+        </div>
+
+        <div class="profile">
+            <img src="assets/images/profile-img.png" alt="Profile Image" class="profile-img">
+            <h2>Nitish pathak</h2>
+            <p>Computer Science</p>
+            <p>Student ID: 12409335</p>
+        </div>
+
+        <div class="quick-stats">
+            <div class="stat-widget">
+                <div class="stat-icon">⏱️</div>
+                <div>
+                    <h4>Hours Spent</h4>
+                    <strong>120h</strong>
+                </div>
+            </div>
+            <div class="stat-widget">
+                <div class="stat-icon">📅</div>
+                <div>
+                    <h4>Active Days</h4>
+                    <strong>84 days</strong>
+                </div>
+            </div>
+            <div class="stat-widget">
+                <div class="stat-icon">⚡</div>
+                <div>
+                    <h4>Current Streak</h4>
+                    <strong>7 days</strong>
+                </div>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="#" class="nav-item">🏠 Dashboard</a>
+            <a href="#" class="nav-item">📚 My Courses</a>
+            <a href="#" class="nav-item">📊 Progress</a>
+            <a href="#" class="nav-item">⏱️ Time Tracker</a>
+            <a href="#" class="nav-item">📝 Assignments</a>
+            <a href="#" class="nav-item">💬 Messages</a>
+            <a href="#" class="nav-item">⚙️ Settings</a>
+            <a href="#" class="nav-item">🚪 Logout</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <h1>Welcome back, John! 👋</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Search courses, assignments, or mentors...">
+            </div>
+            <div>
+                <span>🔔</span>
+                <span>👤</span>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="main-section">
+                <!-- Active Courses -->
+                <section class="card">
+                    <div class="card-header">
+                        <h2>Active Courses</h2>
+                        <button class="btn">View All</button>
+                    </div>
+                    <div class="course-grid">
+                        <div class="course-card">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                <div style="background: var(--primary-light); color: white; width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                    🐍
+                                </div>
+                                <div>
+                                    <h3>Python Programming</h3>
+                                    <p>Dr. Sarah Wilson</p>
+                                </div>
+                            </div>
+                            <p>Next: Chapter 5: Loops in Python</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                                <span>15 hours logged</span>
+                                <button style="background: var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 6px; border: none;">Continue</button>
+                            </div>
+                        </div>
+                        <!-- More course cards -->
+                    </div>
+                </section>
+
+                <!-- Weekly Activity -->
+                <section class="card">
+                    <div class="card-header">
+                        <h2>Weekly Activity</h2>
+                        <p>12 hours this week</p>
+                    </div>
+                    <div class="activity-chart">
+                        <div class="chart-bar" style="height: 60%" title="Monday: 2h"></div>
+                        <div class="chart-bar" style="height: 80%" title="Tuesday: 3h"></div>
+                        <div class="chart-bar" style="height: 40%" title="Wednesday: 1.5h"></div>
+                        <div class="chart-bar" style="height: 90%" title="Thursday: 3.5h"></div>
+                        <div class="chart-bar" style="height: 70%" title="Friday: 2.5h"></div>
+                        <div class="chart-bar" style="height: 30%" title="Saturday: 1h"></div>
+                        <div class="chart-bar" style="height: 50%" title="Sunday: 2h"></div>
+                    </div>
+                    <p>Most active day: Thursday (3.5 hours)</p>
+                </section>
+            </div>
+
+            <div class="side-section">
+                <!-- Learning Streak -->
+                <section class="card">
+                    <h2>Learning Streak</h2>
+                    <div style="text-align: center; margin: 1.5rem 0;">
+                        <div style="font-size: 2.5rem; color: var(--primary);">5</div>
+                        <p>Current Streak</p>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; text-align: center;">
+                        <div>
+                            <strong>12 Days</strong>
+                            <p>Longest Streak</p>
+                        </div>
+                        <div>
+                            <strong>2 Days</strong>
+                            <p>Missed This Month</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Achievements -->
+                <section class="card">
+                    <h2>Achievements</h2>
+                    <div style="margin-top: 1rem;">
+                        <div class="badge">🏆 Streak Master</div>
+                        <div class="badge">🌙 Night Owl</div>
+                        <div class="badge">📚 Quick Learner</div>
+                    </div>
+                </section>
+
+                <!-- Upcoming Tasks -->
+                <section class="card">
+                    <h2>Upcoming Tasks</h2>
+                    <div class="task-item">
+                        <div>
+                            <h4>Assignment 3: Sorting Algorithms</h4>
+                            <small>Due: April 12, 2025</small>
+                        </div>
+                        <span class="task-status status-progress">In Progress</span>
+                    </div>
+                    <!-- More tasks -->
+                </section>
+
+                <!-- Notifications -->
+                <section class="card">
+                    <h2>Notifications</h2>
+                    <div class="notification-item">
+                        <p>New assignment uploaded in Data Structures</p>
+                        <small>2 hours ago</small>
+                    </div>
+                    <div class="notification-item">
+                        <p>Reminder: Quiz on Friday!</p>
+                        <small>5 hours ago</small>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Help & Support</a>
+                <a href="#" class="footer-link">Terms of Use</a>
+                <a href="#" class="footer-link">Contact Us</a>
+            </div>
+        </footer>
+
+        <div class="dark-mode-toggle">🌙</div>
+    </main>
+</body>
+</html>
