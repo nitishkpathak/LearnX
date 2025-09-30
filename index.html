@@ -15,7 +15,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
   <!-- link css file -->
-   <link rel="stylesheet" href="assets/css/index.css">
+   <link rel="stylesheet" href="assets/css/home.css">
 
    <!-- Other tags like meta, title, etc. -->
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
@@ -40,10 +40,31 @@
       <!-- Nav Links and Search -->
       <div class="d-flex align-items-center flex-column flex-lg-row">
         <ul class="navbar-nav d-flex">
+          <li class="nav-item"><a class="nav-link" href="categories.html">Categories</a></li>
           <li class="nav-item"><a class="nav-link" href="courses.html">Courses</a></li>
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              Program
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Skill Programs</a></li>
+              <li><a class="dropdown-item" href="#">Certifications</a></li>
+              <li><a class="dropdown-item" href="#">Career Tracks</a></li>
+            </ul>
+          </li> -->
           <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
           <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-        </ul>        
+        </ul>
+
+        <!-- Search Box -->
+        <form class="d-flex align-items-center mt-3 mt-lg-0" role="search">
+          <div class="search-wrapper">
+            <input type="text" class="search-input" placeholder="Search courses..." />
+            <button class="search-button" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </form>
       </div>
 
       <!-- Icons and Auth Buttons -->
@@ -158,6 +179,57 @@
             <p class="text-muted">Gain hands-on experience with real-world projects and case studies.</p>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Start Categories Section -->
+<!-- Top Categories Section -->
+<section class="categories py-5" id="categories" style="background: linear-gradient(to right, #e0f7fa, #f1f8ff);">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h5 class="text-primary fw-bold text-uppercase">Explore Categories</h5>
+        <h2 class="fw-bold display-5">What Do You Want to Learn Today?</h2>
+        <p class="text-muted fs-5">From development to data, grow your skills with top-rated categories.</p>
+      </div>
+  
+      <div class="row g-4">
+        <!-- Category Card -->
+        <div class="col-md-6 col-lg-3">
+          <div class="bg-white border rounded-4 p-4 text-center shadow-sm h-100 hover-shadow transition">
+            <img src="assets/images/Angular.png" alt="Angular" class="img-fluid mb-3" style="height: 64px;">
+            <h5 class="fw-semibold mb-2">Angular Development</h5>
+            <p class="text-muted mb-0">5 Courses</p>
+          </div>
+        </div>
+  
+        <div class="col-md-6 col-lg-3">
+          <div class="bg-white border rounded-4 p-4 text-center shadow-sm h-100 hover-shadow transition">
+            <img src="assets/images/webDev.webp" alt="Web Dev" class="img-fluid mb-3" style="height: 64px;">
+            <h5 class="fw-semibold mb-2">Web Development</h5>
+            <p class="text-muted mb-0">12 Courses</p>
+          </div>
+        </div>
+  
+        <div class="col-md-6 col-lg-3">
+          <div class="bg-white border rounded-4 p-4 text-center shadow-sm h-100 hover-shadow transition">
+            <img src="assets/images/cybersecurity.webp" alt="Cybersecurity" class="img-fluid mb-3" style="height: 64px;">
+            <h5 class="fw-semibold mb-2">Cybersecurity</h5>
+            <p class="text-muted mb-0">8 Courses</p>
+          </div>
+        </div>
+  
+        <div class="col-md-6 col-lg-3">
+          <div class="bg-white border rounded-4 p-4 text-center shadow-sm h-100 hover-shadow transition">
+            <img src="assets/images/dataAna.jpg" alt="Data Analytics" class="img-fluid mb-3" style="height: 64px;">
+            <h5 class="fw-semibold mb-2">Data Analytics</h5>
+            <p class="text-muted mb-0">10 Courses</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="text-center mt-5">
+        <a href="categories.html" class="btn btn-outline-primary px-4 py-2 rounded-pill">Browse All Categories <i class="bx bx-chevron-right"></i></a>
       </div>
     </div>
   </section>
@@ -311,6 +383,8 @@
       <h4>🌍 Reach Thousands of Learners Worldwide</h4>
       <h4>💼 Build Your Personal Brand & Portfolio</h4>
     </div>
+
+    <a href="mentor.html" class="btn">Join as Mentor</a>
   </div>
 </section>
 
@@ -387,29 +461,116 @@
         </div>
         </div>
 
-    <div class="text-center">
-    <a href="#" id="subscribeBtn" class="btn btn-success subscribe-btn">Subscribe for $14.99/month</a>
-</div>
+        <div class="support-link">
+        Have some other questions? <a href="#">Visit our support page</a>
+        </div>
+
+        <div class="text-center">
+        <a href="#" class="btn btn-success subscribe-btn">Subscribe for $14.99/month</a>
+        </div>
+
+        <p class="cancel-note">Cancel anytime.</p>
+    </div>
 </section>
 
 
 <!-- footer contact -->
 <footer class="learnx-footer">
+    <div class="footer-header">
+      <div class="footer-logo">
+        <img src="assets/images/learnx-logo-img.png" alt="LearnX Logo">
+        <span>LearnX</span>
+      </div>
+      <div class="footer-nav">
+        <a href="#">Courses</a>
+        <a href="#">Projects</a>
+        <a href="#">Certifications</a>
+        <a href="#">For Students</a>
+        <a href="#">For Business</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+
+    <!-- Middle section -->
+    <div class="footer-content">
+      <!-- Tutorials -->
+      <div class="footer-col">
+        <h4>Top Tutorials</h4>
+        <ul>
+          <li><a href="#">HTML Tutorial</a></li>
+          <li><a href="#">CSS Tutorial</a></li>
+          <li><a href="#">JavaScript Tutorial</a></li>
+          <li><a href="#">Python Tutorial</a></li>
+          <li><a href="#">SQL Tutorial</a></li>
+          <li><a href="#">Java Tutorial</a></li>
+          <li><a href="#">C++ Tutorial</a></li>
+          <li><a href="#">Bootstrap Tutorial</a></li>
+        </ul>
+      </div>
+
+      <!-- References -->
+      <div class="footer-col">
+        <h4>Top References</h4>
+        <ul>
+          <li><a href="#">HTML Reference</a></li>
+          <li><a href="#">CSS Reference</a></li>
+          <li><a href="#">JavaScript Reference</a></li>
+          <li><a href="#">Python Reference</a></li>
+          <li><a href="#">SQL Reference</a></li>
+          <li><a href="#">DSA Reference</a></li>
+          <li><a href="#">React Reference</a></li>
+          <li><a href="#">MySQL Reference</a></li>
+        </ul>
+      </div>
+
+      <!-- Examples -->
+      <div class="footer-col">
+        <h4>Top Examples</h4>
+        <ul>
+          <li><a href="#">HTML Examples</a></li>
+          <li><a href="#">CSS Examples</a></li>
+          <li><a href="#">JavaScript Projects</a></li>
+          <li><a href="#">Python Snippets</a></li>
+          <li><a href="#">SQL Queries</a></li>
+          <li><a href="#">React Projects</a></li>
+          <li><a href="#">DSA Solutions</a></li>
+        </ul>
+      </div>
+
+      <!-- Certifications -->
+      <div class="footer-col">
+        <h4>Get Certified</h4>
+        <ul>
+          <li><a href="#">Frontend Certificate</a></li>
+          <li><a href="#">DSA Certificate</a></li>
+          <li><a href="#">Java Certificate</a></li>
+          <li><a href="#">Python Certificate</a></li>
+          <li><a href="#">SQL Certificate</a></li>
+          <li><a href="#">AI/ML Certificate</a></li>
+          <li><a href="#">Full Stack Certificate</a></li>
+        </ul>
+      </div>
+    </div>
 
     <!-- Bottom section -->
     <div class="footer-bottom">
       <div class="footer-social">
-        <a href="https://github.com/nitishkpathak"><i class="fab fa-github"></i></a>
-        <a href="https://www.instagram.com/mr_zack_nitish_bhardwaj/"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.linkedin.com/in/nitishkpathak/"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
       </div>
       <p>&copy; 2025 LearnX. Built with ❤️ by Nitish Pathak. | <a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
     </div>
-</footer>
+    </footer>
+
+
+
+  
     
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/index.js"></script>
 
 </body>
 </html>
+
