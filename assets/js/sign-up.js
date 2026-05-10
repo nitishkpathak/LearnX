@@ -49,7 +49,7 @@ form.addEventListener('submit', async function (e) {
   try {
 
     // 🔥 Send data to backend
-    const res = await fetch("http://localhost:5000/api/auth/signup", {
+    const res = await fetch("https://localhost:5000/api/auth/signup", {
 
       method: "POST",
 
