@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
 
-                const response = await fetch("http://localhost:5000/api/auth/login", {
+                const response = await fetch("http://learnx-backend-wygd.onrender.com/api/auth/login", {
 
                     method: "POST",
 
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
 
-                const res = await fetch("http://localhost:5000/api/auth/signup", {
+                const res = await fetch("http://learnx-backend-wygd.onrender.com/api/auth/signup", {
 
                     method: "POST",
 
@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 // Future: real API call here
                 // For now, mock a successful response
-                const response = await fetch("http://localhost:5000/api/auth/forgot-password", {
+                const response = await fetch("http://learnx-backend-wygd.onrender.com/api/auth/forgot-password", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ [contactMethod]: contactValue })

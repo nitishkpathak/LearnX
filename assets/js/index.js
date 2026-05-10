@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // पहले ये confirm करो कि browser से call जा रहा है
 function testSignup() {
-    fetch("http://localhost:5000/api/auth/signup", {
+    fetch("http://learnx-backend-wygd.onrender.com/api/auth/signup", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
