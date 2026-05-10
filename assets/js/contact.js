@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
-            const res = await fetch("http://learnx-backend-wygd.onrender.com/api/contact", {
+            const res = await fetch("https://learnx-backend-wygd.onrender.com/api/contact", {
 
                 method: "POST",
 
