@@ -1,0 +1,49 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+body { min-height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #e0f2fe, #f0f9ff); }
+
+.container { display: flex; max-width: 1100px; width: 100%; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+/* Hero Section */
+.hero-section { flex: 1.2; background: linear-gradient(135deg, #4f46e5, #0ea5e9); color: #fff; display: flex; flex-direction: column; justify-content: space-between; padding: 3rem; position: relative; border-right: 1px solid rgba(255,255,255,0.2); }
+.hero-section h1 { font-size: 2rem; margin-bottom: 1rem; }
+.hero-section p { font-size: 1rem; margin-bottom: 2rem; }
+
+/* Testimonial */
+.testimonial { background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 15px; margin-top: auto; backdrop-filter: blur(8px); }
+.testimonial p { font-size: 1rem; line-height: 1.5; margin-bottom: 1rem; }
+.testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+.testimonial-author img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #fff; }
+
+/* Login Form */
+.login-form { flex: 1; padding: 3rem; display: flex; flex-direction: column; justify-content: center; }
+.login-form h2 { font-size: 2rem; color: #1e293b; margin-bottom: 0.5rem; }
+.login-form p { color: #64748b; margin-bottom: 2rem; }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #1e293b; }
+.form-group input { width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 2px solid #e2e8f0; transition: all 0.3s ease; }
+.form-group input:focus { border-color: #4f46e5; outline: none; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+
+.remember-forgot { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.remember-me { display: flex; align-items: center; gap: 0.5rem; }
+
+.sign-in-button, .back-button { width: 100%; padding: 0.75rem; border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s ease; font-weight: 500; margin-bottom: 10px; }
+.sign-in-button { background: #4f46e5; color: #fff; }
+.sign-in-button:hover { background: #3730a3; }
+.back-button { background: #ccc; color: #333; }
+.back-button:hover { background: #999; color: #fff; }
+
+/* Social Login */
+.social-login { margin-top: 2rem; text-align: center; }
+.social-login p { margin-bottom: 0.5rem; color: #64748b; }
+.social-buttons { display: flex; justify-content: center; gap: 1rem; margin-top: 0.5rem; }
+.social-button { padding: 0.75rem 1.5rem; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; }
+.social-button:hover { border-color: #4f46e5; background: #f3f4f6; }
+.social-button img { width: 20px; margin-right: 8px; }
+
+/* Sign-up link */
+.sign-up-link { text-align: center; margin-top: 2rem; color: #64748b; }
+.sign-up-link a { color: #4f46e5; text-decoration: none; font-weight: 500; }
+.sign-up-link a:hover { text-decoration: underline; }
+
+/* Responsive */
+@media (max-width: 1024px) { .container { flex-direction: column; border-radius: 0; } .hero-section, .login-form { padding: 2rem; } }

@@ -1,0 +1,250 @@
+/* Premium Glassmorphism Navbar */
+.navbar {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1rem 2rem;
+  transition: all 0.3s ease;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+.navbar-brand {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.6rem;
+  letter-spacing: -0.5px;
+}
+
+.navbar-brand:hover {
+  color: #00b894;
+}
+
+.navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: 500;
+  margin: 0 10px;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #00b894 !important;
+}
+
+.navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0px;
+  left: 0;
+  background-color: #00b894;
+  transition: width 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 100%;
+}
+
+.navbar-icons i {
+  color: white;
+  font-size: 1.2rem;
+  margin-left: 15px;
+  cursor: pointer;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.navbar-icons i:hover {
+  color: #00b894;
+  transform: translateY(-2px);
+}
+
+.navbar .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.2);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+
+.navbar .btn-outline-light:hover {
+    background: white;
+    color: #0f172a;
+}
+
+.navbar .btn-warning {
+    background: linear-gradient(135deg, #00b894, #00d2d3);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 8px 16px;
+    box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.navbar .btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 184, 148, 0.4);
+    background: linear-gradient(135deg, #00d2d3, #00b894);
+    color: white;
+}
+
+.navbar-toggler {
+    border-color: rgba(255,255,255,0.1);
+}
+
+@media (max-width: 991.98px) {
+  .navbar-icons {
+    margin-top: 1.5rem;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 1rem;
+  }
+  .navbar-nav {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  .navbar {
+    padding: 1rem;
+  }
+  .search-wrapper {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+  }
+  .search-input {
+    width: 100%;
+  }
+  .search-input:focus {
+    width: 100%;
+  }
+}
+
+/* Search Box Dashboard / Navbar styling */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+.search-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 6px 15px;
+  color: white;
+  outline: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  width: 200px;
+}
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #00b894;
+  width: 220px;
+}
+.search-button {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.search-button:hover {
+  color: #00b894;
+}
+
+/* Search Results Popup */
+.search-results-popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin-top: 5px;
+  max-height: 250px;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  z-index: 1050;
+  color: white;
+}
+.search-results-popup .search-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease;
+}
+.search-results-popup .search-item:last-child {
+  border-bottom: none;
+}
+.search-results-popup .search-item:hover {
+  background: rgba(0, 184, 148, 0.2);
+  color: #00b894;
+}
+.search-results-popup .search-item.no-results {
+  color: rgba(255, 255, 255, 0.5);
+  cursor: default;
+}
+.search-results-popup .search-item.no-results:hover {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Auth Pop-up Modals Styling */
+.auth-modal .modal-content {
+    background: #0f172a;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    border-radius: 12px;
+}
+.auth-modal .modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.auth-modal .modal-title {
+    font-weight: 700;
+}
+.auth-modal .btn-close {
+    filter: invert(1);
+}
+.auth-modal .form-label {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+}
+.auth-modal .form-control, .auth-modal .form-select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 8px;
+}
+.auth-modal .form-control:focus, .auth-modal .form-select:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #00b894;
+    box-shadow: none;
+}
+.auth-modal .form-select option {
+    background: #0f172a;
+    color: white;
+}
+.auth-modal .modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.auth-modal .btn-primary {
+    background: linear-gradient(135deg, #00b894, #00d2d3);
+    border: none;
+    font-weight: 600;
+}
+.auth-modal .btn-primary:hover {
+    background: linear-gradient(135deg, #00d2d3, #00b894);
+}

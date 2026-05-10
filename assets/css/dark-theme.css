@@ -1,0 +1,128 @@
+/* ---------- Global Dark Mode Styles ---------- */
+body.dark-mode {
+    background-color: #0f172a !important;
+    color: #e2e8f0 !important;
+}
+
+/* Force sections to blend and remove gradients */
+body.dark-mode section,
+body.dark-mode .home,
+body.dark-mode .why-section,
+body.dark-mode .trusted-section {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Fix marquee fade effect in dark mode */
+body.dark-mode .logo-marquee-wrapper::before {
+    background: linear-gradient(to right, #0f172a 0%, transparent 100%) !important;
+}
+body.dark-mode .logo-marquee-wrapper::after {
+    background: linear-gradient(to left, #0f172a 0%, transparent 100%) !important;
+}
+
+
+/* Typography Overrides */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode .faq-heading,
+body.dark-mode .section-title {
+    color: #ffffff !important;
+}
+
+body.dark-mode p,
+body.dark-mode .form-label,
+body.dark-mode label,
+body.dark-mode li,
+body.dark-mode .text-muted,
+body.dark-mode .text-secondary,
+body.dark-mode .accordion-body {
+    color: #cbd5e1 !important;
+}
+
+/* Inputs & Options Overrides */
+body.dark-mode .form-input,
+body.dark-mode .form-control,
+body.dark-mode .form-select,
+body.dark-mode input,
+body.dark-mode textarea {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode option {
+    background-color: #ffffff !important;
+    color: #111111 !important;
+}
+
+/* Cards & Containers & Forms Overrides */
+body.dark-mode .card,
+body.dark-mode .card-box,
+body.dark-mode .info-card,
+body.dark-mode .team-member,
+body.dark-mode .course-card,
+body.dark-mode .category-card,
+body.dark-mode .testimonial-card,
+body.dark-mode .testimonial,
+body.dark-mode .contact-container,
+body.dark-mode .contact-content form,
+body.dark-mode .contact-header,
+body.dark-mode .feature-card,
+body.dark-mode .sidebar,
+body.dark-mode .accordion-item,
+body.dark-mode .accordion-button,
+body.dark-mode .accordion-body,
+body.dark-mode .logo-box {
+    background: #1e293b !important;
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Inputs Overrides */
+body.dark-mode .form-input,
+body.dark-mode .form-control,
+body.dark-mode .form-select,
+body.dark-mode input,
+body.dark-mode textarea {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode .form-input::placeholder,
+body.dark-mode .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+
+body.dark-mode .form-input:focus,
+body.dark-mode .form-control:focus {
+    border-color: #00b894 !important;
+    box-shadow: none !important;
+}
+
+/* Specific Tweak for Dark Navbars to blend nicely */
+body.dark-mode .navbar {
+    background: rgba(15, 23, 42, 0.95) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Ensure links in dark mode are readable */
+body.dark-mode a {
+    color: #00b894;
+}
+body.dark-mode a:hover {
+    color: #00d2d3;
+}
+body.dark-mode .nav-link {
+    color: rgba(255,255,255,0.8) !important;
+}
+body.dark-mode .nav-link:hover {
+    color: #00b894 !important;
+}
