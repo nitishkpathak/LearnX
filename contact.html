@@ -1,58 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Contact Us - LearnX</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us - LearnX</title>
+  <!-- Google Fonts (Deferred) -->
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet">
+  </noscript>
 
+  <!-- Preconnect to CDNs for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="stylesheet" href="assets/css/contact.css">
+  <!-- Bootstrap CSS (Render Blocking, critical for layout) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome Icons (Deferred) -->
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" media="print"
+    onload="this.media='all'">
+  <noscript>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  </noscript>
+
+  <link rel="stylesheet" href="assets/css/contact.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
+  <!-- Global Dark Mode CSS -->
+  <link rel="stylesheet" href="assets/css/dark-theme.css">
+  <link rel="manifest" href="manifest.json">
 </head>
+
 <body>
-    <div class="contact-container">
-        <div class="contact-header">
-            <h1>Let's Connect!</h1>
-            <p>Send us a message and we'll get back to you soon</p>
+  <!-- Navbar Start -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="index.html">LearnX</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCentered"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-between" id="navbarCentered">
+        <div class="d-flex align-items-center flex-column flex-lg-row">
+          <ul class="navbar-nav d-flex">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="courses.html">Courses</a></li>
+            <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          </ul>
         </div>
 
-        <div class="contact-content">
-            <form>
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" placeholder="Enter your name" required>
-                </div>
+        <!-- Search Box -->
+        <form class="d-flex align-items-center mt-3 mt-lg-0" role="search">
+          <div class="search-wrapper position-relative">
+            <input type="text" class="search-input" placeholder="Search courses..." aria-label="Search courses" />
+            <button class="search-button" type="submit" aria-label="Search">
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="search-results-popup d-none"></div>
+          </div>
+        </form>
 
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" class="form-input" placeholder="Enter your email" required>
-                </div>
+        <div class="navbar-icons d-flex align-items-center mt-3 mt-lg-0">
+          <button class="btn btn-link theme-toggle text-white text-decoration-none border-0 p-0 fs-5"
+            aria-label="Toggle Theme">
+            <i class="fas fa-moon"></i>
+          </button>
 
-                <div class="form-group">
-                    <label class="form-label">Message</label>
-                    <textarea class="form-input" placeholder="Write your message here..." required></textarea>
-                </div>
-
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
-
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            </div>
+          <button class="btn btn-outline-light btn-sm ms-3" data-bs-toggle="modal"
+            data-bs-target="#loginModal">Login</button>
+          <button class="btn btn-warning btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#signupModal">Sign
+            Up</button>
         </div>
-
-        <div class="map-container">
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3410.726288069651!2d75.70395727454707!3d31.255768974424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391a5f5e9c489cf3%3A0x4049a5409d53c300!2sLovely%20Professional%20University!5e0!3m2!1sen!2sin!4v1701234567890!5i"
-                allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-        </div>
+      </div>
     </div>
+  </nav>
+  <!-- Navbar End -->
+
+  <!-- Modals moved to bottom -->
+  <main>
+
+    <div class="contact-container">
+      <div class="contact-header">
+        <h1>Let's Connect!</h1>
+        <p>Send us a message and we'll get back to you soon</p>
+      </div>
+
+      <div class="contact-content">
+        <form id="contactForm">
+          <div class="form-group">
+            <label class="form-label" for="contactName">Full Name</label>
+            <input type="text" class="form-input" id="contactName" placeholder="Enter your name" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="contactEmail">Email Address</label>
+            <input type="email" class="form-input" id="contactEmail" placeholder="Enter your email" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="contactMessage">Message</label>
+            <textarea class="form-input" id="contactMessage" placeholder="Write your message here..."
+              required></textarea>
+          </div>
+
+          <!-- Back & Submit Buttons -->
+          <div>
+            <button type="button" class="back-btn" onclick="window.history.back();"><i class="fas fa-arrow-left"></i>
+              Back</button>
+            <button type="submit" class="submit-btn">Send Message</button>
+          </div>
+        </form>
+
+        <div class="social-links">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <div class="map-container">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3410.726288069651!2d75.70395727454707!3d31.255768974424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391a5f5e9c489cf3%3A0x4049a5409d53c300!2sLovely%20Professional%20University!5e0!3m2!1sen!2sin!4v1701234567890!5i"
+          allowfullscreen="" loading="lazy" title="Google Maps Location of LearnX"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </main>
+
+  <!-- Login Modal -->
+  <div class="modal fade auth-modal" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="loginModalLabel">Welcome back! 👋</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="modalLoginForm">
+            <div class="mb-3">
+              <label class="form-label" for="modalLoginEmail">Email Address</label>
+              <input type="email" class="form-control" id="modalLoginEmail" placeholder="Enter your email" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="modalLoginPassword">Password</label>
+              <input type="password" class="form-control" id="modalLoginPassword" placeholder="Enter your password"
+                required>
+            </div>
+            <div class="d-flex justify-content-between mb-4">
+              <label><input type="checkbox" aria-label="Remember me"> Remember me</label>
+              <a href="#" id="switchToForgot" class="text-primary text-decoration-underline">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2">Sign In</button>
+          </form>
+          <div class="text-center mt-3">
+            <p class="mb-0 text-secondary">Don't have an account? <a href="#" id="switchToSignup"
+                class="text-primary text-decoration-underline">Sign up for free</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div class="modal fade auth-modal" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="signupModalLabel">Join LearnX Today</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="modalSignupForm">
+            <div class="mb-3">
+              <label class="form-label" for="modalSignupName">Full Name</label>
+              <input type="text" class="form-control" id="modalSignupName" placeholder="Enter your full name" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="modalSignupEmail">Email Address</label>
+              <input type="email" class="form-control" id="modalSignupEmail" placeholder="Enter your email" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="modalSignupPhone">Phone Number</label>
+              <input type="tel" class="form-control" id="modalSignupPhone" placeholder="Enter your phone number"
+                required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="modalSignupPassword">Password</label>
+              <input type="password" class="form-control" id="modalSignupPassword"
+                placeholder="Create a strong password" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="modalSignupEdu">Education Level</label>
+              <select class="form-select" id="modalSignupEdu" required>
+                <option value="" disabled selected>Select highest education</option>
+                <option value="high-school">High School</option>
+                <option value="undergraduate">Undergraduate</option>
+                <option value="graduate">Graduate / Master's</option>
+                <option value="professional">Professional</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="modalSignupCourse">Select Category</label>
+              <select class="form-select" id="modalSignupCourse" required>
+                <option value="" disabled selected>Choose your interest</option>
+                <option value="web-dev">Web Development</option>
+                <option value="data-science">Data Science</option>
+                <option value="design">UI/UX Design</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label><input type="checkbox" id="modalSignupTerms" required aria-label="I agree to Terms and Conditions">
+                I agree to Terms & Conditions</label>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2">Sign Up</button>
+          </form>
+          <div class="text-center mt-3">
+            <p class="mb-0 text-secondary">Already have an account? <a href="#" id="switchToLogin"
+                class="text-primary text-decoration-underline">Sign in here</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal fade auth-modal" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="forgotPasswordModalLabel">Reset Password</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-secondary mb-4">Choose how you want to reset your password.</p>
+          <form id="modalForgotForm">
+            <div class="mb-3 d-flex gap-4">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="resetMethod" id="resetViaEmail" value="email"
+                  checked>
+                <label class="form-check-label" for="resetViaEmail">Email</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="resetMethod" id="resetViaPhone" value="phone">
+                <label class="form-check-label" for="resetViaPhone">Phone</label>
+              </div>
+            </div>
+            <div class="mb-4" id="forgotEmailContainer">
+              <label class="form-label" for="modalForgotEmail">Email Address</label>
+              <input type="email" class="form-control" id="modalForgotEmail" placeholder="Enter your email">
+            </div>
+            <div class="mb-4" id="forgotPhoneContainer" style="display: none;">
+              <label class="form-label" for="modalForgotPhone">Phone Number</label>
+              <input type="tel" class="form-control" id="modalForgotPhone" placeholder="Enter your phone number">
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2">Send Reset Link</button>
+          </form>
+          <div class="text-center mt-3">
+            <p class="mb-0 text-secondary"><a href="#" id="switchToLoginFromForgot"
+                class="text-primary text-decoration-underline"><i class="fas fa-arrow-left"></i> Back to Login</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/contact.js" defer></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  <!-- Auth Modals -->
+  <script src="assets/js/auth-modal.js" defer></script>
+  <!-- Universal Theme System -->
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
+
 </html>

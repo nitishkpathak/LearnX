@@ -1,0 +1,23 @@
+{
+  "name": "LearnX E-Learning Platform",
+  "short_name": "LearnX",
+  "description": "Empowering learners worldwide with interactive, high-quality courses.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "assets/images/learnx-logo-img.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/learnx-logo-img.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
