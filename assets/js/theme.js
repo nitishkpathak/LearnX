@@ -105,7 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         item.className = 'search-item';
                         item.textContent = course.title;
                         item.addEventListener('click', () => {
-                            window.location.href = course.url;
+                            const hash = course.url.split('#')[1];
+                            switchView('courses', '#' + hash);
                         });
                         popup.appendChild(item);
                     });
@@ -134,8 +135,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const query = input.value.trim();
                 if (query !== "") {
-                    // Navigate to courses page
-                    window.location.href = `courses.html?q=${encodeURIComponent(query)}`;
+                    switchView('courses');
+                    if (typeof window.searchSite === 'function') {
+                        // Populate search inputs and filter
+                        const sInputs = document.querySelectorAll('.search-input');
+                        sInputs.forEach(si => si.value = query);
+                        window.searchSite(query);
+                    }
                 }
             });
         }

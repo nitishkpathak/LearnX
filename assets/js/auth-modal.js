@@ -2,60 +2,65 @@ const API_BASE_URL = window.location.hostname === 'localhost' || window.location
     ? 'http://localhost:5000'
     : 'https://learnx-backend-wygd.onrender.com';
 
-document.addEventListener('DOMContentLoaded', () => {
-
-    // ================================
-    // Navbar Auth State
-    // ================================
-
+// Globally accessible navbar state updater
+function updateNavbarAuthState() {
     const isLoggedIn = localStorage.getItem('learnx_auth') === 'true';
+    const navbarIcons = document.querySelectorAll('.navbar-icons');
 
-    if (isLoggedIn) {
+    navbarIcons.forEach(container => {
+        const loginBtn = container.querySelector('[data-bs-target="#loginModal"]');
+        const signupBtn = container.querySelector('[data-bs-target="#signupModal"]');
 
-        const navbarIcons = document.querySelectorAll('.navbar-icons');
+        // Clean up any existing dashboard button
+        const oldDashBtn = container.querySelector('.btn-dashboard');
+        if (oldDashBtn) oldDashBtn.remove();
 
-        navbarIcons.forEach(container => {
-
-            const loginBtn = container.querySelector('[data-bs-target="#loginModal"]');
-            const signupBtn = container.querySelector('[data-bs-target="#signupModal"]');
-
+        if (isLoggedIn) {
             if (loginBtn) loginBtn.style.display = 'none';
             if (signupBtn) signupBtn.style.display = 'none';
 
-            if (!container.querySelector('.btn-dashboard')) {
-
-                const dashboardBtn = document.createElement('a');
-
-                dashboardBtn.href = 'dashboard.html';
-
-                dashboardBtn.className = 'btn btn-outline-light btn-sm ms-3 btn-dashboard';
-
-                dashboardBtn.innerHTML = '<i class="fas fa-columns"></i> Dashboard';
-
-                container.appendChild(dashboardBtn);
-            }
-        });
-    } else {
-        // Not logged in, check URL params to open modals
-        const urlParams = new URLSearchParams(window.location.search);
-        const showParam = urlParams.get('show');
-        if (showParam === 'signup') {
-            setTimeout(() => {
-                const signupModalEl = document.getElementById('signupModal');
-                if (signupModalEl) {
-                    const signupModal = new bootstrap.Modal(signupModalEl);
-                    signupModal.show();
-                }
-            }, 300);
-        } else if (showParam === 'login') {
-            setTimeout(() => {
-                const loginModalEl = document.getElementById('loginModal');
-                if (loginModalEl) {
-                    const loginModal = new bootstrap.Modal(loginModalEl);
-                    loginModal.show();
-                }
-            }, 300);
+            const dashboardBtn = document.createElement('a');
+            dashboardBtn.href = '#';
+            dashboardBtn.className = 'btn btn-outline-light btn-sm ms-3 btn-dashboard';
+            dashboardBtn.innerHTML = '<i class="fas fa-columns"></i> Dashboard';
+            dashboardBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchView('dashboard');
+            });
+            container.appendChild(dashboardBtn);
+        } else {
+            if (loginBtn) loginBtn.style.display = '';
+            if (signupBtn) signupBtn.style.display = '';
         }
+    });
+}
+
+// Make it global
+window.updateNavbarAuthState = updateNavbarAuthState;
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize navbar state
+    updateNavbarAuthState();
+
+    // Check URL params to open modals
+    const urlParams = new URLSearchParams(window.location.search);
+    const showParam = urlParams.get('show');
+    if (showParam === 'signup') {
+        setTimeout(() => {
+            const signupModalEl = document.getElementById('signupModal');
+            if (signupModalEl) {
+                const signupModal = bootstrap.Modal.getOrCreateInstance(signupModalEl);
+                signupModal.show();
+            }
+        }, 300);
+    } else if (showParam === 'login') {
+        setTimeout(() => {
+            const loginModalEl = document.getElementById('loginModal');
+            if (loginModalEl) {
+                const loginModal = bootstrap.Modal.getOrCreateInstance(loginModalEl);
+                loginModal.show();
+            }
+        }, 300);
     }
 
     // ================================
@@ -100,19 +105,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (response.ok) {
-
                     alert("Login Successful ✅");
-
                     localStorage.setItem("learnx_auth", "true");
-
                     localStorage.setItem("learnx_user", JSON.stringify(data.user));
-
                     localStorage.setItem("learnx_token", data.token);
-
                     loginForm.reset();
 
-                    window.location.href = "dashboard.html";
+                    // Hide login modal
+                    const loginModalEl = document.getElementById('loginModal');
+                    if (loginModalEl) {
+                        const loginModal = bootstrap.Modal.getInstance(loginModalEl);
+                        if (loginModal) loginModal.hide();
+                    }
 
+                    // Update state & switch view
+                    updateNavbarAuthState();
+                    switchView('dashboard');
                 } else {
 
                     alert(data.message || "Login failed ❌");

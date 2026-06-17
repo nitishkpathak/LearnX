@@ -2,12 +2,8 @@ const API_BASE_URL = window.location.hostname === 'localhost' || window.location
     ? 'http://localhost:5000'
     : 'https://learnx-backend-wygd.onrender.com';
 
-// Check auth
-const token = localStorage.getItem('learnx_token');
-if (!token) {
-    alert('Please sign up or log in to access the dashboard.');
-    window.location.href = "index.html?show=signup";
-}
+// Auth token holder
+let token = localStorage.getItem('learnx_token');
 
 // Global user state
 let currentUser = null;
@@ -20,9 +16,9 @@ const menuBtn = document.getElementById('menuBtn');
 const sidebar = document.getElementById('sidebar');
 menuBtn.addEventListener('click', () => sidebar.classList.toggle('show'));
 
-// Navigation
-const sections = document.querySelectorAll('.section');
-const navItems = document.querySelectorAll('.sidebar ul li[data-section]');
+// Navigation (scoped to dashboard view to prevent hiding landing sections)
+const sections = document.querySelectorAll('#dashboard-view .section');
+const navItems = document.querySelectorAll('#dashboard-view .sidebar ul li[data-section]');
 
 // Profile picture click to go to profile section
 const profilePicEl = document.querySelector('.profile-pic');
@@ -43,7 +39,8 @@ navItems.forEach(li => {
       s.style.opacity = '0';
     });
     
-    const targetSection = document.getElementById(target);
+    const targetId = target === 'courses' ? 'dashboardCoursesSection' : target;
+    const targetSection = document.getElementById(targetId);
     if(targetSection) {
         targetSection.style.display = 'block';
         setTimeout(() => {
@@ -57,14 +54,22 @@ navItems.forEach(li => {
 });
 
 // Logout
-document.getElementById('logout').addEventListener('click', () => {
-  if(confirm('Are you sure you want to log out?')) {
-    localStorage.removeItem('learnx_auth');
-    localStorage.removeItem('learnx_user');
-    localStorage.removeItem('learnx_token');
-    window.location.href = "index.html";
-  }
-});
+const logoutBtn = document.getElementById('logout');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    if(confirm('Are you sure you want to log out?')) {
+      localStorage.removeItem('learnx_auth');
+      localStorage.removeItem('learnx_user');
+      localStorage.removeItem('learnx_token');
+      
+      // Reset navbar state and switch view to home
+      if (typeof updateNavbarAuthState === 'function') {
+          updateNavbarAuthState();
+      }
+      switchView('home');
+    }
+  });
+}
 
 // Load Dashboard Data from API
 async function fetchDashboardData() {
@@ -458,5 +463,11 @@ announcementItems.forEach(item => {
     });
 });
 
-// Initialize
-fetchDashboardData();
+// Globally accessible init function
+function initDashboard() {
+    token = localStorage.getItem('learnx_token');
+    if (token) {
+        fetchDashboardData();
+    }
+}
+window.initDashboard = initDashboard;
