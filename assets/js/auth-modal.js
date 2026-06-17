@@ -1,3 +1,7 @@
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://learnx-backend-wygd.onrender.com';
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // ================================
@@ -79,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
 
-                const response = await fetch("https://learnx-backend-wygd.onrender.com/api/auth/login", {
+                const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
 
                     method: "POST",
 
@@ -170,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
 
-                const res = await fetch("https://learnx-backend-wygd.onrender.com/api/auth/signup", {
+                const res = await fetch(`${API_BASE_URL}/api/auth/signup`, {
 
                     method: "POST",
 
@@ -288,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 // Future: real API call here
                 // For now, mock a successful response
-                const response = await fetch("https://learnx-backend-wygd.onrender.com/api/auth/forgot-password", {
+                const response = await fetch(`${API_BASE_URL}/api/auth/forgot-password`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ [contactMethod]: contactValue })

@@ -1,3 +1,7 @@
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://learnx-backend-wygd.onrender.com';
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const form = document.getElementById("contactForm");
@@ -25,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
-            const res = await fetch("https://learnx-backend-wygd.onrender.com/api/contact", {
+            const res = await fetch(`${API_BASE_URL}/api/contact`, {
 
                 method: "POST",
 

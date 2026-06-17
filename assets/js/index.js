@@ -1,3 +1,7 @@
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://learnx-backend-wygd.onrender.com';
+
 // -------------------- Search Box Validation --------------------
 // Moved to theme.js to handle globally across all pages
 
@@ -38,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // पहले ये confirm करो कि browser से call जा रहा है
 function testSignup() {
-    fetch("http://learnx-backend-wygd.onrender.com/api/auth/signup", {
+    fetch(`${API_BASE_URL}/api/auth/signup`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

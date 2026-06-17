@@ -1,3 +1,7 @@
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://learnx-backend-wygd.onrender.com';
+
 // Check auth
 const token = localStorage.getItem('learnx_token');
 if (!token) {
@@ -65,7 +69,7 @@ document.getElementById('logout').addEventListener('click', () => {
 // Load Dashboard Data from API
 async function fetchDashboardData() {
     try {
-        const response = await fetch("https://learnx-backend-wygd.onrender.com/api/dashboard/data", {
+        const response = await fetch(`${API_BASE_URL}/api/dashboard/data`, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
@@ -201,7 +205,7 @@ function loadAssignments(filter = 'all') {
 // API: Submit Assignment
 async function submitAssignment(assignmentId) {
     try {
-        const response = await fetch(`https://learnx-backend-wygd.onrender.com/api/dashboard/assignment/${assignmentId}`, {
+        const response = await fetch(`${API_BASE_URL}/api/dashboard/assignment/${assignmentId}`, {
             method: "PUT",
             headers: { "Authorization": `Bearer ${token}` }
         });
@@ -355,7 +359,7 @@ if (editForm) {
         const payload = { name: newName, email: newEmail };
         if(dpBase64) payload.dp = dpBase64;
 
-        const res = await fetch("https://learnx-backend-wygd.onrender.com/api/dashboard/profile", {
+        const res = await fetch(`${API_BASE_URL}/api/dashboard/profile`, {
             method: "PUT",
             headers: { 
                 "Content-Type": "application/json",
@@ -428,7 +432,7 @@ function setupSettings(settings) {
 
 async function updateSettings(updates) {
     try {
-        await fetch("https://learnx-backend-wygd.onrender.com/api/dashboard/settings", {
+        await fetch(`${API_BASE_URL}/api/dashboard/settings`, {
             method: "PUT",
             headers: { 
                 "Content-Type": "application/json",
