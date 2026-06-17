@@ -370,6 +370,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // initial show all (in case any inline styles)
     applyCourseFilter('all');
     applyInstructorFilter('all');
+
+    // 1. Check for query parameters (?q=searchterm) on load
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('q');
+    if (searchQuery) {
+      if (searchInput) {
+        searchInput.value = searchQuery;
+      }
+      searchSite(searchQuery);
+    }
+
+    // 2. Check for URL hash (#course-id) on load to scroll & preview
+    const hash = window.location.hash;
+    if (hash) {
+      setTimeout(() => {
+        const targetCard = q(hash);
+        if (targetCard) {
+          targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const previewBtn = q('.preview-btn', targetCard);
+          if (previewBtn) {
+            previewBtn.click();
+          }
+        }
+      }, 500); // 500ms timeout ensures assets are rendered and scroll acts smoothly
+    }
   }
 
   initAll();

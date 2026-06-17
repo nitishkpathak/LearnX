@@ -5,21 +5,42 @@ const API_BASE_URL = window.location.hostname === 'localhost' || window.location
 // -------------------- Search Box Validation --------------------
 // Moved to theme.js to handle globally across all pages
 
-// -------------------- Email Subscription Form --------------------
+// -------------------- Email Subscription Form ("Let's Start") --------------------
+// Captures email in hero section, pre-fills the signup modal, and opens it
 const subscribeForm = document.querySelector(".latter form");
-subscribeForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    const email = subscribeForm.querySelector("input[type='email']").value.trim();
-    if (email === "") {
-        alert("Please enter your email!");
-    } else if (!email.includes("@")) {
-        alert("Enter a valid email address!");
-    } else {
-        alert("Subscribed successfully with: " + email);
-        // Future: yahan backend POST /subscribe call
+if (subscribeForm) {
+    subscribeForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const email = subscribeForm.querySelector("input[type='email']").value.trim();
+        
+        if (email === "") {
+            alert("Please enter your email!");
+            return;
+        } 
+        
+        if (!email.includes("@")) {
+            alert("Enter a valid email address!");
+            return;
+        }
+
+        // Pre-fill email in Signup Modal
+        const modalSignupEmailInput = document.getElementById("modalSignupEmail");
+        if (modalSignupEmailInput) {
+            modalSignupEmailInput.value = email;
+        }
+
+        // Dynamically launch the bootstrap signup modal
+        const signupModalEl = document.getElementById("signupModal");
+        if (signupModalEl) {
+            const signupModal = bootstrap.Modal.getInstance(signupModalEl) || new bootstrap.Modal(signupModalEl);
+            signupModal.show();
+        } else {
+            alert("Sign Up modal not found on this page!");
+        }
+        
         subscribeForm.reset();
-    }
-});
+    });
+}
 
 
 document.addEventListener("DOMContentLoaded", function () {
