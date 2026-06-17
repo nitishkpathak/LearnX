@@ -41,7 +41,9 @@ section {
     align-items: center;
     gap: 2rem;
     min-height: 100vh;
-    background: #f7f9fc;
+    background: radial-gradient(circle at 10% 20%, rgba(243, 246, 255, 1) 0%, rgba(224, 237, 255, 1) 90%);
+    position: relative;
+    overflow: hidden;
   }
 
   .home-text h1 {
@@ -119,11 +121,19 @@ section {
     background: #009874;
   }
 
+  @keyframes floatImage {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(0.5deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+  }
+
   .home-img img {
     max-width: 100%;
     height: auto;
     object-fit: cover;
-    border-radius: 15px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    animation: floatImage 5s ease-in-out infinite;
   }
 
   @media (max-width: 768px) {

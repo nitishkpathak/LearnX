@@ -43,6 +43,7 @@
   <!-- link css file -->
   <link rel="stylesheet" href="assets/css/index.css">
   <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/courses.css">
 
   <!-- Global Dark Mode CSS -->
   <link rel="stylesheet" href="assets/css/dark-theme.css">
@@ -213,73 +214,181 @@
     </section>
 
     <!-- Start Course Section -->
-    <section class="courses py-5" id="courses" style="background-color: #f5fff7;">
+    <section class="featured-courses py-5" id="courses">
       <div class="container">
-        <div class="text-center mb-5">
-          <span class="h5 d-block text-success fw-bold mb-2">FEATURED COURSES</span>
-          <h2 class="fw-bold display-6">Expand Your Knowledge</h2>
-          <p class="text-muted">Master trending technologies with our curated learning paths and crash courses.</p>
+        <div class="section-header text-center mb-5">
+          <span class="subtitle">FEATURED COURSES</span>
+          <h2 class="section-title">Expand Your Knowledge</h2>
+          <p class="section-description">Master trending technologies with our curated learning paths and crash courses.</p>
         </div>
 
         <div class="row g-4">
-          <!-- Course 1 -->
-          <div class="col-md-6 col-lg-4">
-            <div class="card h-100 border-0 rounded-4 shadow-sm hover-shadow course-card">
-              <img src="assets/images/group-study.jpg" class="card-img-top rounded-top-4" alt="HTML CSS JS Course"
-                style="height: 200px; object-fit: cover;" loading="lazy" width="400" height="200">
-              <div class="card-body d-flex flex-column">
-                <span class="h6 d-block text-primary mb-2">Free</span>
-                <h3 class="h5 fw-bold flex-grow-1">The Complete HTML CSS JS Course 2025</h3>
-                <p class="text-muted">Duration: 05h 15m</p>
-                <div class="d-flex align-items-center mt-auto">
-                  <div class="me-2 text-warning">
-                    <i class="bx bxs-star"></i><i class="bx bxs-star"></i>
-                    <i class="bx bxs-star"></i><i class="bx bxs-star"></i>
-                    <i class="bx bxs-star"></i>
+          <!-- Course Card 1 -->
+          <div class="col-lg-4 col-md-6">
+            <div class="course-card">
+              <div class="course-image">
+                <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=500" alt="Web Development" loading="lazy" width="500" height="333">
+                <div class="course-overlay">
+                  <span class="course-level"><i class="fas fa-signal"></i> Beginner</span>
+                  <span class="course-tag bestseller">Bestseller</span>
+                  <div class="course-preview">
+                    <a href="courses.html#course-web-dev" class="preview-btn">
+                      <i class="fas fa-play"></i> Preview Course
+                    </a>
                   </div>
-                  <p class="mb-0 text-muted">(5 Reviews)</p>
+                </div>
+              </div>
+              <div class="course-content">
+                <div class="course-info">
+                  <div class="course-meta">
+                    <span><i class="fas fa-user"></i> John Doe</span>
+                    <span><i class="fas fa-clock"></i> 15 hours</span>
+                    <span><i class="fas fa-book"></i> 12 lessons</span>
+                  </div>
+                  <div class="course-rating">
+                    <span class="rating">4.8</span>
+                    <div class="stars">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="reviews">(2.5k reviews)</span>
+                  </div>
+                </div>
+                <h3 class="course-title">Complete Web Development Bootcamp 2024</h3>
+                <p class="course-description">Learn web development from scratch with HTML, CSS, JavaScript, React, and Node.js</p>
+                <div class="course-features">
+                  <span><i class="fas fa-video"></i> 120 videos</span>
+                  <span><i class="fas fa-certificate"></i> Certificate</span>
+                  <span><i class="fas fa-infinity"></i> Lifetime access</span>
+                </div>
+                <div class="course-footer">
+                  <div class="price">
+                    <span class="original-price">$199.99</span>
+                    <span class="discounted-price">$89.99</span>
+                  </div>
+                  <div class="action-buttons">
+                    <button class="wishlist-btn">
+                      <i class="far fa-heart"></i>
+                    </button>
+                    <button class="enroll-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Enroll Now</button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Course 2 -->
-          <div class="col-md-6 col-lg-4">
-            <div class="card h-100 border-0 rounded-4 shadow-sm hover-shadow course-card">
-              <img src="assets/images/python.png" class="card-img-top rounded-top-4" alt="Python Course"
-                style="height: 200px; object-fit: contain;" loading="lazy" width="400" height="200">
-              <div class="card-body d-flex flex-column">
-                <span class="h6 d-block text-primary mb-2">Free</span>
-                <h3 class="h5 fw-bold flex-grow-1">Python Programming for Beginners</h3>
-                <p class="text-muted">Duration: 08h 30m</p>
-                <div class="d-flex align-items-center mt-auto">
-                  <div class="me-2 text-warning">
-                    <i class="bx bxs-star"></i><i class="bx bxs-star"></i>
-                    <i class="bx bxs-star"></i><i class="bx bxs-star"></i>
-                    <i class="bx bx-star"></i>
+          <!-- Course Card 2 -->
+          <div class="col-lg-4 col-md-6">
+            <div class="course-card">
+              <div class="course-image">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500" alt="Data Science" loading="lazy" width="500" height="333">
+                <div class="course-overlay">
+                  <span class="course-level"><i class="fas fa-signal"></i> Intermediate</span>
+                  <span class="course-tag hot">Hot</span>
+                  <div class="course-preview">
+                    <a href="courses.html#course-data-science" class="preview-btn">
+                      <i class="fas fa-play"></i> Preview Course
+                    </a>
                   </div>
-                  <p class="mb-0 text-muted">(4 Reviews)</p>
+                </div>
+              </div>
+              <div class="course-content">
+                <div class="course-info">
+                  <div class="course-meta">
+                    <span><i class="fas fa-user"></i> Sarah Johnson</span>
+                    <span><i class="fas fa-clock"></i> 20 hours</span>
+                    <span><i class="fas fa-book"></i> 15 lessons</span>
+                  </div>
+                  <div class="course-rating">
+                    <span class="rating">4.9</span>
+                    <div class="stars">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                    <span class="reviews">(1.8k reviews)</span>
+                  </div>
+                </div>
+                <h3 class="course-title">Data Science and Machine Learning</h3>
+                <p class="course-description">Master data analysis, visualization, and machine learning with Python</p>
+                <div class="course-features">
+                  <span><i class="fas fa-video"></i> 150 videos</span>
+                  <span><i class="fas fa-certificate"></i> Certificate</span>
+                  <span><i class="fas fa-infinity"></i> Lifetime access</span>
+                </div>
+                <div class="course-footer">
+                  <div class="price">
+                    <span class="original-price">$249.99</span>
+                    <span class="discounted-price">$94.99</span>
+                  </div>
+                  <div class="action-buttons">
+                    <button class="wishlist-btn">
+                      <i class="far fa-heart"></i>
+                    </button>
+                    <button class="enroll-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Enroll Now</button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Course 3 -->
-          <div class="col-md-6 col-lg-4">
-            <div class="card h-100 border-0 rounded-4 shadow-sm hover-shadow course-card">
-              <img src="assets/images/react.jfif" class="card-img-top rounded-top-4" alt="React Course"
-                style="height: 200px; object-fit: contain;" loading="lazy" width="400" height="200">
-              <div class="card-body d-flex flex-column">
-                <span class="h6 d-block text-primary mb-2">Free</span>
-                <h3 class="h5 fw-bold flex-grow-1">React JS Crash Course</h3>
-                <p class="text-muted">Duration: 06h 10m</p>
-                <div class="d-flex align-items-center mt-auto">
-                  <div class="me-2 text-warning">
-                    <i class="bx bxs-star"></i><i class="bx bxs-star"></i>
-                    <i class="bx bxs-star"></i><i class="bx bxs-star-half"></i>
-                    <i class="bx bx-star"></i>
+          <!-- Course Card 3 -->
+          <div class="col-lg-4 col-md-6">
+            <div class="course-card">
+              <div class="course-image">
+                <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500" alt="UI Design" loading="lazy" width="500" height="333">
+                <div class="course-overlay">
+                  <span class="course-level"><i class="fas fa-signal"></i> All Levels</span>
+                  <span class="course-tag new">New</span>
+                  <div class="course-preview">
+                    <a href="courses.html#course-ui-ux" class="preview-btn">
+                      <i class="fas fa-play"></i> Preview Course
+                    </a>
                   </div>
-                  <p class="mb-0 text-muted">(3 Reviews)</p>
+                </div>
+              </div>
+              <div class="course-content">
+                <div class="course-info">
+                  <div class="course-meta">
+                    <span><i class="fas fa-user"></i> Mike Wilson</span>
+                    <span><i class="fas fa-clock"></i> 18 hours</span>
+                    <span><i class="fas fa-book"></i> 14 lessons</span>
+                  </div>
+                  <div class="course-rating">
+                    <span class="rating">4.7</span>
+                    <div class="stars">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="reviews">(1.2k reviews)</span>
+                  </div>
+                </div>
+                <h3 class="course-title">UI/UX Design Masterclass 2024</h3>
+                <p class="course-description">Learn modern UI/UX design principles and create stunning interfaces</p>
+                <div class="course-features">
+                  <span><i class="fas fa-video"></i> 130 videos</span>
+                  <span><i class="fas fa-certificate"></i> Certificate</span>
+                  <span><i class="fas fa-infinity"></i> Lifetime access</span>
+                </div>
+                <div class="course-footer">
+                  <div class="price">
+                    <span class="original-price">$179.99</span>
+                    <span class="discounted-price">$79.99</span>
+                  </div>
+                  <div class="action-buttons">
+                    <button class="wishlist-btn">
+                      <i class="far fa-heart"></i>
+                    </button>
+                    <button class="enroll-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Enroll Now</button>
+                  </div>
                 </div>
               </div>
             </div>
