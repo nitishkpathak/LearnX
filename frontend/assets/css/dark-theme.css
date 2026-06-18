@@ -1,26 +1,85 @@
 /* ---------- Global Dark Mode Styles ---------- */
 body.dark-mode {
-    background-color: #0f172a !important;
-    color: #e2e8f0 !important;
+    background-color: #0f172a !important; /* slate-950 */
+    color: #f1f5f9 !important; /* slate-100 */
 }
 
-/* Force sections to blend and remove gradients */
+/* Structural alternating sections in Dark Mode */
 body.dark-mode section,
 body.dark-mode .home,
 body.dark-mode .why-section,
-body.dark-mode .trusted-section {
+body.dark-mode .trusted-section,
+body.dark-mode .categories-section,
+body.dark-mode .featured-courses,
+body.dark-mode .about,
+body.dark-mode .about-us-section,
+body.dark-mode .ask-questions,
+body.dark-mode .cta-section {
     background: transparent !important;
     background-color: transparent !important;
 }
 
-/* Fix marquee fade effect in dark mode */
-body.dark-mode .logo-marquee-wrapper::before {
-    background: linear-gradient(to right, #0f172a 0%, transparent 100%) !important;
-}
-body.dark-mode .logo-marquee-wrapper::after {
-    background: linear-gradient(to left, #0f172a 0%, transparent 100%) !important;
+body.dark-mode .home {
+    background-color: #0f172a !important;
 }
 
+body.dark-mode .trusted-section {
+    background-color: #1e293b !important; /* slate-900 */
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+body.dark-mode .why-section {
+    background-color: #0f172a !important;
+}
+
+body.dark-mode .categories-section {
+    background-color: #1e293b !important;
+}
+
+body.dark-mode .featured-courses {
+    background-color: #0f172a !important;
+}
+
+body.dark-mode .about {
+    background-color: #1e293b !important;
+}
+
+body.dark-mode .about-us-section {
+    background-color: #0f172a !important;
+}
+
+body.dark-mode .ask-questions {
+    background-color: #1e293b !important;
+}
+
+body.dark-mode .cta-section {
+    background-color: #0f172a !important;
+}
+
+body.dark-mode .contact-container {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode .newsletter-section {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(124, 58, 237, 0.15)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+body.dark-mode .newsletter-wrapper {
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Fix marquee fade effect in dark mode */
+body.dark-mode .logo-marquee-wrapper::before {
+    background: linear-gradient(to right, #1e293b 0%, transparent 100%) !important;
+}
+body.dark-mode .logo-marquee-wrapper::after {
+    background: linear-gradient(to left, #1e293b 0%, transparent 100%) !important;
+}
 
 /* Typography Overrides */
 body.dark-mode h1,
@@ -30,7 +89,9 @@ body.dark-mode h4,
 body.dark-mode h5,
 body.dark-mode h6,
 body.dark-mode .faq-heading,
-body.dark-mode .section-title {
+body.dark-mode .section-title,
+body.dark-mode .about-text h2,
+body.dark-mode .contact-header h1 {
     color: #ffffff !important;
 }
 
@@ -40,24 +101,10 @@ body.dark-mode label,
 body.dark-mode li,
 body.dark-mode .text-muted,
 body.dark-mode .text-secondary,
+body.dark-mode .section-subtitle,
+body.dark-mode .features li,
 body.dark-mode .accordion-body {
-    color: #cbd5e1 !important;
-}
-
-/* Inputs & Options Overrides */
-body.dark-mode .form-input,
-body.dark-mode .form-control,
-body.dark-mode .form-select,
-body.dark-mode input,
-body.dark-mode textarea {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-body.dark-mode option {
-    background-color: #ffffff !important;
-    color: #111111 !important;
+    color: #94a3b8 !important; /* slate-400 */
 }
 
 /* Cards & Containers & Forms Overrides */
@@ -69,48 +116,76 @@ body.dark-mode .course-card,
 body.dark-mode .category-card,
 body.dark-mode .testimonial-card,
 body.dark-mode .testimonial,
-body.dark-mode .contact-container,
 body.dark-mode .contact-content form,
-body.dark-mode .contact-header,
 body.dark-mode .feature-card,
 body.dark-mode .sidebar,
 body.dark-mode .accordion-item,
-body.dark-mode .accordion-button,
-body.dark-mode .accordion-body,
 body.dark-mode .logo-box {
     background: #1e293b !important;
     background-color: #1e293b !important;
-    color: #e2e8f0 !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+    color: #f1f5f9 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Inputs Overrides */
+body.dark-mode .category-card:hover,
+body.dark-mode .course-card:hover,
+body.dark-mode .card-box:hover,
+body.dark-mode .info-card:hover,
+body.dark-mode .team-member:hover,
+body.dark-mode .logo-box:hover {
+    border-color: rgba(99, 102, 241, 0.4) !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Accordion Custom Styling in Dark Mode */
+body.dark-mode .accordion-button {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+body.dark-mode .accordion-button:not(.collapsed) {
+    background-color: rgba(99, 102, 241, 0.1) !important;
+    color: var(--primary) !important;
+    border-bottom: 1px solid rgba(99, 102, 241, 0.2) !important;
+}
+
+body.dark-mode .accordion-body {
+    background-color: #0f172a !important;
+    color: #94a3b8 !important;
+}
+
+/* Inputs & Options Overrides */
 body.dark-mode .form-input,
 body.dark-mode .form-control,
 body.dark-mode .form-select,
 body.dark-mode input,
 body.dark-mode textarea {
-    background-color: rgba(255, 255, 255, 0.05) !important;
+    background-color: rgba(15, 23, 42, 0.6) !important;
     color: #ffffff !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 body.dark-mode .form-input::placeholder,
-body.dark-mode .form-control::placeholder {
+body.dark-mode .form-control::placeholder,
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
     color: rgba(255, 255, 255, 0.4) !important;
 }
 
 body.dark-mode .form-input:focus,
-body.dark-mode .form-control:focus {
+body.dark-mode .form-control:focus,
+body.dark-mode input:focus,
+body.dark-mode textarea:focus {
     border-color: var(--primary) !important;
-    box-shadow: none !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25) !important;
 }
 
-/* Specific Tweak for Dark Navbars to blend nicely */
-body.dark-mode .navbar {
-    background: rgba(15, 23, 42, 0.95) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+body.dark-mode option {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
 }
 
 /* Ensure links in dark mode are readable */

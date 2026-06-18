@@ -1,9 +1,9 @@
 /* Premium Glassmorphism Navbar */
 .navbar {
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
   padding: 1rem 2rem;
   transition: all 0.3s ease;
   position: sticky;
@@ -12,7 +12,7 @@
 }
 
 .navbar-brand {
-  color: #ffffff;
+  color: #0f172a;
   font-weight: 700;
   font-size: 1.6rem;
   letter-spacing: -0.5px;
@@ -23,14 +23,15 @@
 }
 
 .navbar-nav .nav-link {
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: #475569 !important;
   font-weight: 500;
   margin: 0 10px;
   position: relative;
   transition: color 0.3s ease;
 }
 
-.navbar-nav .nav-link:hover {
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
   color: var(--primary) !important;
 }
 
@@ -45,12 +46,13 @@
   transition: width 0.3s ease;
 }
 
-.navbar-nav .nav-link:hover::after {
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
   width: 100%;
 }
 
 .navbar-icons i {
-  color: white;
+  color: #475569;
   font-size: 1.2rem;
   margin-left: 15px;
   cursor: pointer;
@@ -63,7 +65,8 @@
 }
 
 .navbar .btn-outline-light {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(15, 23, 42, 0.15);
+    color: #0f172a;
     font-weight: 500;
     transition: all 0.3s ease;
     border-radius: 8px;
@@ -71,8 +74,9 @@
 }
 
 .navbar .btn-outline-light:hover {
-    background: white;
-    color: #0f172a;
+    background: #0f172a;
+    color: white;
+    border-color: #0f172a;
 }
 
 .navbar .btn-warning {
@@ -82,19 +86,67 @@
     font-weight: 600;
     border-radius: 8px;
     padding: 8px 16px;
-    box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3);
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .navbar .btn-warning:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 184, 148, 0.4);
+    box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
     background: linear-gradient(135deg, var(--secondary), var(--primary));
     color: white;
 }
 
 .navbar-toggler {
-    border-color: rgba(255,255,255,0.1);
+    border-color: rgba(0,0,0,0.1);
+    background-color: rgba(0,0,0,0.02);
+}
+
+/* Dark Mode Overrides for Navbar */
+body.dark-mode .navbar {
+  background: rgba(15, 23, 42, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .navbar-brand {
+  color: #ffffff;
+}
+
+body.dark-mode .navbar-brand:hover {
+  color: var(--primary);
+}
+
+body.dark-mode .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.dark-mode .navbar-nav .nav-link:hover,
+body.dark-mode .navbar-nav .nav-link.active {
+  color: var(--primary) !important;
+}
+
+body.dark-mode .navbar-icons i {
+  color: #ffffff;
+}
+
+body.dark-mode .navbar-icons i:hover {
+  color: var(--primary);
+}
+
+body.dark-mode .navbar .btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+body.dark-mode .navbar .btn-outline-light:hover {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #ffffff;
+}
+
+body.dark-mode .navbar-toggler {
+  border-color: rgba(255,255,255,0.15);
+  background-color: rgba(255,255,255,0.05);
 }
 
 @media (max-width: 991.98px) {
