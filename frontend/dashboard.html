@@ -500,7 +500,8 @@
         </div>
         
         <div style="margin-top: 30px; display: flex; justify-content: center; gap: 15px;">
-          <button id="printCertBtn" class="btn-primary" style="padding: 10px 25px;"><i class="fas fa-print" style="margin-right:8px;"></i> Print Certificate</button>
+          <button id="printCertBtn" class="btn-primary" style="padding: 10px 25px; background: var(--secondary);"><i class="fas fa-print" style="margin-right:8px;"></i> Print Certificate</button>
+          <button id="downloadCertBtn" class="btn-primary" style="padding: 10px 25px;"><i class="fas fa-download" style="margin-right:8px;"></i> Download PDF</button>
         </div>
       </div>
     </div>
@@ -513,15 +514,18 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
   <!-- Universal Router -->
-  <script src="assets/js/router.js?v=1.0.2" defer></script>
+  <script src="assets/js/router.js?v=1.0.3" defer></script>
   <!-- Auth Modals -->
-  <script src="assets/js/auth-modal.js?v=1.0.2" defer></script>
+  <script src="assets/js/auth-modal.js?v=1.0.3" defer></script>
   <!-- Page Scripts -->
-  <script src="assets/js/dashboard.js?v=1.0.2" defer></script>
+  <script src="assets/js/dashboard.js?v=1.0.3" defer></script>
   <!-- Universal Theme System -->
-  <script src="assets/js/theme.js?v=1.0.2" defer></script>
+  <script src="assets/js/theme.js?v=1.0.3" defer></script>
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- jsPDF & html2canvas for PDF Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 
 </html>

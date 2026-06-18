@@ -1022,6 +1022,78 @@ if (printCertBtn) {
   });
 }
 
+const downloadCertBtn = document.getElementById('downloadCertBtn');
+if (downloadCertBtn) {
+  downloadCertBtn.addEventListener('click', async () => {
+    const element = document.getElementById('printableCertificate');
+    if (!element) return;
+
+    const oldBtnText = downloadCertBtn.innerHTML;
+    downloadCertBtn.disabled = true;
+    downloadCertBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i> Generating...';
+
+    try {
+      const { jsPDF } = window.jspdf;
+
+      // Force clean landscape layout colors regardless of app theme
+      const originalBg = element.style.background;
+      const originalBorder = element.style.border;
+      const originalColor = element.style.color;
+      
+      element.style.background = '#ffffff';
+      element.style.color = '#1f2937';
+      element.style.border = '6px double #6366f1';
+      
+      const canvas = await html2canvas(element, {
+        scale: 3, // High-res export
+        useCORS: true,
+        backgroundColor: '#ffffff'
+      });
+
+      // Restore original
+      element.style.background = originalBg;
+      element.style.color = originalColor;
+      element.style.border = originalBorder;
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('l', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      const imgWidth = pdfWidth - 20;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
+      const xOffset = 10;
+      const yOffset = (pdfHeight - imgHeight) / 2;
+
+      pdf.addImage(imgData, 'PNG', xOffset, yOffset, imgWidth, imgHeight);
+      
+      const courseName = document.getElementById('certCourseName').innerText || 'Course';
+      const filename = `LearnX_Certificate_${courseName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`;
+      pdf.save(filename);
+
+      Swal.fire({
+        title: 'Success! 📄',
+        text: 'Your certificate PDF has been successfully downloaded.',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+      });
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to generate PDF. Please try again.',
+        icon: 'error',
+        confirmButtonColor: '#ef4444'
+      });
+    } finally {
+      downloadCertBtn.disabled = false;
+      downloadCertBtn.innerHTML = oldBtnText;
+    }
+  });
+}
+
 // ================== ✅ ASSIGNMENT MODALS LOGIC ==================
 const closeAssignmentModal = document.getElementById('closeAssignmentModal');
 if (closeAssignmentModal) {
