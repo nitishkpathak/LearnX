@@ -10,7 +10,9 @@ let profile = {};
 // Sidebar toggle
 const menuBtn = document.getElementById('menuBtn');
 const sidebar = document.getElementById('sidebar');
-menuBtn.addEventListener('click', () => sidebar.classList.toggle('show'));
+if (menuBtn && sidebar) {
+  menuBtn.addEventListener('click', () => sidebar.classList.toggle('show'));
+}
 
 // Navigation (scoped to dashboard view to prevent hiding landing sections)
 const sections = document.querySelectorAll('#dashboard-view .section');
@@ -102,6 +104,33 @@ async function fetchDashboardData() {
             
             renderDynamicContent();
             setupSettings(currentUser.settings);
+        } else if (response.status === 401 || response.status === 403) {
+            console.error("Session expired or unauthorized.");
+            // Session expired/invalid -> clear tokens and redirect to login
+            localStorage.removeItem('learnx_auth');
+            localStorage.removeItem('learnx_user');
+            localStorage.removeItem('learnx_token');
+            localStorage.removeItem('learnx_active_view');
+            
+            Swal.fire({
+                icon: 'warning',
+                title: 'Session Expired',
+                text: 'Your session has expired. Please log in again.',
+                timer: 3000,
+                showConfirmButton: false
+            });
+            
+            setTimeout(() => {
+                switchView('home');
+                if (typeof updateNavbarAuthState === 'function') {
+                    updateNavbarAuthState();
+                }
+                const loginModalEl = document.getElementById('loginModal');
+                if (loginModalEl) {
+                    const loginModal = bootstrap.Modal.getOrCreateInstance(loginModalEl);
+                    loginModal.show();
+                }
+            }, 1500);
         } else {
             console.error("Failed to fetch dashboard data.");
         }
