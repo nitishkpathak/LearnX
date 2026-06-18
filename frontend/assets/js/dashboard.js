@@ -244,7 +244,7 @@ function loadCourses() {
       </div>
     `;
     if(courseList) courseList.innerHTML += html;
-    if(dashboardCourseList && index < 2) dashboardCourseList.innerHTML += html;
+    if(dashboardCourseList) dashboardCourseList.innerHTML += html;
   });
 
   const enrolledCountEl = document.getElementById('enrolledCount');
