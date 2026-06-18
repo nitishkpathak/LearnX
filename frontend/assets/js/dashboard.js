@@ -1752,8 +1752,17 @@ function switchPlayerTab(tabName) {
     panelOverview.style.display = 'none';
     panelQuiz.style.display = 'block';
     
-    renderQuiz();
   }
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
 
 function renderQuiz(forceRetake = false) {
@@ -1808,7 +1817,7 @@ function renderQuiz(forceRetake = false) {
         quizHtml += `
             <div style="padding: 10px 12px; border-radius: 6px; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: ${isCorrect ? 'var(--text-main)' : 'var(--text-muted)'}; ${borderStyle} ${bgStyle}">
               ${iconHtml}
-              <span>${opt}</span>
+              <span>${escapeHtml(opt)}</span>
             </div>
         `;
       });
@@ -1854,7 +1863,7 @@ function renderQuiz(forceRetake = false) {
                  onmouseover="if(!this.querySelector('input').checked) { this.style.background='rgba(99, 102, 241, 0.03)'; this.style.borderColor='rgba(99, 102, 241, 0.4)'; }"
                  onmouseout="if(!this.querySelector('input').checked) { this.style.background='rgba(255, 255, 255, 0.01)'; this.style.borderColor='var(--card-border)'; }">
             <input type="radio" name="q_${qIdx}" value="${oIdx}" style="accent-color: var(--primary); width: 18px; height: 18px; cursor: pointer;" required>
-            <span style="font-size: 0.9rem; color: var(--text-main); font-family: 'Outfit', sans-serif;">${opt}</span>
+            <span style="font-size: 0.9rem; color: var(--text-main); font-family: 'Outfit', sans-serif;">${escapeHtml(opt)}</span>
           </label>
       `;
     });
