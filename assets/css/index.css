@@ -2,17 +2,21 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Outfit', sans-serif;
   list-style: none;
   text-decoration: none;
   scroll-behavior: smooth;
 }
 
 :root {
-  --bg-color: #ffffff;
-  --text-color: #22100d;
-  --second-color: #685f78;
-  --main-color: #f66962;
+  --primary: #6366f1; /* Indigo 500 */
+  --primary-hover: #4f46e5;
+  --secondary: #8b5cf6; /* Violet 500 */
+  --accent: #10b981; /* Emerald 500 */
+  --bg-color: #f8fafc; /* Slate 50 */
+  --text-color: #0f172a; /* Slate 900 */
+  --second-color: #64748b; /* Slate 500 */
+  --main-color: var(--primary);
   --big-font: 3.8rem;
   --h2-font: 2.6rem;
   --p-font: 1.1rem;
@@ -24,7 +28,7 @@ body {
 }
 
 :root {
-  --main-color: #ff5e5e;
+  --main-color: var(--primary);
   --second-color: #555;
   --bg-color: #fff;
   --big-font: 3rem;
@@ -41,7 +45,7 @@ section {
     align-items: center;
     gap: 2rem;
     min-height: 100vh;
-    background: #f7f9fc;
+    background: var(--bg-color);
   }
 
   .home-text h1 {
@@ -51,11 +55,11 @@ section {
   }
 
   .home-text h1 span {
-    color: #d94d00;
+    color: var(--primary);
   }
 
   .home-text h6 {
-    color: #d94d00;
+    color: var(--primary);
     font-size: 18px;
     font-weight: 600;
     letter-spacing: 2px;
@@ -82,7 +86,7 @@ section {
   }
 
   .features li i {
-    color: #00b894;
+    color: var(--accent);
     margin-right: 8px;
   }
 
@@ -94,7 +98,7 @@ section {
   .latter form input[type="email"] {
     width: 100%;
     padding: 16px 140px 16px 15px;
-    border: 2px solid #00b894;
+    border: 2px solid var(--accent);
     border-radius: 30px;
     outline: none;
     font-size: 14px;
@@ -106,7 +110,7 @@ section {
     top: 1px;
     bottom: 1px;
     padding: 16px 40px;
-    background: #00b894;
+    background: var(--accent);
     color: #fff;
     border: none;
     border-radius: 30px;
@@ -331,7 +335,7 @@ section {
   }
 
   .cta-header h5 {
-    color: #00b894;
+    color: var(--accent);
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
     font-weight: 600;
@@ -447,7 +451,7 @@ section {
 
   .about-text .btn {
     margin-top: 1rem;
-    background-color: #00b894;
+    background-color: var(--accent);
     padding: 0.75rem 1.5rem;
     color: #fff;
     font-weight: 600;
@@ -555,12 +559,12 @@ section {
   .footer-logo span {
     font-size: 24px;
     font-weight: bold;
-    color: #ffe600;
+    color: var(--accent);
   }
 
   .footer-nav a {
     margin: 0 10px;
-    color: #ffe600;
+    color: var(--accent);
     text-decoration: none;
     font-weight: 500;
   }
@@ -592,12 +596,12 @@ section {
   }
 
   .footer-col ul li a:hover {
-    color: #ffe600;
+    color: var(--accent);
   }
 
   /* Stylish h3 Headers */
   .footer-col h3 {
-    color: #ffe600;
+    color: var(--accent);
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 15px;
@@ -612,7 +616,7 @@ section {
     position: absolute;
     width: 40px;
     height: 2px;
-    background-color: #ffe600;
+    background-color: var(--accent);
     bottom: 0;
     left: 0;
     transition: width 0.3s;
@@ -632,7 +636,7 @@ section {
   }
 
   .footer-bottom a {
-    color: #ffe600;
+    color: var(--accent);
     text-decoration: underline;
   }
 
@@ -642,7 +646,7 @@ section {
 
   .footer-social a {
     margin: 0 8px;
-    color: #ffe600;
+    color: var(--accent);
     font-size: 18px;
   }
 

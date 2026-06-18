@@ -103,7 +103,7 @@ body.dark-mode .form-control::placeholder {
 
 body.dark-mode .form-input:focus,
 body.dark-mode .form-control:focus {
-    border-color: #00b894 !important;
+    border-color: var(--primary) !important;
     box-shadow: none !important;
 }
 
@@ -115,14 +115,14 @@ body.dark-mode .navbar {
 
 /* Ensure links in dark mode are readable */
 body.dark-mode a {
-    color: #00b894;
+    color: var(--primary);
 }
 body.dark-mode a:hover {
-    color: #00d2d3;
+    color: var(--primary-hover);
 }
 body.dark-mode .nav-link {
     color: rgba(255,255,255,0.8) !important;
 }
 body.dark-mode .nav-link:hover {
-    color: #00b894 !important;
+    color: var(--primary) !important;
 }

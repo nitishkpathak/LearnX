@@ -1,10 +1,10 @@
 /* Root Variables */
 :root {
-    --primary-color: #4361ee;
-    --secondary-color: #3a0ca3;
-    --accent-color: #f72585;
-    --text-dark: #2b2d42;
-    --text-light: #8d99ae;
+    --primary-color: var(--primary);
+    --secondary-color: var(--secondary);
+    --accent-color: var(--accent);
+    --text-dark: var(--text-color);
+    --text-light: var(--second-color);
     --white: #ffffff;
     --light-bg: #f8f9fa;
     --border-radius: 10px;
@@ -20,14 +20,14 @@
 }
 
 #courses-view {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Outfit', sans-serif;
     line-height: 1.6;
     color: var(--text-dark);
 }
 
     /* Gradient Navbar */
     .navbar {
-        background: linear-gradient(90deg, #db84be, #ffb347);
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
         padding: 0.5rem 1rem;
       }
   
@@ -69,7 +69,7 @@
         border-radius: 25px;
         overflow: hidden;
         margin-left: 20px;
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.05);
       }
   
       .search-input {
