@@ -59,6 +59,7 @@
       <li data-section="courses"><i class="fas fa-book-open"></i> My Courses</li>
       <li data-section="assignments"><i class="fas fa-tasks"></i> Assignments</li>
       <li data-section="progress"><i class="fas fa-chart-line"></i> Progress</li>
+      <li data-section="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</li>
       <li data-section="certificates"><i class="fas fa-award"></i> Certificates</li>
     </ul>
 
@@ -81,6 +82,9 @@
       </div>
     </div>
     <div class="header-right">
+      <div id="headerXpBadge" style="background: linear-gradient(135deg, #eab308, #ca8a04); color: white; padding: 5px 12px; border-radius: 20px; font-family: 'Outfit'; font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(234, 179, 8, 0.25); margin-right: 5px;">
+        <i class="fas fa-bolt"></i> <span id="headerXpValue">0 XP</span>
+      </div>
       <button id="darkModeBtn" class="theme-toggle icon-btn" aria-label="Toggle Theme">
         <i class="fas fa-moon"></i>
       </button>
@@ -282,6 +286,70 @@
           <h3 style="margin-bottom: 20px; font-size: 1.3rem;">Data Management</h3>
           <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.95rem;">This will reset all your dashboard data back to default.</p>
           <button id="resetData" class="btn-primary" style="background: #ef4444; width: 100%;"><i class="fas fa-sync-alt" style="margin-right:8px;"></i> Reset Dashboard Data</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaderboard Section -->
+    <div id="leaderboard" class="section" style="display:none;">
+      <h2 class="section-title">Global Leaderboard & Achievements</h2>
+      
+      <!-- Gamification Overview Stats -->
+      <div class="stats-grid" style="margin-bottom: 30px;">
+        <div class="stat-card glass">
+          <div class="stat-icon" style="background: rgba(217, 119, 6, 0.1); color: #d97706;"><i class="fas fa-trophy"></i></div>
+          <div class="stat-info">
+            <h3 id="leaderboardUserRank">--</h3>
+            <p>Your Rank</p>
+          </div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon" style="background: rgba(99, 102, 241, 0.1); color: #6366f1;"><i class="fas fa-bolt"></i></div>
+          <div class="stat-info">
+            <h3 id="leaderboardUserXp">0 XP</h3>
+            <p>Total Experience Points</p>
+          </div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fas fa-award"></i></div>
+          <div class="stat-info">
+            <h3 id="leaderboardUserBadges">0</h3>
+            <p>Badges Unlocked</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-layout" style="grid-template-columns: 1.6fr 1.4fr; gap: 30px;">
+        <!-- Leaderboard Table Card -->
+        <div class="glass" style="padding: 30px;">
+          <h3 style="margin-bottom: 20px; font-size: 1.3rem; display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-medal" style="color:#d97706;"></i> Top Students
+          </h3>
+          <div class="table-responsive">
+            <table class="table" style="color: var(--text-main); vertical-align: middle;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--text-muted);">
+                  <th style="padding: 12px 8px; width: 80px;">Rank</th>
+                  <th style="padding: 12px 8px;">Student</th>
+                  <th style="padding: 12px 8px; text-align: right; width: 100px;">XP</th>
+                  <th style="padding: 12px 8px; text-align: right; width: 100px;">Badges</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboardTableBody">
+                <!-- Dynamic ranking lists will go here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Badges Card -->
+        <div class="glass" style="padding: 30px;">
+          <h3 style="margin-bottom: 25px; font-size: 1.3rem; display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-shield-halved" style="color:#6366f1;"></i> My Achievements
+          </h3>
+          <div id="badgesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 20px; text-align: center;">
+            <!-- Dynamic Badges will go here -->
+          </div>
         </div>
       </div>
     </div>

@@ -19,8 +19,15 @@ let profile = {};
           email: cachedUser.email || '',
           studentId: cachedUser.studentId || 'N/A',
           dp: cachedUser.dp || null,
-          joined: cachedUser.joined || 'N/A'
+          joined: cachedUser.joined || 'N/A',
+          xp: cachedUser.xp || 0
         };
+        
+        // Update header XP value immediately
+        const headerXpValue = document.getElementById('headerXpValue');
+        if (headerXpValue) {
+          headerXpValue.innerText = `${cachedUser.xp || 0} XP`;
+        }
         
         // Update welcome banner immediately
         const welcomeText = document.querySelector('.welcome-banner h2');
@@ -86,6 +93,10 @@ navItems.forEach(li => {
         loadCertificates();
     }
 
+    if (target === 'leaderboard') {
+        loadLeaderboard();
+    }
+
     if (window.innerWidth <= 992) sidebar.classList.remove('show');
   });
 });
@@ -136,8 +147,16 @@ async function fetchDashboardData() {
                 email: currentUser.email,
                 studentId: currentUser.studentId || 'N/A',
                 dp: currentUser.dp || null,
-                joined: new Date(currentUser.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+                joined: new Date(currentUser.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+                xp: currentUser.xp || 0,
+                badges: currentUser.badges || []
             };
+
+            // Update header XP value
+            const headerXpValue = document.getElementById('headerXpValue');
+            if (headerXpValue) {
+              headerXpValue.innerText = `${profile.xp} XP`;
+            }
             
             // Sync with local storage
             localStorage.setItem("learnx_user", JSON.stringify({
@@ -148,7 +167,9 @@ async function fetchDashboardData() {
                 education: currentUser.education,
                 studentId: profile.studentId,
                 dp: profile.dp,
-                joined: profile.joined
+                joined: profile.joined,
+                xp: profile.xp,
+                badges: profile.badges
             }));
             
             renderDynamicContent();
@@ -836,11 +857,58 @@ if (markCompleteBtn) {
       });
 
       if (response.ok) {
+        const resData = await response.json();
         course.progress = nextProgress;
         
+        // Update user state and local storage immediately
+        if (currentUser) {
+          currentUser.xp = resData.xp;
+          currentUser.badges = resData.badges;
+        }
+        profile.xp = resData.xp;
+        profile.badges = resData.badges;
+        
+        // Update header XP value immediately
+        const headerXpValue = document.getElementById('headerXpValue');
+        if (headerXpValue) {
+          headerXpValue.innerText = `${profile.xp} XP`;
+        }
+        
+        // Update learnx_user in localStorage
+        const cachedUserStr = localStorage.getItem('learnx_user');
+        if (cachedUserStr) {
+          try {
+            const cachedUser = JSON.parse(cachedUserStr);
+            cachedUser.xp = profile.xp;
+            cachedUser.badges = profile.badges;
+            localStorage.setItem('learnx_user', JSON.stringify(cachedUser));
+          } catch(e) {
+            console.error(e);
+          }
+        }
+        
+        // Award XP message trigger
+        let xpMsg = "";
+        if (resData.earnedXp > 0) {
+          xpMsg = ` (+${resData.earnedXp} XP)`;
+        }
+
+        // Check for unlocked badges to showcase
+        if (resData.unlockedBadges && resData.unlockedBadges.length > 0) {
+          resData.unlockedBadges.forEach(badge => {
+            Swal.fire({
+              title: 'Badge Unlocked! 🏆',
+              html: `You have earned the <strong>"${badge.name}"</strong> badge!<br><em>"${badge.description}"</em>`,
+              icon: 'success',
+              confirmButtonText: 'Great!',
+              confirmButtonColor: '#6366f1'
+            });
+          });
+        }
+
         if (nextProgress === 100) {
           Swal.fire({
-            title: 'Congratulations! 🎓',
+            title: 'Congratulations! 🎓' + xpMsg,
             text: `You have successfully completed "${course.name}"! Your completion certificate is now available under the Certificates tab.`,
             icon: 'success',
             confirmButtonText: 'View Certificate',
@@ -852,7 +920,7 @@ if (markCompleteBtn) {
           });
         } else {
           Swal.fire({
-            title: 'Lesson Completed! 🌟',
+            title: 'Lesson Completed! 🌟' + xpMsg,
             text: 'Keep learning to unlock your completion certificate.',
             icon: 'success',
             timer: 2000,
@@ -986,14 +1054,63 @@ if (submitAssignmentForm) {
       });
       
       if (response.ok) {
+        const resData = await response.json();
         document.getElementById('submitAssignmentModal').classList.remove('active');
-        Swal.fire({
-          title: 'Project Submitted! 🚀',
-          text: 'Your project has been successfully submitted for grading.',
-          icon: 'success',
-          timer: 3000,
-          showConfirmButton: false
-        });
+        
+        // Update user state and local storage immediately
+        if (currentUser) {
+          currentUser.xp = resData.xp;
+          currentUser.badges = resData.badges;
+        }
+        profile.xp = resData.xp;
+        profile.badges = resData.badges;
+        
+        // Update header XP value immediately
+        const headerXpValue = document.getElementById('headerXpValue');
+        if (headerXpValue) {
+          headerXpValue.innerText = `${profile.xp} XP`;
+        }
+        
+        // Update learnx_user in localStorage
+        const cachedUserStr = localStorage.getItem('learnx_user');
+        if (cachedUserStr) {
+          try {
+            const cachedUser = JSON.parse(cachedUserStr);
+            cachedUser.xp = profile.xp;
+            cachedUser.badges = profile.badges;
+            localStorage.setItem('learnx_user', JSON.stringify(cachedUser));
+          } catch(e) {
+            console.error(e);
+          }
+        }
+        
+        // Award XP message trigger
+        let xpMsg = "";
+        if (resData.earnedXp > 0) {
+          xpMsg = ` (+${resData.earnedXp} XP)`;
+        }
+
+        // Check for unlocked badges to showcase
+        if (resData.unlockedBadges && resData.unlockedBadges.length > 0) {
+          resData.unlockedBadges.forEach(badge => {
+            Swal.fire({
+              title: 'Badge Unlocked! 🏆',
+              html: `You have earned the <strong>"${badge.name}"</strong> badge!<br><em>"${badge.description}"</em>`,
+              icon: 'success',
+              confirmButtonText: 'Great!',
+              confirmButtonColor: '#6366f1'
+            });
+          });
+        } else {
+          Swal.fire({
+            title: 'Project Submitted! 🚀' + xpMsg,
+            text: 'Your project has been successfully submitted for grading.',
+            icon: 'success',
+            timer: 3000,
+            showConfirmButton: false
+          });
+        }
+        
         fetchDashboardData(); // Refresh data
       } else {
         Swal.fire({
@@ -1068,4 +1185,126 @@ if (resetBtn) {
       }
     }
   });
+}
+
+// ================== ✅ LEADERBOARD & ACHIEVEMENTS LOGIC ==================
+async function loadLeaderboard() {
+  const tableBody = document.getElementById('leaderboardTableBody');
+  const badgesGrid = document.getElementById('badgesGrid');
+  if (!tableBody || !badgesGrid) return;
+
+  tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Loading rankings...</td></tr>';
+  badgesGrid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Loading achievements...</div>';
+
+  try {
+      const response = await fetch(`${API_BASE_URL}/api/dashboard/leaderboard?_=${Date.now()}`, {
+          headers: {
+              "Authorization": `Bearer ${token}`,
+              "Cache-Control": "no-cache",
+              "Pragma": "no-cache"
+          }
+      });
+
+      if (response.ok) {
+          const data = await response.json();
+
+          // 1. Update Personal stats counters
+          const rankEl = document.getElementById('leaderboardUserRank');
+          const xpEl = document.getElementById('leaderboardUserXp');
+          const badgesEl = document.getElementById('leaderboardUserBadges');
+
+          if (rankEl) rankEl.innerText = `#${data.userRank}`;
+          if (xpEl) xpEl.innerText = `${data.userXp} XP`;
+          if (badgesEl) badgesEl.innerText = data.userBadgesCount;
+
+          // 2. Render Top Students Table
+          tableBody.innerHTML = '';
+          if (data.leaderboard.length === 0) {
+              tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No rankings available yet.</td></tr>';
+          } else {
+              data.leaderboard.forEach(student => {
+                  let rankDisplay = student.rank;
+                  if (student.rank === 1) rankDisplay = '<span style="color:#eab308; font-size:1.2rem;"><i class="fas fa-crown"></i></span>';
+                  else if (student.rank === 2) rankDisplay = '<span style="color:#94a3b8; font-size:1.1rem;"><i class="fas fa-medal"></i></span>';
+                  else if (student.rank === 3) rankDisplay = '<span style="color:#b45309; font-size:1rem;"><i class="fas fa-medal"></i></span>';
+
+                  const avatarUrl = student.dp ? student.dp : `https://ui-avatars.com/api/?name=${encodeURIComponent(student.name)}&background=6366f1&color=fff&size=80`;
+                  const isCurrentUser = student.id === currentUser._id;
+                  const rowStyle = isCurrentUser ? 'style="background: rgba(99, 102, 241, 0.05); font-weight: 600; border-left: 3px solid var(--primary);"' : '';
+
+                  const html = `
+                    <tr ${rowStyle}>
+                      <td style="padding: 15px 8px; font-weight:700; text-align:center; width: 60px;">${rankDisplay}</td>
+                      <td style="padding: 15px 8px; display: flex; align-items: center; gap: 12px;">
+                        <img src="${avatarUrl}" alt="Avatar" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border: 1.5px solid var(--primary);">
+                        <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;">
+                          ${student.name} ${isCurrentUser ? '<span style="font-size:0.75rem; background: var(--primary); color:white; padding: 2px 6px; border-radius:10px; margin-left: 5px;">You</span>' : ''}
+                        </span>
+                      </td>
+                      <td style="padding: 15px 8px; text-align: right; font-weight: 700; color: var(--primary);">${student.xp}</td>
+                      <td style="padding: 15px 8px; text-align: right; color: var(--text-muted); font-size:0.9rem;">
+                        <i class="fas fa-shield-halved" style="color:var(--primary); margin-right:4px;"></i> ${student.badgesCount}
+                      </td>
+                    </tr>
+                  `;
+                  tableBody.innerHTML += html;
+              });
+          }
+
+          // 3. Render Achievements Badges Grid
+          badgesGrid.innerHTML = '';
+          const badgeDefinitions = [
+              { name: "First Steps", icon: "fa-shoe-prints", description: "Completed your first lesson!", color: "#3b82f6" },
+              { name: "Project Submitter", icon: "fa-upload", description: "Submitted your first assignment!", color: "#ec4899" },
+              { name: "HTML Master", icon: "fa-code", description: "Completed HTML & CSS Masterclass!", color: "#10b981" },
+              { name: "JS Wizard", icon: "fa-wand-magic-sparkles", description: "Completed JavaScript Basics!", color: "#8b5cf6" },
+              { name: "Active Learner", icon: "fa-fire", description: "Earned over 200 XP!", color: "#ef4444" }
+          ];
+
+          badgeDefinitions.forEach(badgeDef => {
+              const unlockedBadge = currentUser.badges && currentUser.badges.find(b => b.name === badgeDef.name);
+              const isUnlocked = !!unlockedBadge;
+              const dateText = isUnlocked ? new Date(unlockedBadge.unlockedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+
+              const itemHtml = `
+                <div class="badge-item" style="padding: 18px 12px; border-radius: 14px; 
+                  background: ${isUnlocked ? 'rgba(99, 102, 241, 0.04)' : 'rgba(255, 255, 255, 0.02)'}; 
+                  border: 1.5px solid ${isUnlocked ? 'rgba(99, 102, 241, 0.2)' : 'rgba(255, 255, 255, 0.05)'}; 
+                  opacity: ${isUnlocked ? '1' : '0.45'}; 
+                  transition: all 0.3s ease;
+                  box-shadow: ${isUnlocked ? '0 4px 12px rgba(99, 102, 241, 0.1)' : 'none'};"
+                  onmouseover="this.style.transform='translateY(-5px)'"
+                  onmouseout="this.style.transform='translateY(0)'">
+                  
+                  <div style="font-size: 2.4rem; color: ${isUnlocked ? badgeDef.color : '#6b7280'}; margin-bottom: 12px; filter: ${isUnlocked ? 'drop-shadow(0 2px 6px ' + badgeDef.color + '40)' : 'none'};">
+                    <i class="fas ${badgeDef.icon}"></i>
+                  </div>
+                  <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; color: ${isUnlocked ? 'var(--text-main)' : 'var(--text-muted)'}">${badgeDef.name}</h4>
+                  <p style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.25; margin: 0; min-height:36px; display:flex; align-items:center; justify-content:center;">
+                    ${badgeDef.description}
+                  </p>
+                  
+                  ${isUnlocked 
+                    ? `<span style="display:inline-block; font-size: 0.65rem; color:#10b981; margin-top: 10px; font-weight: 600; background:rgba(16, 185, 129, 0.1); padding:2px 8px; border-radius:10px;"><i class="fas fa-check-circle"></i> Unlocked</span>` 
+                    : `<span style="display:inline-block; font-size: 0.65rem; color:var(--text-muted); margin-top: 10px; background:rgba(255,255,255,0.05); padding:2px 8px; border-radius:10px;"><i class="fas fa-lock"></i> Locked</span>`
+                  }
+                  
+                  ${isUnlocked && dateText 
+                    ? `<div style="font-size: 0.65rem; color:var(--text-muted); margin-top: 6px;">${dateText}</div>` 
+                    : ''
+                  }
+                </div>
+              `;
+              badgesGrid.innerHTML += itemHtml;
+          });
+      } else {
+          console.error("Failed to fetch leaderboard data.");
+          tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#ef4444;">Failed to load rankings.</td></tr>';
+          badgesGrid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:#ef4444;">Failed to load achievements.</div>';
+      }
+  } catch (error) {
+      console.error(error);
+      tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#ef4444;">Connection error.</td></tr>';
+      badgesGrid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:#ef4444;">Connection error.</div>';
+  }
 }
