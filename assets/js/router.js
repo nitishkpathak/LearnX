@@ -3,6 +3,11 @@
  * Client-side routing logic for LearnX SPA
  */
 
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://learnx-backend-wygd.onrender.com';
+
+
 function switchView(viewName, hash) {
     console.log("Switching view to:", viewName, "hash:", hash);
     const publicSite = document.getElementById('public-site-view');

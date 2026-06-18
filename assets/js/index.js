@@ -1,7 +1,3 @@
-const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:5000'
-    : 'https://learnx-backend-wygd.onrender.com';
-
 // -------------------- Search Box Validation --------------------
 // Moved to theme.js to handle globally across all pages
 

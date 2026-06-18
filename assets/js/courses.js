@@ -62,9 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
     toastEl.addEventListener('hidden.bs.toast', () => toastEl.remove());
   }
 
-  const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? 'http://localhost:5000'
-      : 'https://learnx-backend-wygd.onrender.com';
 
   async function enrollInCourse(courseDetails, btn) {
     const token = localStorage.getItem('learnx_token');
