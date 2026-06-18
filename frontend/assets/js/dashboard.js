@@ -1752,6 +1752,7 @@ function switchPlayerTab(tabName) {
     panelOverview.style.display = 'none';
     panelQuiz.style.display = 'block';
     
+    renderQuiz();
   }
 }
 
