@@ -741,3 +741,72 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+/* Syllabus List inside Course Player */
+.syllabus-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.syllabus-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  border-radius: 8px;
+  background: var(--hover-bg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+.syllabus-item:hover {
+  border-color: var(--primary);
+  background: var(--card-bg);
+}
+.syllabus-item.active {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.syllabus-item i {
+  font-size: 1.1rem;
+}
+
+/* Course Player Responsive Grid */
+@media(max-width: 992px) {
+  .course-player-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Certificate Card Styles */
+.cert-card {
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.cert-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+.cert-card-icon {
+  font-size: 2.5rem;
+  color: #d97706;
+  margin-bottom: 12px;
+}
+
+/* Printable Styles for Certificate */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #certificateModal, #certificateModal *, #printableCertificate, #printableCertificate * {
+    visibility: visible;
+  }
+  #certificateModal {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}

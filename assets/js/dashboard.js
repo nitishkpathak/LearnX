@@ -45,6 +45,10 @@ navItems.forEach(li => {
         }, 50);
     }
 
+    if (target === 'certificates') {
+        loadCertificates();
+    }
+
     if (window.innerWidth <= 992) sidebar.classList.remove('show');
   });
 });
@@ -134,7 +138,7 @@ function loadCourses() {
               <div class="progress-fill" style="width: 0%" data-width="${c.progress}%"></div>
             </div>
           </div>
-          <button class="btn-primary" style="margin-top: 15px; padding: 10px; width: 100%; font-size: 0.95rem;">
+          <button class="btn-primary continue-course-btn" data-id="${c.courseId}" style="margin-top: 15px; padding: 10px; width: 100%; font-size: 0.95rem;">
             ${c.progress === 100 ? 'Review Course' : 'Continue Course'}
           </button>
         </div>
@@ -165,6 +169,14 @@ function loadCourses() {
         }
       }
     }
+  });
+
+  // Bind Continue Course buttons
+  document.querySelectorAll('.continue-course-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+          const id = e.currentTarget.getAttribute('data-id');
+          openCoursePlayer(id);
+      });
   });
 
   setTimeout(() => {
@@ -222,9 +234,17 @@ function loadAssignments(filter = 'all') {
 
   // Bind Submit Assignment buttons
   document.querySelectorAll('.submit-assignment-btn').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
+      btn.addEventListener('click', (e) => {
           const id = e.target.getAttribute('data-id');
-          await submitAssignment(id);
+          const listItem = btn.closest('.list-item');
+          const title = listItem ? listItem.querySelector('h4').innerText : 'Assignment';
+          
+          document.getElementById('submitAssignmentId').value = id;
+          document.getElementById('submitAssignmentTitle').value = title;
+          document.getElementById('submitAssignmentUrl').value = '';
+          document.getElementById('submitAssignmentNotes').value = '';
+          
+          document.getElementById('submitAssignmentModal').classList.add('active');
       });
   });
 }
@@ -493,3 +513,295 @@ function initDashboard() {
     }
 }
 window.initDashboard = initDashboard;
+
+// ================== ✅ COURSE PLAYER LOGIC ==================
+let activeCourseId = null;
+let activeLectureIndex = 0;
+
+function openCoursePlayer(courseId) {
+  const course = courses.find(c => c.courseId === courseId);
+  if (!course) return;
+
+  activeCourseId = courseId;
+  activeLectureIndex = Math.min(3, Math.floor(course.progress / 25));
+
+  // Hide all sections
+  sections.forEach(s => {
+    s.style.display = 'none';
+    s.style.opacity = '0';
+  });
+
+  // Show Course Player Section
+  const playerSection = document.getElementById('coursePlayer');
+  if (playerSection) {
+    playerSection.style.display = 'block';
+    setTimeout(() => {
+      playerSection.style.opacity = '1';
+    }, 50);
+  }
+
+  // Populate player fields
+  document.getElementById('playerCourseTitle').innerText = course.name;
+  document.getElementById('playerInstructor').innerText = course.instructor || 'LearnX Instructor';
+  document.getElementById('playerVideoImg').src = course.img || 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=500';
+
+  // Lectures Mock List
+  const lectures = [
+    { title: '1. Introduction & Setup', duration: '12 mins' },
+    { title: '2. Basic Principles & Environment', duration: '25 mins' },
+    { title: '3. Intermediate Projects', duration: '40 mins' },
+    { title: '4. Advanced Techniques & Deployment', duration: '35 mins' }
+  ];
+
+  // Render Syllabus
+  const playerSyllabus = document.getElementById('playerSyllabus');
+  if (playerSyllabus) {
+    playerSyllabus.innerHTML = '';
+    lectures.forEach((lec, idx) => {
+      const isCompleted = course.progress > (idx * 25);
+      const isActive = idx === activeLectureIndex;
+      
+      const checkIcon = isCompleted ? 'fa-check-circle text-success' : 'fa-circle text-muted';
+      const activeClass = isActive ? 'active' : '';
+
+      const lecHtml = `
+        <div class="syllabus-item ${activeClass}" data-index="${idx}">
+          <i class="far ${checkIcon}"></i>
+          <div style="flex:1;">
+            <h4 style="font-size:0.95rem; margin-bottom:2px; font-weight:${isActive ? '600' : '400'};">${lec.title}</h4>
+            <span style="font-size:0.8rem; color:var(--text-muted);"><i class="far fa-clock"></i> ${lec.duration}</span>
+          </div>
+        </div>
+      `;
+      playerSyllabus.innerHTML += lecHtml;
+    });
+
+    // Click lecture to view
+    document.querySelectorAll('.syllabus-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const idx = parseInt(item.getAttribute('data-index'));
+        document.querySelectorAll('.syllabus-item').forEach(el => el.classList.remove('active'));
+        item.classList.add('active');
+        activeLectureIndex = idx;
+        
+        document.getElementById('playerActiveLecture').innerText = `Lecture ${idx+1}: ${lectures[idx].title.split('. ')[1]}`;
+        document.getElementById('playerLectureTitle').innerText = lectures[idx].title.split('. ')[1];
+        
+        updateCompleteButtonState(course);
+      });
+    });
+  }
+
+  // Set initial text
+  document.getElementById('playerActiveLecture').innerText = `Lecture ${activeLectureIndex+1}: ${lectures[activeLectureIndex].title.split('. ')[1]}`;
+  document.getElementById('playerLectureTitle').innerText = lectures[activeLectureIndex].title.split('. ')[1];
+
+  updateCompleteButtonState(course);
+}
+
+function updateCompleteButtonState(course) {
+  const markBtn = document.getElementById('markCompleteBtn');
+  if (markBtn) {
+    const isLecCompleted = course.progress > (activeLectureIndex * 25);
+    if (isLecCompleted) {
+      markBtn.innerText = 'Completed ✓';
+      markBtn.disabled = true;
+    } else {
+      markBtn.innerText = 'Complete Lesson';
+      markBtn.disabled = false;
+    }
+  }
+}
+
+// Close player button
+const closePlayerBtn = document.getElementById('closePlayerBtn');
+if (closePlayerBtn) {
+  closePlayerBtn.addEventListener('click', () => {
+    document.querySelector('.sidebar ul li[data-section="courses"]').click();
+  });
+}
+
+// Complete lesson action
+const markCompleteBtn = document.getElementById('markCompleteBtn');
+if (markCompleteBtn) {
+  markCompleteBtn.addEventListener('click', async () => {
+    const course = courses.find(c => c.courseId === activeCourseId);
+    if (!course) return;
+
+    const nextProgress = (activeLectureIndex + 1) * 25;
+    
+    markCompleteBtn.disabled = true;
+    markCompleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/dashboard/course/${activeCourseId}/progress`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ progress: nextProgress })
+      });
+
+      if (response.ok) {
+        course.progress = nextProgress;
+        
+        if (nextProgress === 100) {
+          Swal.fire({
+            title: 'Congratulations! 🎓',
+            text: `You have successfully completed "${course.name}"! Your completion certificate is now available under the Certificates tab.`,
+            icon: 'success',
+            confirmButtonText: 'View Certificate',
+            confirmButtonColor: '#6366f1'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              document.querySelector('.sidebar ul li[data-section="certificates"]').click();
+            }
+          });
+        } else {
+          Swal.fire({
+            title: 'Lesson Completed! 🌟',
+            text: 'Keep learning to unlock your completion certificate.',
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false
+          });
+        }
+        
+        fetchDashboardData();
+        
+        setTimeout(() => {
+          openCoursePlayer(activeCourseId);
+        }, 300);
+      } else {
+        alert("Failed to update progress.");
+        markCompleteBtn.disabled = false;
+        markCompleteBtn.innerText = 'Complete Lesson';
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Connection error.");
+      markCompleteBtn.disabled = false;
+      markCompleteBtn.innerText = 'Complete Lesson';
+    }
+  });
+}
+
+// ================== ✅ CERTIFICATES LOGIC ==================
+function loadCertificates() {
+  const certList = document.getElementById('certificateList');
+  if (!certList) return;
+  certList.innerHTML = '';
+
+  const completedCourses = courses.filter(c => c.progress === 100);
+
+  if (completedCourses.length === 0) {
+    certList.innerHTML = '<p class="text-muted p-3" style="grid-column: 1/-1; text-align: center;">You have not completed any courses yet. Reach 100% progress to unlock your certificate!</p>';
+    return;
+  }
+
+  completedCourses.forEach(c => {
+    const html = `
+      <div class="course-card glass cert-card">
+        <div class="cert-card-icon"><i class="fas fa-award"></i></div>
+        <h3 style="font-size: 1.15rem; margin-bottom: 5px;">${c.name}</h3>
+        <p class="instructor" style="margin-bottom: 15px;"><i class="fas fa-chalkboard-teacher"></i> ${c.instructor || 'LearnX Mentor'}</p>
+        <button class="btn-primary view-cert-btn" data-id="${c.courseId}" style="width: 100%; padding: 8px; font-size: 0.9rem;">
+          View Certificate
+        </button>
+      </div>
+    `;
+    certList.innerHTML += html;
+  });
+
+  // Bind view certificate clicks
+  document.querySelectorAll('.view-cert-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const courseId = btn.getAttribute('data-id');
+      const course = completedCourses.find(c => c.courseId === courseId);
+      if (course) {
+        openCertificateModal(course);
+      }
+    });
+  });
+}
+
+function openCertificateModal(course) {
+  document.getElementById('certStudentName').innerText = profile.name;
+  document.getElementById('certCourseName').innerText = course.name;
+  
+  const completionDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  document.getElementById('certDate').innerText = completionDate;
+
+  // Show Modal
+  document.getElementById('certificateModal').classList.add('active');
+}
+
+// Certificate modal close/print buttons
+const closeCertModal = document.getElementById('closeCertModal');
+if (closeCertModal) {
+  closeCertModal.addEventListener('click', () => {
+    document.getElementById('certificateModal').classList.remove('active');
+  });
+}
+
+const printCertBtn = document.getElementById('printCertBtn');
+if (printCertBtn) {
+  printCertBtn.addEventListener('click', () => {
+    window.print();
+  });
+}
+
+// ================== ✅ ASSIGNMENT MODALS LOGIC ==================
+const closeAssignmentModal = document.getElementById('closeAssignmentModal');
+if (closeAssignmentModal) {
+  closeAssignmentModal.addEventListener('click', () => {
+    document.getElementById('submitAssignmentModal').classList.remove('active');
+  });
+}
+
+const submitAssignmentForm = document.getElementById('submitAssignmentForm');
+if (submitAssignmentForm) {
+  submitAssignmentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('submitAssignmentId').value;
+    const url = document.getElementById('submitAssignmentUrl').value;
+    const notes = document.getElementById('submitAssignmentNotes').value;
+
+    const submitBtn = submitAssignmentForm.querySelector('button[type="submit"]');
+    const oldBtnText = submitBtn.innerText;
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Submitting...';
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/dashboard/assignment/${id}`, {
+        method: "PUT",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` 
+        },
+        body: JSON.stringify({ url, notes })
+      });
+      
+      if (response.ok) {
+        document.getElementById('submitAssignmentModal').classList.remove('active');
+        Swal.fire({
+          title: 'Project Submitted! 🚀',
+          text: 'Your project has been successfully submitted for grading.',
+          icon: 'success',
+          timer: 3000,
+          showConfirmButton: false
+        });
+        fetchDashboardData(); // Refresh data
+      } else {
+        alert("Failed to submit assignment.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Server error.");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = oldBtnText;
+    }
+  });
+}

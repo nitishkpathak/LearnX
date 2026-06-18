@@ -1068,6 +1068,7 @@
       <li data-section="courses"><i class="fas fa-book-open"></i> My Courses</li>
       <li data-section="assignments"><i class="fas fa-tasks"></i> Assignments</li>
       <li data-section="progress"><i class="fas fa-chart-line"></i> Progress</li>
+      <li data-section="certificates"><i class="fas fa-award"></i> Certificates</li>
     </ul>
 
     <div class="sidebar-label">Account</div>
@@ -1293,6 +1294,62 @@
         </div>
       </div>
     </div>
+
+    <!-- Certificates Section -->
+    <div id="certificates" class="section" style="display:none;">
+      <h2 class="section-title">My Certificates</h2>
+      <div class="dashboard-layout">
+        <div class="glass" style="padding: 30px;">
+          <h3 style="margin-bottom: 20px; font-size: 1.3rem;">Earned Certificates</h3>
+          <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 0.95rem;">
+            When you complete a course with 100% progress, you will unlock a verified completion certificate here.
+          </p>
+          <div id="certificateList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+            <!-- Dynamic Certificate Cards will go here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Player Section -->
+    <div id="coursePlayer" class="section" style="display:none;">
+      <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+        <button id="closePlayerBtn" class="btn-primary" style="padding: 8px 15px; font-size: 0.9rem; background: var(--secondary);">
+          <i class="fas fa-arrow-left"></i> Back to Courses
+        </button>
+        <h2 class="section-title" id="playerCourseTitle" style="margin-bottom: 0;">Course Title</h2>
+      </div>
+      
+      <div class="dashboard-layout course-player-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; align-items: start;">
+        <!-- Left: Video Panel -->
+        <div class="glass" style="padding: 20px;">
+          <div class="video-mock" style="width:100%; aspect-ratio:16/9; background:#000; border-radius:12px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.3);">
+            <img id="playerVideoImg" src="" alt="Video Placeholder" style="width:100%; height:100%; object-fit:cover; opacity:0.6;">
+            <div id="videoPlayBtn" style="position:absolute; width:70px; height:70px; border-radius:50%; background:rgba(99,102,241,0.9); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.8rem; cursor:pointer; transition:transform 0.2s; box-shadow:0 0 20px var(--primary);" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+              <i class="fas fa-play" style="margin-left: 5px;"></i>
+            </div>
+            <div style="position:absolute; bottom:15px; left:15px; background:rgba(0,0,0,0.7); padding:5px 12px; border-radius:6px; font-size:0.85rem; color:#fff;">
+              <span id="playerActiveLecture">Lecture 1: Introduction</span>
+            </div>
+          </div>
+          <div style="margin-top:20px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <h3 id="playerLectureTitle" style="font-size:1.3rem; margin-bottom:5px;">Introduction & Setup</h3>
+              <p style="font-size:0.9rem; color:var(--text-muted);"><i class="fas fa-user-graduate"></i> Instructor: <span id="playerInstructor">John Doe</span></p>
+            </div>
+            <button id="markCompleteBtn" class="btn-primary" style="padding: 10px 20px;"><i class="fas fa-check-circle" style="margin-right:8px;"></i> Complete Lesson</button>
+          </div>
+        </div>
+        
+        <!-- Right: Lessons Syllabus -->
+        <div class="glass" style="padding: 20px; max-height:480px; overflow-y:auto;">
+          <h3 style="font-size:1.2rem; margin-bottom:15px; border-bottom:1px solid var(--card-border); padding-bottom:10px;">Syllabus</h3>
+          <div class="syllabus-list" id="playerSyllabus">
+            <!-- Dynamic Lesson Items will go here -->
+          </div>
+        </div>
+      </div>
+    </div>
     
     <!-- Edit Profile Modal -->
     <div id="editProfileModal" class="modal-overlay">
@@ -1317,6 +1374,75 @@
           </div>
           <button type="submit" class="btn-primary" style="width: 100%;">Save Changes</button>
         </form>
+      </div>
+    </div>
+
+    <!-- Assignment Submission Modal -->
+    <div id="submitAssignmentModal" class="modal-overlay">
+      <div class="modal-content glass" style="max-width: 450px; width: 90%;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+          <h3 style="font-size: 1.5rem;">Submit Assignment</h3>
+          <button id="closeAssignmentModal" class="icon-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <form id="submitAssignmentForm">
+          <input type="hidden" id="submitAssignmentId">
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; color: var(--text-muted);">Assignment Title</label>
+            <input type="text" id="submitAssignmentTitle" disabled style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid var(--card-border); background: rgba(0,0,0,0.05); color: var(--text-main); font-family: 'Outfit';">
+          </div>
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; color: var(--text-muted);">GitHub Repository Link</label>
+            <input type="url" id="submitAssignmentUrl" required placeholder="https://github.com/username/project" style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid var(--card-border); background: var(--hover-bg); color: var(--text-main); font-family: 'Outfit';">
+          </div>
+          <div class="form-group" style="margin-bottom: 25px;">
+            <label style="display: block; margin-bottom: 8px; color: var(--text-muted);">Comments / Notes</label>
+            <textarea id="submitAssignmentNotes" rows="3" placeholder="Tell the instructor any details..." style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid var(--card-border); background: var(--hover-bg); color: var(--text-main); font-family: 'Outfit'; resize:none;"></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%;">Submit Project</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Certificate Viewer Modal -->
+    <div id="certificateModal" class="modal-overlay">
+      <div class="modal-content glass" style="max-width: 700px; width: 95%; padding: 40px; background: radial-gradient(circle, var(--card-bg) 70%, rgba(99,102,241,0.05) 100%);">
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+          <button id="closeCertModal" class="icon-btn" style="font-size:1.4rem;"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <!-- Printable Certificate Area -->
+        <div id="printableCertificate" style="border: 6px double var(--primary); padding: 30px; border-radius: 12px; text-align: center; background: var(--card-bg); position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+          <!-- Decorative Watermark Caps -->
+          <div style="font-size: 6rem; color: rgba(99,102,241,0.05); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 0;">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          
+          <div style="position: relative; z-index: 1;">
+            <div style="font-size: 1.5rem; color: var(--primary); font-weight: 600; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px;">Certificate of Completion</div>
+            <p style="font-size: 0.95rem; color: var(--text-muted); font-style: italic; margin-bottom: 25px;">This is proudly presented to</p>
+            <h2 id="certStudentName" style="font-size: 2.2rem; font-family: 'Outfit'; font-weight: 700; color: var(--text-main); margin-bottom: 20px; border-bottom: 2px solid var(--card-border); display: inline-block; padding-bottom: 5px;">Student Name</h2>
+            <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 25px;">for successfully completing the online learning curriculum for the course</p>
+            <h3 id="certCourseName" style="font-size: 1.5rem; color: var(--primary); font-weight: 600; margin-bottom: 30px;">Course Title</h3>
+            
+            <div style="display: flex; justify-content: space-around; align-items: flex-end; margin-top: 40px; border-top: 1px solid var(--card-border); padding-top: 25px;">
+              <div>
+                <div style="font-family: 'Outfit'; font-size: 0.9rem; color: var(--text-main); font-weight: 600; border-bottom: 1px solid var(--text-muted); width: 140px; margin: 0 auto 5px; padding-bottom: 5px;">LearnX Board</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Verified Signature</div>
+              </div>
+              <div style="font-size: 2.5rem; color: #d97706;">
+                <i class="fas fa-award"></i>
+              </div>
+              <div>
+                <div id="certDate" style="font-family: 'Outfit'; font-size: 0.9rem; color: var(--text-main); font-weight: 600; border-bottom: 1px solid var(--text-muted); width: 140px; margin: 0 auto 5px; padding-bottom: 5px;">June 18, 2026</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Completion Date</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div style="margin-top: 30px; display: flex; justify-content: center; gap: 15px;">
+          <button id="printCertBtn" class="btn-primary" style="padding: 10px 25px;"><i class="fas fa-print" style="margin-right:8px;"></i> Print Certificate</button>
+        </div>
       </div>
     </div>
 
