@@ -14,7 +14,7 @@ const API_BASE_URL = window.location.hostname === 'localhost' ||
 function switchView(viewName, hash) {
     console.log("Switching view to:", viewName, "hash:", hash);
     const publicSite = document.getElementById('public-site-view');
-    const dashboardView = document.getElementById('dashboard-view');
+    const isDashboardPage = !!document.getElementById('dashboard-view');
     
     if (viewName === 'dashboard') {
         const token = localStorage.getItem('learnx_token');
@@ -38,9 +38,12 @@ function switchView(viewName, hash) {
         // Save active view state for session persistence
         localStorage.setItem('learnx_active_view', 'dashboard');
         
-        // Hide public site, show dashboard
-        if (publicSite) publicSite.style.display = 'none';
-        if (dashboardView) dashboardView.style.display = 'block';
+        if (!isDashboardPage) {
+            // Redirect to dashboard page
+            window.location.href = 'dashboard.html';
+            return;
+        }
+        
         document.body.classList.add('dashboard-active');
         
         // Load dashboard data if dashboard.js is loaded
@@ -57,7 +60,12 @@ function switchView(viewName, hash) {
         // Public views: home, courses, about, contact
         localStorage.setItem('learnx_active_view', viewName);
         
-        if (dashboardView) dashboardView.style.display = 'none';
+        if (isDashboardPage) {
+            // Redirect from dashboard.html to index.html with appropriate hash
+            window.location.href = 'index.html' + (hash || '#' + viewName);
+            return;
+        }
+        
         if (publicSite) publicSite.style.display = 'block';
         document.body.classList.remove('dashboard-active');
         
@@ -102,47 +110,70 @@ function switchView(viewName, hash) {
 document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const viewParam = params.get('view');
+    const showParam = params.get('show');
     const token = localStorage.getItem('learnx_token');
     const activeView = localStorage.getItem('learnx_active_view');
     const hash = window.location.hash;
+    const isDashboardPage = !!document.getElementById('dashboard-view');
     
-    if (hash) {
-        if (hash.startsWith('#courses')) {
-            switchView('courses', hash.replace('#courses', ''));
-        } else if (hash.startsWith('#about')) {
-            switchView('about');
-        } else if (hash.startsWith('#contact')) {
-            switchView('contact');
-        } else if (hash === '#dashboard' && token) {
-            switchView('dashboard');
+    // Automatically open login modal if show=login query parameter is present
+    if (showParam === 'login') {
+        setTimeout(() => {
+            const loginModalEl = document.getElementById('loginModal');
+            if (loginModalEl) {
+                const loginModal = bootstrap.Modal.getOrCreateInstance(loginModalEl);
+                loginModal.show();
+            }
+        }, 300);
+    }
+    
+    if (isDashboardPage) {
+        // Authenticated validation on dashboard.html
+        if (!token) {
+            window.location.href = 'index.html?show=login';
         } else {
-            switchView('home');
+            switchView('dashboard');
         }
     } else {
-        if (activeView === 'dashboard' && token) {
-            switchView('dashboard');
-        } else if (activeView && activeView !== 'dashboard') {
-            switchView(activeView);
-        } else if (viewParam === 'dashboard' && token) {
-            switchView('dashboard');
+        // Landing page routing
+        if (hash) {
+            if (hash.startsWith('#courses')) {
+                switchView('courses', hash.replace('#courses', ''));
+            } else if (hash.startsWith('#about')) {
+                switchView('about');
+            } else if (hash.startsWith('#contact')) {
+                switchView('contact');
+            } else {
+                switchView('home');
+            }
         } else {
-            switchView('home');
+            if (activeView && activeView !== 'dashboard') {
+                switchView(activeView);
+            } else if (viewParam === 'dashboard' && token) {
+                switchView('dashboard');
+            } else {
+                switchView('home');
+            }
         }
     }
     
     // Hash change handler for routing triggers
     window.addEventListener('hashchange', () => {
         const currentHash = window.location.hash;
-        if (currentHash.startsWith('#courses')) {
-            switchView('courses', currentHash.replace('#courses', ''));
-        } else if (currentHash.startsWith('#about')) {
-            switchView('about');
-        } else if (currentHash.startsWith('#contact')) {
-            switchView('contact');
-        } else if (currentHash === '#dashboard') {
-            switchView('dashboard');
-        } else if (currentHash.startsWith('#home') || currentHash === '') {
-            switchView('home');
+        if (isDashboardPage) {
+            if (currentHash && currentHash !== '#dashboard') {
+                window.location.href = 'index.html' + currentHash;
+            }
+        } else {
+            if (currentHash.startsWith('#courses')) {
+                switchView('courses', currentHash.replace('#courses', ''));
+            } else if (currentHash.startsWith('#about')) {
+                switchView('about');
+            } else if (currentHash.startsWith('#contact')) {
+                switchView('contact');
+            } else if (currentHash.startsWith('#home') || currentHash === '') {
+                switchView('home');
+            }
         }
     });
 });

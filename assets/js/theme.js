@@ -44,6 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Save preference
             localStorage.setItem('theme', newTheme);
             
+            // Sync with backend if logged in
+            const token = localStorage.getItem('learnx_token');
+            if (token && typeof window.updateSettings === 'function') {
+                window.updateSettings({ theme: newTheme });
+            }
+            
             // Update all icons
             syncIcons(newTheme);
         });

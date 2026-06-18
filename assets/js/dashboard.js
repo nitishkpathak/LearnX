@@ -487,7 +487,8 @@ function setupSettings(settings) {
     if(settingsThemeToggle) {
         settingsThemeToggle.checked = settings.theme === 'dark';
         
-        // Sync body theme
+        // Sync body theme & localStorage to prevent flickering
+        localStorage.setItem('theme', settings.theme || 'light');
         if(settings.theme === 'dark') {
             document.body.classList.add('dark-mode');
         } else {
@@ -496,6 +497,7 @@ function setupSettings(settings) {
 
         settingsThemeToggle.onchange = (e) => {
             const theme = e.target.checked ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
             if(e.target.checked) {
                 document.body.classList.add('dark-mode');
             } else {
@@ -520,6 +522,7 @@ async function updateSettings(updates) {
         console.error("Settings update failed", err);
     }
 }
+window.updateSettings = updateSettings;
 
 // Announcements "Mark as read"
 const announcementItems = document.querySelectorAll('#announcements .list-item');
