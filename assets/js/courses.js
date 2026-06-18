@@ -62,6 +62,83 @@ document.addEventListener('DOMContentLoaded', () => {
     toastEl.addEventListener('hidden.bs.toast', () => toastEl.remove());
   }
 
+  const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:5000'
+      : 'https://learnx-backend-wygd.onrender.com';
+
+  async function enrollInCourse(courseDetails, btn) {
+    const token = localStorage.getItem('learnx_token');
+    
+    if (!token) {
+      showToast('Please log in to enroll in this course!', { delay: 4000 });
+      const loginModalBtn = q('[data-bs-target="#loginModal"]');
+      if (loginModalBtn) {
+        loginModalBtn.click();
+      }
+      return false;
+    }
+
+    const oldBtnText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enrolling...';
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/dashboard/enroll`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(courseDetails)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        showToast(`Successfully enrolled in "${courseDetails.name}"!`);
+        btn.innerText = 'Enrolled ✓';
+        btn.disabled = true;
+        
+        // Sync landing button if enrolled from preview modal
+        const landingBtn = q(`#${courseDetails.courseId} .enroll-btn`);
+        if (landingBtn) {
+          landingBtn.innerText = 'Enrolled ✓';
+          landingBtn.disabled = true;
+        }
+
+        // Sync Dashboard!
+        if (typeof window.initDashboard === 'function') {
+          window.initDashboard();
+        }
+        return true;
+      } else {
+        if (response.status === 400 && data.message.includes('already enrolled')) {
+          showToast(data.message);
+          btn.innerText = 'Enrolled ✓';
+          btn.disabled = true;
+          
+          const landingBtn = q(`#${courseDetails.courseId} .enroll-btn`);
+          if (landingBtn) {
+            landingBtn.innerText = 'Enrolled ✓';
+            landingBtn.disabled = true;
+          }
+        } else {
+          showToast(data.message || 'Enrollment failed. Please try again.');
+          btn.disabled = false;
+          btn.innerHTML = oldBtnText;
+        }
+        return false;
+      }
+    } catch (error) {
+      console.error('Enrollment error:', error);
+      showToast('Connection error. Please check your internet connection.');
+      btn.disabled = false;
+      btn.innerHTML = oldBtnText;
+      return false;
+    }
+  }
+
+
   /* ---------------------------
      Search (top navbar search)
      --------------------------- */
@@ -220,19 +297,16 @@ document.addEventListener('DOMContentLoaded', () => {
     enrollBtns.forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        // find course title
         const card = btn.closest('.course-card');
-        const title = card ? (q('.course-title', card)?.innerText || 'Course') : 'Course';
-        // simulate enrollment flow
-        showToast(`You're enrolled in "${title}" — check your dashboard!`);
-        // optionally: change button text temporarily
-        btn.disabled = true;
-        const old = btn.innerText;
-        btn.innerText = 'Enrolled ✓';
-        setTimeout(() => {
-          btn.disabled = false;
-          btn.innerText = old;
-        }, 2500);
+        if (!card) return;
+        const col = card.closest('[id]');
+        const courseId = col ? col.id : 'c_unknown';
+        const name = q('.course-title', card)?.innerText || 'Course';
+        const instructorSpan = q('.course-meta span', card);
+        const instructor = instructorSpan ? instructorSpan.innerText.trim() : 'Unknown Instructor';
+        const img = q('.course-image img', card)?.src || '';
+
+        enrollInCourse({ courseId, name, instructor, img }, btn);
       });
     });
   }
@@ -240,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------------------------
      Course Preview Modal (Bootstrap modal created dynamically)
      --------------------------- */
-  function createAndShowPreview({ title = '', image = '', level = '', description = '', instructor = '' } = {}) {
+  function createAndShowPreview({ courseId = '', title = '', image = '', level = '', description = '', instructor = '' } = {}) {
     // remove any existing modal
     const existing = q('#learnx-preview-modal');
     if (existing) existing.remove();
@@ -278,10 +352,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const bsModal = new bootstrap.Modal(modalEl);
     bsModal.show();
 
+    // Check if already enrolled to disable modal button
+    const token = localStorage.getItem('learnx_token');
+    if (token) {
+      const landingBtn = q(`#${courseId} .enroll-btn`);
+      if (landingBtn && landingBtn.disabled) {
+        const modalEnrollBtn = q('.enroll-from-preview', modalEl);
+        if (modalEnrollBtn) {
+          modalEnrollBtn.innerText = 'Enrolled ✓';
+          modalEnrollBtn.disabled = true;
+        }
+      }
+    }
+
     // Enroll from preview
-    q('.enroll-from-preview', modalEl).addEventListener('click', () => {
-      bsModal.hide();
-      showToast(`You're enrolled in "${title}" — welcome aboard!`);
+    q('.enroll-from-preview', modalEl).addEventListener('click', async (e) => {
+      const btn = e.target;
+      const enrolled = await enrollInCourse({ courseId, name: title, instructor, img: image }, btn);
+      if (enrolled) {
+        setTimeout(() => {
+          bsModal.hide();
+        }, 1000);
+      }
     });
 
     // cleanup when hidden
@@ -304,12 +396,15 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         const card = btn.closest('.course-card');
+        if (!card) return;
+        const col = card.closest('[id]');
+        const courseId = col ? col.id : 'c_unknown';
         const title = q('.course-title', card)?.innerText || 'Course Preview';
         const img = q('.course-image img', card)?.src || '';
         const level = q('.course-overlay .course-level', card)?.innerText || '';
         const desc = q('.course-description', card)?.innerText || '';
         const instructor = (q('.course-meta span', card)?.innerText || '').replace(/\n/g, ' ');
-        createAndShowPreview({ title, image: img, level, description: desc, instructor });
+        createAndShowPreview({ courseId, title, image: img, level, description: desc, instructor });
       });
     });
   }

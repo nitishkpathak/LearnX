@@ -62,6 +62,12 @@ if (logoutBtn) {
       localStorage.removeItem('learnx_user');
       localStorage.removeItem('learnx_token');
       
+      // Reset landing page buttons
+      document.querySelectorAll('.featured-courses .enroll-btn').forEach(btn => {
+        btn.disabled = false;
+        btn.innerText = 'Enroll Now';
+      });
+
       // Reset navbar state and switch view to home
       if (typeof updateNavbarAuthState === 'function') {
           updateNavbarAuthState();
@@ -144,6 +150,26 @@ function loadCourses() {
 
   const enrolledCountEl = document.getElementById('enrolledCount');
   if(enrolledCountEl) enrolledCountEl.innerText = courses.length;
+
+  // Sync landing page "Enroll Now" buttons
+  const landingEnrollBtns = document.querySelectorAll('.featured-courses .enroll-btn');
+  landingEnrollBtns.forEach(btn => {
+    btn.disabled = false;
+    btn.innerText = 'Enroll Now';
+  });
+
+  courses.forEach(c => {
+    if (c.courseId) {
+      const cardCol = document.getElementById(c.courseId);
+      if (cardCol) {
+        const btn = cardCol.querySelector('.enroll-btn');
+        if (btn) {
+          btn.innerText = 'Enrolled ✓';
+          btn.disabled = true;
+        }
+      }
+    }
+  });
 
   setTimeout(() => {
     document.querySelectorAll('.progress-fill').forEach(fill => {
