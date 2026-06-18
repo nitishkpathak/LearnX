@@ -756,13 +756,20 @@ function openCoursePlayer(courseId) {
     playerSyllabus.innerHTML = '';
     lectures.forEach((lec, idx) => {
       const isCompleted = course.progress > (idx * 25);
+      const isUnlocked = idx <= Math.floor(course.progress / 25);
       const isActive = idx === activeLectureIndex;
       
-      const checkIcon = isCompleted ? 'fa-check-circle text-success' : 'fa-circle text-muted';
+      let checkIcon = 'fa-lock text-muted';
+      if (isCompleted) {
+        checkIcon = 'fa-check-circle text-success';
+      } else if (isUnlocked) {
+        checkIcon = 'fa-circle text-muted';
+      }
+      
       const activeClass = isActive ? 'active' : '';
 
       const lecHtml = `
-        <div class="syllabus-item ${activeClass}" data-index="${idx}">
+        <div class="syllabus-item ${activeClass}" data-index="${idx}" style="${!isUnlocked ? 'opacity: 0.6; cursor: not-allowed;' : ''}">
           <i class="far ${checkIcon}"></i>
           <div style="flex:1;">
             <h4 style="font-size:0.95rem; margin-bottom:2px; font-weight:${isActive ? '600' : '400'};">${lec.title}</h4>
@@ -777,6 +784,19 @@ function openCoursePlayer(courseId) {
     document.querySelectorAll('.syllabus-item').forEach(item => {
       item.addEventListener('click', () => {
         const idx = parseInt(item.getAttribute('data-index'));
+        
+        // Enforce progression lock
+        const isUnlocked = idx <= Math.floor(course.progress / 25);
+        if (!isUnlocked) {
+          Swal.fire({
+            title: 'Lecture Locked 🔒',
+            text: 'You must pass the quiz for the previous lecture to unlock this lesson.',
+            icon: 'warning',
+            confirmButtonColor: '#6366f1'
+          });
+          return;
+        }
+
         document.querySelectorAll('.syllabus-item').forEach(el => el.classList.remove('active'));
         item.classList.add('active');
         activeLectureIndex = idx;
@@ -790,6 +810,9 @@ function openCoursePlayer(courseId) {
           playerVideo.load();
           playerVideo.play().catch(err => console.log("Playback prevented:", err));
         }
+        
+        // Reset to Overview tab when switching lectures
+        switchPlayerTab('overview');
         
         updateCompleteButtonState(course);
       });
@@ -805,6 +828,9 @@ function openCoursePlayer(courseId) {
     playerVideo.load();
   }
 
+  // Reset to Overview tab when player first opens
+  switchPlayerTab('overview');
+
   updateCompleteButtonState(course);
 }
 
@@ -816,8 +842,8 @@ function updateCompleteButtonState(course) {
       markBtn.innerText = 'Completed ✓';
       markBtn.disabled = true;
     } else {
-      markBtn.innerText = 'Complete Lesson';
-      markBtn.disabled = false;
+      markBtn.innerText = 'Pass Quiz to Complete';
+      markBtn.disabled = true;
     }
   }
 }
@@ -1414,3 +1440,616 @@ async function loadLeaderboard() {
       badgesGrid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:#ef4444;">Connection error.</div>';
   }
 }
+
+// ================== ✅ PRACTICE QUIZ LOGIC ==================
+const quizBank = {
+  c1: [
+    // Lecture 1
+    [
+      {
+        question: "What does HTML stand for?",
+        options: ["Hyper Text Markup Language", "High Text Markup Language", "Hyper Tabular Markup Language", "Hypertech Markup Language"],
+        answer: 0
+      },
+      {
+        question: "Which HTML element is used for the largest heading?",
+        options: ["<heading>", "<h6>", "<h1>", "<head>"],
+        answer: 2
+      },
+      {
+        question: "Which tag is used to link an external CSS file?",
+        options: ["<link>", "<style>", "<script>", "<a>"],
+        answer: 0
+      }
+    ],
+    // Lecture 2
+    [
+      {
+        question: "What is the correct CSS syntax to change the text color of a paragraph to blue?",
+        options: ["p {text-color: blue;}", "p {color: blue;}", "p:color = blue;", "all.p {color: blue;}"],
+        answer: 1
+      },
+      {
+        question: "Which property is used to change the background color in CSS?",
+        options: ["color", "bgcolor", "background-color", "background-style"],
+        answer: 2
+      },
+      {
+        question: "What is the default display value of a <div> element?",
+        options: ["inline", "block", "inline-block", "flex"],
+        answer: 1
+      }
+    ],
+    // Lecture 3
+    [
+      {
+        question: "In the CSS box model, which of the following is the innermost component?",
+        options: ["Padding", "Border", "Margin", "Content"],
+        answer: 3
+      },
+      {
+        question: "How do you center a block element horizontally using margin?",
+        options: ["margin: center;", "margin: 0 auto;", "margin: auto 0;", "align: center;"],
+        answer: 1
+      },
+      {
+        question: "Which CSS property is used to create space inside the border of an element?",
+        options: ["margin", "padding", "spacing", "border-width"],
+        answer: 1
+      }
+    ],
+    // Lecture 4
+    [
+      {
+        question: "Which Flexbox property controls the alignment of items along the main axis?",
+        options: ["align-items", "justify-content", "align-content", "flex-direction"],
+        answer: 1
+      },
+      {
+        question: "What does media query '@media (max-width: 600px)' target?",
+        options: ["Screens larger than 600px", "Screens exactly 600px wide", "Screens 600px wide or smaller", "Print documents only"],
+        answer: 2
+      },
+      {
+        question: "What is the standard port number for secure HTTP (HTTPS)?",
+        options: ["80", "8080", "443", "22"],
+        answer: 2
+      }
+    ]
+  ],
+  c2: [
+    // Lecture 1
+    [
+      {
+        question: "Inside which HTML element do we put JavaScript?",
+        options: ["<js>", "<scripting>", "<script>", "<javascript>"],
+        answer: 2
+      },
+      {
+        question: "How do you write 'Hello World' in an alert box?",
+        options: ["msgBox('Hello World');", "alertBox('Hello World');", "alert('Hello World');", "console.log('Hello World');"],
+        answer: 2
+      },
+      {
+        question: "Which keyword is used to declare a block-scoped variable that can be reassigned?",
+        options: ["var", "let", "const", "def"],
+        answer: 1
+      }
+    ],
+    // Lecture 2
+    [
+      {
+        question: "How do you write a conditional statement for executing some code if 'i' is equal to 5?",
+        options: ["if i = 5 then", "if (i == 5)", "if i == 5", "if i = 5"],
+        answer: 1
+      },
+      {
+        question: "What is the correct way to write a JavaScript array?",
+        options: ["const colors = 'red', 'green', 'blue'", "const colors = ['red', 'green', 'blue']", "const colors = (1:'red', 2:'green', 3:'blue')", "const colors = {'red', 'green', 'blue'}"],
+        answer: 1
+      },
+      {
+        question: "How do you call a function named 'myFunction'?",
+        options: ["call myFunction()", "myFunction()", "call function myFunction()", "myFunction.call()"],
+        answer: 1
+      }
+    ],
+    // Lecture 3
+    [
+      {
+        question: "How do you find the number with the highest value of x and y?",
+        options: ["Math.max(x, y)", "Math.ceil(x, y)", "Math.high(x, y)", "top(x, y)"],
+        answer: 0
+      },
+      {
+        question: "How do you add a click event listener to an element with ID 'btn'?",
+        options: ["btn.onclick = addEventListener('click', ...)", "btn.addEventListener('click', myFunction)", "btn.listen('click', ...)", "btn.on('click', ...)"],
+        answer: 1
+      },
+      {
+        question: "Which array method adds a new element to the end of an array?",
+        options: ["pop()", "push()", "shift()", "unshift()"],
+        answer: 1
+      }
+    ],
+    // Lecture 4
+    [
+      {
+        question: "What is the value of 'this' inside an arrow function?",
+        options: ["The global object", "The element that triggered the event", "It is lexically bound to the surrounding context", "undefined"],
+        answer: 2
+      },
+      {
+        question: "What is a Promise in JavaScript?",
+        options: ["A guarantee that code has no syntax errors", "An object representing the eventual completion or failure of an asynchronous operation", "A secure encryption key", "A standard function declaration style"],
+        answer: 1
+      },
+      {
+        question: "Which method is used to parse a JSON string into a JavaScript object?",
+        options: ["JSON.stringify()", "JSON.parse()", "JSON.toObject()", "JSON.objectify()"],
+        answer: 1
+      }
+    ]
+  ],
+  fallback: [
+    // Lecture 1
+    [
+      {
+        question: "What is the primary purpose of version control systems like Git?",
+        options: ["To design user interfaces", "To run databases", "To track changes in source code over time", "To host live websites"],
+        answer: 2
+      },
+      {
+        question: "Which command initializes a new Git repository?",
+        options: ["git start", "git init", "git new", "git create"],
+        answer: 1
+      },
+      {
+        question: "What is the default branch name created when initializing a new Git repository?",
+        options: ["master or main", "trunk", "root", "develop"],
+        answer: 0
+      }
+    ],
+    // Lecture 2
+    [
+      {
+        question: "Which data structure operates on a Last-In, First-Out (LIFO) basis?",
+        options: ["Queue", "Stack", "Array", "Hash map"],
+        answer: 1
+      },
+      {
+        question: "What does API stand for?",
+        options: ["Application Programming Interface", "App Program Integration", "Applied Protocol Internet", "Advanced Programming Interface"],
+        answer: 0
+      },
+      {
+        question: "What is the purpose of the HTTP GET method?",
+        options: ["To submit data to a resource", "To delete a resource", "To request/retrieve data from a specified resource", "To update a resource"],
+        answer: 2
+      }
+    ],
+    // Lecture 3
+    [
+      {
+        question: "What is the time complexity of searching in a balanced Binary Search Tree (BST)?",
+        options: ["O(1)", "O(n)", "O(log n)", "O(n log n)"],
+        answer: 2
+      },
+      {
+        question: "Which of the following is NOT a relational database?",
+        options: ["PostgreSQL", "MySQL", "MongoDB", "Oracle"],
+        answer: 2
+      },
+      {
+        question: "What does SQL stand for?",
+        options: ["Structured Query Language", "Simple Query Language", "Standard Query List", "System Query Language"],
+        answer: 0
+      }
+    ],
+    // Lecture 4
+    [
+      {
+        question: "What is the main benefit of containerization using Docker?",
+        options: ["Faster internet speeds", "Guaranteeing consistency of environment across dev, testing, and production", "Automatic code generation", "Database compression"],
+        answer: 1
+      },
+      {
+        question: "What is CI/CD in modern software development?",
+        options: ["Customer Integration / Customer Delivery", "Code Inspection / Code Development", "Continuous Integration / Continuous Deployment", "Critical Infrastructure / Cloud Deployment"],
+        answer: 2
+      },
+      {
+        question: "Which HTTP status code represents 'Internal Server Error'?",
+        options: ["400", "404", "500", "403"],
+        answer: 2
+      }
+    ]
+  ]
+};
+
+function getQuizQuestions(courseId, lectureIdx) {
+  if (!courseId) return quizBank.fallback[0];
+  const cid = courseId.toLowerCase();
+  
+  let courseQuiz = quizBank.fallback;
+  if (cid === 'c1' || cid.includes('web-dev') || cid.includes('html') || cid.includes('css')) {
+    courseQuiz = quizBank.c1;
+  } else if (cid === 'c2' || cid.includes('javascript') || cid.includes('js')) {
+    courseQuiz = quizBank.c2;
+  }
+  
+  return courseQuiz[lectureIdx] || courseQuiz[0] || quizBank.fallback[0];
+}
+
+function switchPlayerTab(tabName) {
+  const tabOverviewBtn = document.getElementById('tabOverviewBtn');
+  const tabQuizBtn = document.getElementById('tabQuizBtn');
+  const panelOverview = document.getElementById('panelOverview');
+  const panelQuiz = document.getElementById('panelQuiz');
+
+  if (!tabOverviewBtn || !tabQuizBtn || !panelOverview || !panelQuiz) return;
+
+  if (tabName === 'overview') {
+    tabOverviewBtn.classList.add('active');
+    tabOverviewBtn.style.color = 'var(--primary)';
+    tabOverviewBtn.style.borderBottom = '2px solid var(--primary)';
+    
+    tabQuizBtn.classList.remove('active');
+    tabQuizBtn.style.color = 'var(--text-muted)';
+    tabQuizBtn.style.borderBottom = '2px solid transparent';
+    
+    panelOverview.style.display = 'block';
+    panelQuiz.style.display = 'none';
+  } else if (tabName === 'quiz') {
+    tabQuizBtn.classList.add('active');
+    tabQuizBtn.style.color = 'var(--primary)';
+    tabQuizBtn.style.borderBottom = '2px solid var(--primary)';
+    
+    tabOverviewBtn.classList.remove('active');
+    tabOverviewBtn.style.color = 'var(--text-muted)';
+    tabOverviewBtn.style.borderBottom = '2px solid transparent';
+    
+    panelOverview.style.display = 'none';
+    panelQuiz.style.display = 'block';
+    
+    renderQuiz();
+  }
+}
+
+function renderQuiz(forceRetake = false) {
+  const quizContent = document.getElementById('quizContent');
+  if (!quizContent) return;
+
+  const course = courses.find(c => c.courseId === activeCourseId);
+  if (!course) {
+    quizContent.innerHTML = '<p class="text-muted text-center p-4">No course loaded.</p>';
+    return;
+  }
+
+  const questions = getQuizQuestions(activeCourseId, activeLectureIndex);
+  const isCompleted = course.progress > (activeLectureIndex * 25);
+
+  // If completed and not forcing a retake, show the passed state
+  if (isCompleted && !forceRetake) {
+    let quizHtml = `
+      <div style="text-align: center; padding: 30px 20px; border-radius: 12px; background: rgba(16, 185, 129, 0.05); border: 1.5px solid rgba(16, 185, 129, 0.2); margin-bottom: 25px;">
+        <div style="font-size: 3.5rem; color: #10b981; margin-bottom: 15px; filter: drop-shadow(0 4px 10px rgba(16, 185, 129, 0.3));">
+          <i class="fas fa-certificate"></i>
+        </div>
+        <h3 style="font-size: 1.4rem; font-weight: 700; color: #10b981; margin-bottom: 8px;">Quiz Completed Successfully!</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">You scored 100% (3/3) and unlocked the next lesson.</p>
+        <button id="retakeQuizBtn" class="btn-primary" style="background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 8px 20px; font-size: 0.9rem; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(16, 185, 129, 0.2)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.1)'">
+          <i class="fas fa-redo" style="margin-right: 6px;"></i> Retake Practice Quiz
+        </button>
+      </div>
+      <div style="border-top: 1px dashed var(--card-border); padding-top: 20px;">
+        <h4 style="font-size: 1.1rem; margin-bottom: 15px; color: var(--text-main);"><i class="fas fa-clipboard-check" style="margin-right: 8px; color: #10b981;"></i> Quiz Answers Review</h4>
+    `;
+
+    questions.forEach((q, qIdx) => {
+      quizHtml += `
+        <div style="margin-bottom: 20px; padding: 15px; border-radius: 10px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--card-border);">
+          <p style="font-weight: 600; font-size: 0.95rem; margin-bottom: 12px; color: var(--text-main);">${qIdx + 1}. ${q.question}</p>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+      `;
+
+      q.options.forEach((opt, oIdx) => {
+        const isCorrect = oIdx === q.answer;
+        let borderStyle = 'border: 1px solid var(--card-border);';
+        let bgStyle = 'background: rgba(255, 255, 255, 0.01);';
+        let iconHtml = '<i class="far fa-circle" style="color: var(--text-muted);"></i>';
+
+        if (isCorrect) {
+          borderStyle = 'border: 1.5px solid #10b981;';
+          bgStyle = 'background: rgba(16, 185, 129, 0.08);';
+          iconHtml = '<i class="fas fa-check-circle" style="color: #10b981;"></i>';
+        }
+
+        quizHtml += `
+            <div style="padding: 10px 12px; border-radius: 6px; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: ${isCorrect ? 'var(--text-main)' : 'var(--text-muted)'}; ${borderStyle} ${bgStyle}">
+              ${iconHtml}
+              <span>${opt}</span>
+            </div>
+        `;
+      });
+
+      quizHtml += `
+          </div>
+        </div>
+      `;
+    });
+
+    quizHtml += `</div>`;
+    quizContent.innerHTML = quizHtml;
+
+    // Bind retake button
+    const retakeBtn = document.getElementById('retakeQuizBtn');
+    if (retakeBtn) {
+      retakeBtn.addEventListener('click', () => {
+        renderQuiz(true);
+      });
+    }
+    return;
+  }
+
+  // Else, render the interactive quiz
+  let quizHtml = `
+    <div style="margin-bottom: 20px;">
+      <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 5px; color: var(--text-main);">Practice Quiz</h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">Answer all questions correctly (3/3) to unlock the next lecture and update your progress.</p>
+    </div>
+    <form id="quizForm" onsubmit="event.preventDefault();">
+  `;
+
+  questions.forEach((q, qIdx) => {
+    quizHtml += `
+      <div style="margin-bottom: 25px; padding: 20px; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1.5px solid var(--card-border);" class="quiz-question-card">
+        <p style="font-weight: 600; font-size: 1rem; margin-bottom: 15px; color: var(--text-main);">${qIdx + 1}. ${q.question}</p>
+        <div style="display: flex; flex-direction: column; gap: 10px;" class="options-group" data-qidx="${qIdx}">
+    `;
+
+    q.options.forEach((opt, oIdx) => {
+      quizHtml += `
+          <label style="padding: 12px 15px; border-radius: 8px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.01); display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.2s ease; margin: 0; user-select: none;" class="quiz-option-label"
+                 onmouseover="if(!this.querySelector('input').checked) { this.style.background='rgba(99, 102, 241, 0.03)'; this.style.borderColor='rgba(99, 102, 241, 0.4)'; }"
+                 onmouseout="if(!this.querySelector('input').checked) { this.style.background='rgba(255, 255, 255, 0.01)'; this.style.borderColor='var(--card-border)'; }">
+            <input type="radio" name="q_${qIdx}" value="${oIdx}" style="accent-color: var(--primary); width: 18px; height: 18px; cursor: pointer;" required>
+            <span style="font-size: 0.9rem; color: var(--text-main); font-family: 'Outfit', sans-serif;">${opt}</span>
+          </label>
+      `;
+    });
+
+    quizHtml += `
+        </div>
+      </div>
+    `;
+  });
+
+  quizHtml += `
+      <button type="submit" class="btn-primary" style="padding: 12px 24px; font-size: 1rem; width: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600;">
+        <i class="fas fa-paper-plane"></i> Submit Answers
+      </button>
+    </form>
+  `;
+
+  quizContent.innerHTML = quizHtml;
+
+  // Implement interactive option selection visual style updates
+  const form = document.getElementById('quizForm');
+  if (form) {
+    const optionLabels = form.querySelectorAll('.quiz-option-label');
+    optionLabels.forEach(label => {
+      const input = label.querySelector('input');
+      
+      // Handle option click visual highlight
+      label.addEventListener('click', () => {
+        const qIdx = label.parentElement.getAttribute('data-qidx');
+        const siblingLabels = form.querySelectorAll(`.options-group[data-qidx="${qIdx}"] .quiz-option-label`);
+        
+        siblingLabels.forEach(sib => {
+          sib.style.background = 'rgba(255, 255, 255, 0.01)';
+          sib.style.borderColor = 'var(--card-border)';
+          sib.style.boxShadow = 'none';
+          const span = sib.querySelector('span');
+          if (span) span.style.fontWeight = '400';
+        });
+
+        label.style.background = 'rgba(99, 102, 241, 0.08)';
+        label.style.borderColor = 'var(--primary)';
+        label.style.boxShadow = '0 0 10px rgba(99, 102, 241, 0.15)';
+        const span = label.querySelector('span');
+        if (span) span.style.fontWeight = '600';
+      });
+    });
+
+    // Handle quiz form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const answers = [];
+      let allAnswered = true;
+
+      for (let i = 0; i < questions.length; i++) {
+        const selected = form.querySelector(`input[name="q_${i}"]:checked`);
+        if (!selected) {
+          allAnswered = false;
+          break;
+        }
+        answers.push(parseInt(selected.value));
+      }
+
+      if (!allAnswered || answers.length < questions.length) {
+        Swal.fire({
+          title: 'Unanswered Questions',
+          text: 'Please answer all questions before submitting!',
+          icon: 'warning',
+          confirmButtonColor: '#6366f1'
+        });
+        return;
+      }
+
+      // Grade the quiz
+      let correctCount = 0;
+      answers.forEach((ans, idx) => {
+        if (ans === questions[idx].answer) {
+          correctCount++;
+        }
+      });
+
+      if (correctCount === questions.length) {
+        // Passed!
+        if (isCompleted) {
+          Swal.fire({
+            title: 'Quiz Passed! 🎉',
+            text: 'You answered all questions correctly (3/3) again! Nice job.',
+            icon: 'success',
+            confirmButtonColor: '#6366f1'
+          }).then(() => {
+            renderQuiz();
+          });
+        } else {
+          // Trigger backend update
+          await handleQuizPassedSuccess();
+        }
+      } else {
+        // Failed
+        Swal.fire({
+          title: 'Incorrect Answers ❌',
+          text: `You scored ${correctCount}/${questions.length}. Please try again! Watch the video lecture carefully to find the correct answers.`,
+          icon: 'error',
+          confirmButtonColor: '#ef4444'
+        });
+      }
+    });
+  }
+}
+
+async function handleQuizPassedSuccess() {
+  const course = courses.find(c => c.courseId === activeCourseId);
+  if (!course) return;
+
+  const nextProgress = (activeLectureIndex + 1) * 25;
+  
+  Swal.fire({
+    title: 'Grading Quiz...',
+    html: 'Verifying your answers and saving progress...',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/dashboard/course/${activeCourseId}/progress`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ progress: nextProgress })
+    });
+
+    if (response.ok) {
+      const resData = await response.json();
+      course.progress = nextProgress;
+      
+      // Update user state and local storage immediately
+      if (currentUser) {
+        currentUser.xp = resData.xp;
+        currentUser.badges = resData.badges;
+      }
+      profile.xp = resData.xp;
+      profile.badges = resData.badges;
+      
+      // Update header XP value immediately
+      const headerXpValue = document.getElementById('headerXpValue');
+      if (headerXpValue) {
+        headerXpValue.innerText = `${profile.xp} XP`;
+      }
+      
+      // Update learnx_user in localStorage
+      const cachedUserStr = localStorage.getItem('learnx_user');
+      if (cachedUserStr) {
+        try {
+          const cachedUser = JSON.parse(cachedUserStr);
+          cachedUser.xp = profile.xp;
+          cachedUser.badges = profile.badges;
+          localStorage.setItem('learnx_user', JSON.stringify(cachedUser));
+        } catch(e) {
+          console.error(e);
+        }
+      }
+      
+      let xpMsg = "";
+      if (resData.earnedXp > 0) {
+        xpMsg = ` (+${resData.earnedXp} XP)`;
+      }
+
+      // Check for unlocked badges to showcase
+      if (resData.unlockedBadges && resData.unlockedBadges.length > 0) {
+        resData.unlockedBadges.forEach(badge => {
+          Swal.fire({
+            title: 'Badge Unlocked! 🏆',
+            html: `You have earned the <strong>"${badge.name}"</strong> badge!<br><em>"${badge.description}"</em>`,
+            icon: 'success',
+            confirmButtonText: 'Great!',
+            confirmButtonColor: '#6366f1'
+          });
+        });
+      }
+
+      if (nextProgress === 100) {
+        Swal.fire({
+          title: 'Congratulations! 🎓' + xpMsg,
+          text: `You have successfully completed "${course.name}"! Your completion certificate is now available under the Certificates tab.`,
+          icon: 'success',
+          confirmButtonText: 'View Certificate',
+          confirmButtonColor: '#6366f1'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            document.querySelector('.sidebar ul li[data-section="certificates"]').click();
+          }
+        });
+      } else {
+        Swal.fire({
+          title: 'Quiz Passed! 🌟' + xpMsg,
+          text: 'Perfect score! Next lesson is now unlocked.',
+          icon: 'success',
+          timer: 2500,
+          showConfirmButton: false
+        });
+      }
+      
+      fetchDashboardData();
+      
+      setTimeout(() => {
+        openCoursePlayer(activeCourseId);
+      }, 300);
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to update progress.',
+        icon: 'error',
+        confirmButtonColor: '#ef4444'
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    Swal.fire({
+      title: 'Error',
+      text: 'Connection error.',
+      icon: 'error',
+      confirmButtonColor: '#ef4444'
+    });
+  }
+}
+
+// Bind player tab click listeners once the DOM loads
+const tabOverviewBtn = document.getElementById('tabOverviewBtn');
+const tabQuizBtn = document.getElementById('tabQuizBtn');
+
+if (tabOverviewBtn && tabQuizBtn) {
+  tabOverviewBtn.addEventListener('click', () => switchPlayerTab('overview'));
+  tabQuizBtn.addEventListener('click', () => switchPlayerTab('quiz'));
+}
+
