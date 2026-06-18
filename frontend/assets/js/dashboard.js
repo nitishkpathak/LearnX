@@ -141,6 +141,38 @@ async function fetchDashboardData() {
             
             // Map data
             courses = currentUser.enrolledCourses || [];
+
+            // Client-side auto-enrollment fallback for existing/old users
+            const defaultFeaturedCourses = [
+              { courseId: 'course-web-dev', name: 'Complete Web Development Bootcamp 2024', instructor: 'John Doe', img: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=500' },
+              { courseId: 'course-data-science', name: 'Data Science and Machine Learning', instructor: 'Sarah Johnson', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500' },
+              { courseId: 'course-ui-ux', name: 'UI/UX Design Masterclass 2024', instructor: 'Mike Wilson', img: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500' }
+            ];
+
+            let enrolledNew = false;
+            for (let defC of defaultFeaturedCourses) {
+              const isEnrolled = courses.some(c => c.courseId === defC.courseId);
+              if (!isEnrolled) {
+                try {
+                  await fetch(`${API_BASE_URL}/api/dashboard/enroll`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(defC)
+                  });
+                  enrolledNew = true;
+                } catch (err) {
+                  console.error("Auto-enroll error:", err);
+                }
+              }
+            }
+
+            if (enrolledNew) {
+              fetchDashboardData();
+              return;
+            }
             assignments = currentUser.assignments || [];
             profile = {
                 name: currentUser.name,
