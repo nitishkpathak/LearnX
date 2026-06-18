@@ -48,16 +48,6 @@ function switchView(viewName, hash) {
         if (publicSite) publicSite.style.display = 'block';
         document.body.classList.remove('dashboard-active');
         
-        // Hide all public subviews
-        const subviews = document.querySelectorAll('.public-subview');
-        subviews.forEach(sv => sv.style.display = 'none');
-        
-        // Show target subview
-        const targetView = document.getElementById(`${viewName}-view`);
-        if (targetView) {
-            targetView.style.display = 'block';
-        }
-        
         // Update public navbar link active styles
         const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
         navLinks.forEach(link => {
@@ -68,14 +58,27 @@ function switchView(viewName, hash) {
             }
         });
 
-        // Scroll to target element or top
+        // Determine target element for scroll
+        let scrollTarget = null;
         if (hash) {
-            const targetEl = document.querySelector(hash);
-            if (targetEl) {
-                setTimeout(() => {
-                    targetEl.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
+            scrollTarget = document.querySelector(hash);
+        } else {
+            if (viewName === 'home') {
+                scrollTarget = document.getElementById('home');
+            } else if (viewName === 'courses') {
+                scrollTarget = document.getElementById('courses-section');
+            } else if (viewName === 'about') {
+                scrollTarget = document.getElementById('about-us-section');
+            } else if (viewName === 'contact') {
+                scrollTarget = document.getElementById('contact-section');
             }
+        }
+
+        // Scroll smoothly to target element
+        if (scrollTarget) {
+            setTimeout(() => {
+                scrollTarget.scrollIntoView({ behavior: 'smooth' });
+            }, 50);
         } else {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -99,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         switchView('home');
     }
     
-    // Hash change handler for routing triggers (e.g. #courses-view, #contact-view)
+    // Hash change handler for routing triggers
     window.addEventListener('hashchange', () => {
         const hash = window.location.hash;
         if (hash.startsWith('#courses')) {
