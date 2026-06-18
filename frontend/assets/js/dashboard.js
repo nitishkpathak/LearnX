@@ -1040,9 +1040,16 @@ if (downloadCertBtn) {
       const originalBorder = element.style.border;
       const originalColor = element.style.color;
       
+      const hasVarTextMain = element.style.getPropertyValue('--text-main');
+      const hasVarTextMuted = element.style.getPropertyValue('--text-muted');
+      const hasVarCardBorder = element.style.getPropertyValue('--card-border');
+
       element.style.background = '#ffffff';
       element.style.color = '#1f2937';
       element.style.border = '6px double #6366f1';
+      element.style.setProperty('--text-main', '#1f2937');
+      element.style.setProperty('--text-muted', '#4b5563');
+      element.style.setProperty('--card-border', '#e5e7eb');
       
       const canvas = await html2canvas(element, {
         scale: 3, // High-res export
@@ -1054,6 +1061,15 @@ if (downloadCertBtn) {
       element.style.background = originalBg;
       element.style.color = originalColor;
       element.style.border = originalBorder;
+
+      if (hasVarTextMain) element.style.setProperty('--text-main', hasVarTextMain);
+      else element.style.removeProperty('--text-main');
+
+      if (hasVarTextMuted) element.style.setProperty('--text-muted', hasVarTextMuted);
+      else element.style.removeProperty('--text-muted');
+
+      if (hasVarCardBorder) element.style.setProperty('--card-border', hasVarCardBorder);
+      else element.style.removeProperty('--card-border');
 
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('l', 'mm', 'a4');
