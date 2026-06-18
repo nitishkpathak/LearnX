@@ -543,14 +543,51 @@ function openCoursePlayer(courseId) {
   // Populate player fields
   document.getElementById('playerCourseTitle').innerText = course.name;
   document.getElementById('playerInstructor').innerText = course.instructor || 'LearnX Instructor';
-  document.getElementById('playerVideoImg').src = course.img || 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=500';
+  
+  const playerVideo = document.getElementById('playerVideo');
+  const playerVideoSource = document.getElementById('playerVideoSource');
+  if (playerVideo) {
+    playerVideo.poster = course.img || 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=500';
+  }
 
-  // Lectures Mock List
+  // Customize sample videos based on course name
+  let videoUrls = [
+    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4'
+  ];
+
+  const courseNameLower = course.name.toLowerCase();
+  if (courseNameLower.includes('python')) {
+    videoUrls = [
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4',
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4'
+    ];
+  } else if (courseNameLower.includes('javascript') || courseNameLower.includes('js')) {
+    videoUrls = [
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
+    ];
+  } else if (courseNameLower.includes('html') || courseNameLower.includes('css')) {
+    videoUrls = [
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4'
+    ];
+  }
+
+  // Lectures List with Custom Video Sources
   const lectures = [
-    { title: '1. Introduction & Setup', duration: '12 mins' },
-    { title: '2. Basic Principles & Environment', duration: '25 mins' },
-    { title: '3. Intermediate Projects', duration: '40 mins' },
-    { title: '4. Advanced Techniques & Deployment', duration: '35 mins' }
+    { title: '1. Introduction & Setup', duration: '12 mins', videoUrl: videoUrls[0] },
+    { title: '2. Basic Principles & Environment', duration: '25 mins', videoUrl: videoUrls[1] },
+    { title: '3. Intermediate Projects', duration: '40 mins', videoUrl: videoUrls[2] },
+    { title: '4. Advanced Techniques & Deployment', duration: '35 mins', videoUrl: videoUrls[3] }
   ];
 
   // Render Syllabus
@@ -587,14 +624,26 @@ function openCoursePlayer(courseId) {
         document.getElementById('playerActiveLecture').innerText = `Lecture ${idx+1}: ${lectures[idx].title.split('. ')[1]}`;
         document.getElementById('playerLectureTitle').innerText = lectures[idx].title.split('. ')[1];
         
+        // Update video source and play
+        if (playerVideoSource && playerVideo) {
+          playerVideoSource.src = lectures[idx].videoUrl;
+          playerVideo.load();
+          playerVideo.play().catch(err => console.log("Playback prevented:", err));
+        }
+        
         updateCompleteButtonState(course);
       });
     });
   }
 
-  // Set initial text
+  // Set initial video and text
   document.getElementById('playerActiveLecture').innerText = `Lecture ${activeLectureIndex+1}: ${lectures[activeLectureIndex].title.split('. ')[1]}`;
   document.getElementById('playerLectureTitle').innerText = lectures[activeLectureIndex].title.split('. ')[1];
+  
+  if (playerVideoSource && playerVideo) {
+    playerVideoSource.src = lectures[activeLectureIndex].videoUrl;
+    playerVideo.load();
+  }
 
   updateCompleteButtonState(course);
 }
@@ -617,6 +666,10 @@ function updateCompleteButtonState(course) {
 const closePlayerBtn = document.getElementById('closePlayerBtn');
 if (closePlayerBtn) {
   closePlayerBtn.addEventListener('click', () => {
+    const playerVideo = document.getElementById('playerVideo');
+    if (playerVideo) {
+      playerVideo.pause();
+    }
     document.querySelector('.sidebar ul li[data-section="courses"]').click();
   });
 }
