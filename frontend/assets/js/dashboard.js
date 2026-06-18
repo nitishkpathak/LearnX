@@ -1032,44 +1032,55 @@ if (downloadCertBtn) {
     downloadCertBtn.disabled = true;
     downloadCertBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i> Generating...';
 
+    // Save all original inline styles of children
+    const elementsToModify = element.querySelectorAll('*');
+    const originalStyles = [];
+    const originalParentStyle = element.getAttribute('style');
+
     try {
       const { jsPDF } = window.jspdf;
 
-      // Force clean landscape layout colors regardless of app theme
-      const originalBg = element.style.background;
-      const originalBorder = element.style.border;
-      const originalColor = element.style.color;
-      
-      const hasVarTextMain = element.style.getPropertyValue('--text-main');
-      const hasVarTextMuted = element.style.getPropertyValue('--text-muted');
-      const hasVarCardBorder = element.style.getPropertyValue('--card-border');
-
+      // Force clean landscape layout colors on parent
       element.style.background = '#ffffff';
       element.style.color = '#1f2937';
-      element.style.border = '6px double #6366f1';
-      element.style.setProperty('--text-main', '#1f2937');
-      element.style.setProperty('--text-muted', '#4b5563');
-      element.style.setProperty('--card-border', '#e5e7eb');
+      element.style.borderColor = '#6366f1';
+      element.style.borderStyle = 'double';
+      element.style.borderWidth = '6px';
+      
+      // Temporarily swap all CSS variables with hardcoded light-theme colors in children's styles
+      elementsToModify.forEach((el) => {
+        const styleAttr = el.getAttribute('style');
+        originalStyles.push({ el, styleAttr });
+        
+        if (styleAttr) {
+          let newStyle = styleAttr;
+          newStyle = newStyle.replace(/var\(--text-main\)/g, '#1f2937');
+          newStyle = newStyle.replace(/var\(--text-muted\)/g, '#4b5563');
+          newStyle = newStyle.replace(/var\(--card-border\)/g, '#e5e7eb');
+          newStyle = newStyle.replace(/var\(--primary\)/g, '#6366f1');
+          newStyle = newStyle.replace(/var\(--card-bg\)/g, '#ffffff');
+          el.setAttribute('style', newStyle);
+        }
+      });
       
       const canvas = await html2canvas(element, {
         scale: 3, // High-res export
         useCORS: true,
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
+        logging: false,
+        scrollY: 0, // Prevent page scroll offset issues
+        scrollX: 0
       });
 
-      // Restore original
-      element.style.background = originalBg;
-      element.style.color = originalColor;
-      element.style.border = originalBorder;
-
-      if (hasVarTextMain) element.style.setProperty('--text-main', hasVarTextMain);
-      else element.style.removeProperty('--text-main');
-
-      if (hasVarTextMuted) element.style.setProperty('--text-muted', hasVarTextMuted);
-      else element.style.removeProperty('--text-muted');
-
-      if (hasVarCardBorder) element.style.setProperty('--card-border', hasVarCardBorder);
-      else element.style.removeProperty('--card-border');
+      // Restore original inline styles
+      element.setAttribute('style', originalParentStyle);
+      originalStyles.forEach(({ el, styleAttr }) => {
+        if (styleAttr) {
+          el.setAttribute('style', styleAttr);
+        } else {
+          el.removeAttribute('style');
+        }
+      });
 
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('l', 'mm', 'a4');
@@ -1097,6 +1108,13 @@ if (downloadCertBtn) {
       });
     } catch (err) {
       console.error("PDF generation failed:", err);
+      // Fallback restore in case of failure
+      element.setAttribute('style', originalParentStyle);
+      originalStyles.forEach(({ el, styleAttr }) => {
+        if (styleAttr) el.setAttribute('style', styleAttr);
+        else el.removeAttribute('style');
+      });
+
       Swal.fire({
         title: 'Error',
         text: 'Failed to generate PDF. Please try again.',
