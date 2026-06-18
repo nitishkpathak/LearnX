@@ -7,6 +7,41 @@ let courses = [];
 let assignments = [];
 let profile = {};
 
+// Load cached user profile from localStorage immediately to prevent flicker/stale info on refresh
+(function loadCachedProfile() {
+  const cachedUserStr = localStorage.getItem('learnx_user');
+  if (cachedUserStr) {
+    try {
+      const cachedUser = JSON.parse(cachedUserStr);
+      if (cachedUser && cachedUser.name) {
+        profile = {
+          name: cachedUser.name,
+          email: cachedUser.email || '',
+          studentId: cachedUser.studentId || 'N/A',
+          dp: cachedUser.dp || null,
+          joined: cachedUser.joined || 'N/A'
+        };
+        
+        // Update welcome banner immediately
+        const welcomeText = document.querySelector('.welcome-banner h2');
+        if (welcomeText) {
+          const firstName = cachedUser.name.split(' ')[0];
+          welcomeText.innerText = `Welcome back, ${firstName}! 👋`;
+        }
+        
+        // Update header avatar immediately
+        const headerAvatar = document.querySelector('.profile-pic');
+        const avatarUrl = cachedUser.dp ? cachedUser.dp : `https://ui-avatars.com/api/?name=${encodeURIComponent(cachedUser.name)}&background=6366f1&color=fff&size=200`;
+        if (headerAvatar) {
+          headerAvatar.src = avatarUrl;
+        }
+      }
+    } catch (e) {
+      console.error("Error loading cached profile:", e);
+    }
+  }
+})();
+
 // Sidebar toggle
 const menuBtn = document.getElementById('menuBtn');
 const sidebar = document.getElementById('sidebar');
@@ -82,9 +117,11 @@ if (logoutBtn) {
 // Load Dashboard Data from API
 async function fetchDashboardData() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/dashboard/data`, {
+        const response = await fetch(`${API_BASE_URL}/api/dashboard/data?_=${Date.now()}`, {
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`,
+                "Cache-Control": "no-cache",
+                "Pragma": "no-cache"
             }
         });
 
@@ -101,6 +138,18 @@ async function fetchDashboardData() {
                 dp: currentUser.dp || null,
                 joined: new Date(currentUser.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
             };
+            
+            // Sync with local storage
+            localStorage.setItem("learnx_user", JSON.stringify({
+                id: currentUser._id,
+                name: currentUser.name,
+                email: currentUser.email,
+                phone: currentUser.phone,
+                education: currentUser.education,
+                studentId: profile.studentId,
+                dp: profile.dp,
+                joined: profile.joined
+            }));
             
             renderDynamicContent();
             setupSettings(currentUser.settings);
@@ -461,7 +510,10 @@ if (editForm) {
                 name: updatedUser.name,
                 email: updatedUser.email,
                 phone: updatedUser.phone,
-                education: updatedUser.education
+                education: updatedUser.education,
+                studentId: updatedUser.studentId,
+                dp: updatedUser.dp || null,
+                joined: new Date(updatedUser.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
             }));
 
             Swal.fire({
