@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const auth = require("../middleware/authMiddleware");
+const { sendCourseCompletionEmail, sendAssignmentSubmissionEmail } = require("../utils/email");
 
 // GET /api/dashboard/data
 // Fetch all dashboard data for logged-in user
@@ -94,6 +95,13 @@ router.put("/assignment/:id", auth, async (req, res) => {
         }
 
         await user.save();
+
+        if (!wasCompleted) {
+            sendAssignmentSubmissionEmail(user.email, user.name, assignment.title).catch(err => {
+                console.error("Failed to send assignment submission email:", err);
+            });
+        }
+
         res.json({
             assignments: user.assignments,
             xp: user.xp,
@@ -228,6 +236,13 @@ router.put("/course/:id/progress", auth, async (req, res) => {
         }
 
         await user.save();
+
+        if (newProgress === 100 && oldProgress < 100) {
+            sendCourseCompletionEmail(user.email, user.name, course.name).catch(err => {
+                console.error("Failed to send course completion email:", err);
+            });
+        }
+
         res.json({ 
             message: "Progress updated successfully", 
             enrolledCourses: user.enrolledCourses, 

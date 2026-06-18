@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const { sendWelcomeEmail } = require("../utils/email");
 
 // JWT Secret Key
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -57,6 +58,11 @@ router.post("/signup", async (req, res) => {
         });
 
         await user.save();
+
+        // Dispatch Welcome Email asynchronously
+        sendWelcomeEmail(user.email, user.name, user.studentId).catch(err => {
+            console.error("Failed to send welcome email:", err);
+        });
 
         res.status(201).json({ message: "User Registered Successfully" });
 
