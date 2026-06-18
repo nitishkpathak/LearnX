@@ -38,12 +38,22 @@ router.post("/signup", async (req, res) => {
             { courseId: 'c2', name: 'JavaScript Basics', progress: 0, instructor: 'Gary Simon', img: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=500&q=80' },
             { courseId: 'course-web-dev', name: 'Complete Web Development Bootcamp 2024', progress: 0, instructor: 'John Doe', img: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=500' },
             { courseId: 'course-data-science', name: 'Data Science and Machine Learning', progress: 0, instructor: 'Sarah Johnson', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500' },
-            { courseId: 'course-ui-ux', name: 'UI/UX Design Masterclass 2024', progress: 0, instructor: 'Mike Wilson', img: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500' }
+            { courseId: 'course-ui-ux', name: 'UI/UX Design Masterclass 2024', progress: 0, instructor: 'Mike Wilson', img: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500' },
+            { courseId: 'course-react', name: 'React.js - Complete Guide 2024', progress: 0, instructor: 'Maximilian Schwarzmüller', img: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=500' },
+            { courseId: 'course-python', name: 'Python for Everyone: Scripting & Automation', progress: 0, instructor: 'Charles Severance', img: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500' },
+            { courseId: 'course-nodejs', name: 'Node.js, Express & MongoDB Masterclass', progress: 0, instructor: 'Jonas Schmedtmann', img: 'https://images.unsplash.com/photo-1502945015378-0e284029ddbe?w=500' },
+            { courseId: 'course-git', name: 'Git & GitHub: Version Control Guide', progress: 0, instructor: 'Brad Traversy', img: 'https://images.unsplash.com/photo-1556075798-482a2161b79c?w=500' },
+            { courseId: 'course-nextjs', name: 'Next.js 14 - Production-Grade Applications', progress: 0, instructor: 'Mosh Hamedani', img: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?w=500' },
+            { courseId: 'course-tailwind', name: 'Tailwind CSS From Utility to Masterclass', progress: 0, instructor: 'Adam Wathan', img: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=500' }
         ];
 
         const defaultAssignments = [
             { title: 'HTML Portfolio Project', status: 'Pending', dueDate: 'Due in 2 days', icon: 'fa-clock' },
-            { title: 'JS Basics Quiz', status: 'Pending', dueDate: 'Due Next Week', icon: 'fa-clock' }
+            { title: 'JS Basics Quiz', status: 'Pending', dueDate: 'Due Next Week', icon: 'fa-clock' },
+            { title: 'React Task Manager App', status: 'Pending', dueDate: 'Due in 5 days', icon: 'fa-clock' },
+            { title: 'Python Web Scraper Script', status: 'Pending', dueDate: 'Due in 10 days', icon: 'fa-clock' },
+            { title: 'Node.js JWT Auth API', status: 'Pending', dueDate: 'Due in 2 weeks', icon: 'fa-clock' },
+            { title: 'Figma Landing Page Design', status: 'Pending', dueDate: 'Due in 3 days', icon: 'fa-clock' }
         ];
 
         // Create new user
