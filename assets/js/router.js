@@ -32,6 +32,9 @@ function switchView(viewName, hash) {
             return;
         }
         
+        // Save active view state for session persistence
+        localStorage.setItem('learnx_active_view', 'dashboard');
+        
         // Hide public site, show dashboard
         if (publicSite) publicSite.style.display = 'none';
         if (dashboardView) dashboardView.style.display = 'block';
@@ -49,6 +52,8 @@ function switchView(viewName, hash) {
         }
     } else {
         // Public views: home, courses, about, contact
+        localStorage.setItem('learnx_active_view', viewName);
+        
         if (dashboardView) dashboardView.style.display = 'none';
         if (publicSite) publicSite.style.display = 'block';
         document.body.classList.remove('dashboard-active');
@@ -92,31 +97,48 @@ function switchView(viewName, hash) {
 
 // Run routing on initial load and handle hash params
 document.addEventListener('DOMContentLoaded', () => {
-    // Check query parameters
     const params = new URLSearchParams(window.location.search);
     const viewParam = params.get('view');
+    const token = localStorage.getItem('learnx_token');
+    const activeView = localStorage.getItem('learnx_active_view');
+    const hash = window.location.hash;
     
-    if (viewParam === 'dashboard' || localStorage.getItem('learnx_token')) {
-        // If logged in, show dashboard or home depending on preference
-        if (viewParam === 'dashboard') {
-            switchView('dashboard');
-        } else {
-            switchView('home');
-        }
-    } else {
-        switchView('home');
-    }
-    
-    // Hash change handler for routing triggers
-    window.addEventListener('hashchange', () => {
-        const hash = window.location.hash;
+    if (hash) {
         if (hash.startsWith('#courses')) {
             switchView('courses', hash.replace('#courses', ''));
         } else if (hash.startsWith('#about')) {
             switchView('about');
         } else if (hash.startsWith('#contact')) {
             switchView('contact');
-        } else if (hash.startsWith('#home') || hash === '') {
+        } else if (hash === '#dashboard' && token) {
+            switchView('dashboard');
+        } else {
+            switchView('home');
+        }
+    } else {
+        if (activeView === 'dashboard' && token) {
+            switchView('dashboard');
+        } else if (activeView && activeView !== 'dashboard') {
+            switchView(activeView);
+        } else if (viewParam === 'dashboard' && token) {
+            switchView('dashboard');
+        } else {
+            switchView('home');
+        }
+    }
+    
+    // Hash change handler for routing triggers
+    window.addEventListener('hashchange', () => {
+        const currentHash = window.location.hash;
+        if (currentHash.startsWith('#courses')) {
+            switchView('courses', currentHash.replace('#courses', ''));
+        } else if (currentHash.startsWith('#about')) {
+            switchView('about');
+        } else if (currentHash.startsWith('#contact')) {
+            switchView('contact');
+        } else if (currentHash === '#dashboard') {
+            switchView('dashboard');
+        } else if (currentHash.startsWith('#home') || currentHash === '') {
             switchView('home');
         }
     });

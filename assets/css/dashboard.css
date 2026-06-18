@@ -31,7 +31,7 @@ body.dark-mode {
   --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
 }
 
-#dashboard-view, #dashboard-view * {
+#dashboard-view, #dashboard-view *:not(i):not([class*="fa-"]) {
   box-sizing: border-box;
   font-family: 'Outfit', sans-serif;
 }
@@ -336,11 +336,13 @@ body.dashboard-active {
   font-size: 2.2rem;
   font-weight: 700;
   margin-bottom: 8px;
+  color: #ffffff !important;
 }
 
 .welcome-banner p {
   font-size: 1.1rem;
   opacity: 0.9;
+  color: #ffffff !important;
 }
 
 /* Grid Layouts */
