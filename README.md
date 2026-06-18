@@ -5,6 +5,11 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-yellow?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Node.js](https://img.shields.io/badge/Node.js-v18%2B-green?style=for-the-badge&logo=nodedotjs)](https://nodejs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-emerald?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/atlas)
+[![Express.js](https://img.shields.io/badge/Express.js-v4-lightgrey?style=for-the-badge&logo=express)](https://expressjs.com/)
+[![JWT](https://img.shields.io/badge/JWT-Authentication-black?style=for-the-badge&logo=jsonwebtokens)](https://jwt.io/)
+[![Bootstrap 5](https://img.shields.io/badge/Bootstrap-v5.3-purple?style=for-the-badge&logo=bootstrap)](https://getbootstrap.com/)
+[![Nodemailer](https://img.shields.io/badge/Nodemailer-SMTP-orange?style=for-the-badge&logo=nodemailer)](https://nodemailer.com/)
+[![SweetAlert2](https://img.shields.io/badge/SweetAlert2-Popups-red?style=for-the-badge&logo=sweetalert2)](https://sweetalert2.github.io/)
 
 LearnX is a state-of-the-art, responsive, and gamified **Learning Management System (LMS)** designed to provide students with a premium educational workspace. The application integrates a modern glassmorphic landing page with an interactive student dashboard, featuring real-time course player progression, MCQ quizzes, assignment submission tracking, XP-based leaderboards, and automated email alerts.
 
