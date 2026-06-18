@@ -63,15 +63,40 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  async function enrollInCourse(courseDetails, btn) {
-    const token = localStorage.getItem('learnx_token');
-    
-    if (!token) {
-      showToast('Please log in to enroll in this course!', { delay: 4000 });
+  function showLoginRequiredPrompt(message) {
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        title: 'Authentication Required',
+        text: message || 'Please log in to access this premium course and dynamic student workspace!',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Log In Now',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#6366f1',
+        cancelButtonColor: '#64748b'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const loginModalEl = document.getElementById('loginModal');
+          if (loginModalEl) {
+            const loginModal = bootstrap.Modal.getOrCreateInstance(loginModalEl);
+            loginModal.show();
+          }
+        }
+      });
+    } else {
+      showToast(message || 'Please log in to continue!');
       const loginModalBtn = q('[data-bs-target="#loginModal"]');
       if (loginModalBtn) {
         loginModalBtn.click();
       }
+    }
+  }
+
+  async function enrollInCourse(courseDetails, btn) {
+    const token = localStorage.getItem('learnx_token');
+    
+    if (!token) {
+      showLoginRequiredPrompt('Please log in to enroll in this course and access the student workspace!');
       return false;
     }
 
@@ -454,6 +479,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function initCategoryButtons() {
+    const categoryCards = qa('.category-card');
+    categoryCards.forEach(card => {
+      // Find explore button and card elements
+      const btn = q('.explore-btn', card);
+      const elements = btn ? [card, btn] : [card];
+      
+      elements.forEach(el => {
+        el.addEventListener('click', (e) => {
+          const token = localStorage.getItem('learnx_token');
+          if (!token) {
+            e.preventDefault();
+            e.stopPropagation();
+            showLoginRequiredPrompt('Please log in to explore our premium course catalogs!');
+          } else {
+            // If logged in, redirect them to dashboard
+            const dashboardToken = localStorage.getItem('learnx_token');
+            if (dashboardToken) {
+              e.preventDefault();
+              e.stopPropagation();
+              window.location.href = 'dashboard.html';
+            }
+          }
+        });
+      });
+    });
+  }
+
   /* ---------------------------
      Page init
      --------------------------- */
@@ -461,6 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initWishlistButtons();
     initEnrollButtons();
     initPreviewButtons();
+    initCategoryButtons();
     makeCardsKeyboardAccessible();
     // initial show all (in case any inline styles)
     applyCourseFilter('all');

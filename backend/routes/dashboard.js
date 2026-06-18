@@ -300,7 +300,10 @@ router.post("/reset", auth, async (req, res) => {
 
         const defaultCourses = [
             { courseId: 'c1', name: 'HTML & CSS Masterclass', progress: 10, instructor: 'Sarah Drasner', img: 'https://images.unsplash.com/photo-1621839673705-6617adf9e890?w=500&q=80' },
-            { courseId: 'c2', name: 'JavaScript Basics', progress: 0, instructor: 'Gary Simon', img: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=500&q=80' }
+            { courseId: 'c2', name: 'JavaScript Basics', progress: 0, instructor: 'Gary Simon', img: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=500&q=80' },
+            { courseId: 'course-web-dev', name: 'Complete Web Development Bootcamp 2024', progress: 0, instructor: 'John Doe', img: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=500' },
+            { courseId: 'course-data-science', name: 'Data Science and Machine Learning', progress: 0, instructor: 'Sarah Johnson', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500' },
+            { courseId: 'course-ui-ux', name: 'UI/UX Design Masterclass 2024', progress: 0, instructor: 'Mike Wilson', img: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500' }
         ];
 
         const defaultAssignments = [
