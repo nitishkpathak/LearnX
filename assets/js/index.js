@@ -3,36 +3,60 @@
 
 // -------------------- Email Subscription Form --------------------
 const subscribeForm = document.querySelector(".latter form");
-subscribeForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    const email = subscribeForm.querySelector("input[type='email']").value.trim();
-    if (email === "") {
-        alert("Please enter your email!");
-    } else if (!email.includes("@")) {
-        alert("Enter a valid email address!");
-    } else {
-        alert("Subscribed successfully with: " + email);
-        // Future: yahan backend POST /subscribe call
-        subscribeForm.reset();
-    }
-});
+if (subscribeForm) {
+    subscribeForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const email = subscribeForm.querySelector("input[type='email']").value.trim();
+        if (email === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Please enter your email!',
+                confirmButtonColor: '#6366f1'
+            });
+        } else if (!email.includes("@")) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Enter a valid email address!',
+                confirmButtonColor: '#6366f1'
+            });
+        } else {
+            Swal.fire({
+                icon: 'success',
+                title: 'Subscribed!',
+                text: "Subscribed successfully with: " + email,
+                confirmButtonColor: '#6366f1'
+            });
+            // Future: yahan backend POST /subscribe call
+            subscribeForm.reset();
+        }
+    });
+}
 
 
 document.addEventListener("DOMContentLoaded", function () {
     const subscribeBtn = document.getElementById("subscribeBtn");
 
-    subscribeBtn.addEventListener("click", function (e) {
-        e.preventDefault(); // page reload nahi hoga
+    if (subscribeBtn) {
+        subscribeBtn.addEventListener("click", function (e) {
+            e.preventDefault(); // page reload nahi hoga
 
-        // Alert message
-        alert("🎉 Thank you for subscribing to LearnX! Your $14.99/month subscription is active.");
+            // Alert message
+            Swal.fire({
+                icon: 'success',
+                title: 'Subscribed! 🎉',
+                text: 'Thank you for subscribing to LearnX! Your $14.99/month subscription is active.',
+                confirmButtonColor: '#6366f1'
+            });
 
-        // Optional: Button disable & change text
-        subscribeBtn.textContent = "Subscribed ✅";
-        subscribeBtn.classList.remove("btn-success");
-        subscribeBtn.classList.add("btn-secondary");
-        subscribeBtn.disabled = true;
-    });
+            // Optional: Button disable & change text
+            subscribeBtn.textContent = "Subscribed ✅";
+            subscribeBtn.classList.remove("btn-success");
+            subscribeBtn.classList.add("btn-secondary");
+            subscribeBtn.disabled = true;
+        });
+    }
 });
 
 

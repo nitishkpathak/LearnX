@@ -76,22 +76,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('modalLoginPassword').value.trim();
 
             if (!email || !password) {
-
-                alert("Please fill all fields");
-
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Please fill all fields',
+                    confirmButtonColor: '#6366f1'
+                });
                 return;
             }
 
             try {
-
                 const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-
                     method: "POST",
-
                     headers: {
                         "Content-Type": "application/json"
                     },
-
                     body: JSON.stringify({
                         email,
                         password
@@ -101,7 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    alert("Login Successful ✅");
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Successful! ✅',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                     localStorage.setItem("learnx_auth", "true");
                     localStorage.setItem("learnx_user", JSON.stringify(data.user));
                     localStorage.setItem("learnx_token", data.token);
@@ -118,17 +122,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateNavbarAuthState();
                     switchView('dashboard');
                 } else {
-
-                    alert(data.message || "Login failed ❌");
-
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login Failed',
+                        text: data.message || "Invalid email or password",
+                        confirmButtonColor: '#ef4444'
+                    });
                 }
-
             } catch (error) {
-
                 console.log(error);
-
-                alert("Server Error ❌");
-
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error',
+                    text: 'Unable to connect to server. Please make sure the server is running.',
+                    confirmButtonColor: '#ef4444'
+                });
             }
 
         });
@@ -163,29 +171,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Validation
             if (!fullName || !email || !phone || !password || !education || !category) {
-
-                alert("Please fill all fields");
-
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Please fill all fields',
+                    confirmButtonColor: '#6366f1'
+                });
                 return;
             }
 
             if (!termsChecked) {
-
-                alert("Please accept Terms & Conditions");
-
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Please accept Terms & Conditions',
+                    confirmButtonColor: '#6366f1'
+                });
                 return;
             }
 
             try {
-
                 const res = await fetch(`${API_BASE_URL}/api/auth/signup`, {
-
                     method: "POST",
-
                     headers: {
                         "Content-Type": "application/json"
                     },
-
                     body: JSON.stringify({
                         name: fullName,
                         email,
@@ -194,15 +204,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         education,
                         category
                     })
-
                 });
 
                 const data = await res.json();
 
                 if (res.ok) {
-
-                    alert("Signup Successful ✅");
-
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Signup Successful! ✅',
+                        text: 'Redirecting you to login...',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                     localStorage.setItem("learnx_user", JSON.stringify({
                         name: fullName,
                         email: email
@@ -212,7 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // close signup modal
                     const signupModal = bootstrap.Modal.getInstance(document.getElementById('signupModal'));
-
                     if (signupModal) signupModal.hide();
 
                     // open login modal
@@ -223,23 +235,24 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
 
                         const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-
                         loginModal.show();
-
                     }, 300);
-
                 } else {
-
-                    alert(data.message || "Signup failed ❌");
-
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Signup Failed',
+                        text: data.message || "Registration failed.",
+                        confirmButtonColor: '#ef4444'
+                    });
                 }
-
             } catch (error) {
-
                 console.log(error);
-
-                alert("Server Error ❌");
-
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error',
+                    text: 'Unable to connect to server. Please try again.',
+                    confirmButtonColor: '#ef4444'
+                });
             }
 
         });

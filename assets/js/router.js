@@ -10,6 +10,8 @@ const API_BASE_URL = window.location.hostname === 'localhost' ||
     ? 'http://localhost:5000'
     : 'https://learnx-backend-wygd.onrender.com';
 
+window.API_BASE_URL = API_BASE_URL;
+
 
 function switchView(viewName, hash) {
     console.log("Switching view to:", viewName, "hash:", hash);

@@ -1,32 +1,42 @@
+// Global function to apply theme and keep elements in sync
+function applyTheme(theme) {
+    localStorage.setItem('theme', theme);
+    if (theme === 'dark') {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+    
+    // Sync all header toggle buttons icons
+    const themeToggles = document.querySelectorAll('.theme-toggle');
+    themeToggles.forEach(tBtn => {
+        const i = tBtn.querySelector('i');
+        if (i) {
+            if (theme === 'dark') {
+                i.className = 'fas fa-sun';
+            } else {
+                i.className = 'fas fa-moon';
+            }
+        }
+    });
+
+    // Sync settings page checkbox if it exists
+    const settingsThemeToggle = document.getElementById('settingsThemeToggle');
+    if (settingsThemeToggle) {
+        settingsThemeToggle.checked = (theme === 'dark');
+    }
+}
+window.applyTheme = applyTheme;
+
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Check for saved theme preference or use default
     const currentTheme = localStorage.getItem('theme') || 'light';
     
-    if (currentTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-    }
+    // Synchronize initial UI icons and checkbox
+    window.applyTheme(currentTheme);
 
     // 2. Select all theme toggle buttons
     const themeToggles = document.querySelectorAll('.theme-toggle');
-
-    // Helper to switch icon forcefully
-    const syncIcons = (theme) => {
-        themeToggles.forEach(tBtn => {
-            const i = tBtn.querySelector('i');
-            if (i) {
-                if (theme === 'dark') {
-                    i.classList.remove('fa-moon');
-                    i.classList.add('fa-sun');
-                } else {
-                    i.classList.remove('fa-sun');
-                    i.classList.add('fa-moon');
-                }
-            }
-        });
-    };
-
-    // Update icons upon initial load
-    syncIcons(currentTheme);
 
     // Attach click event listeners
     themeToggles.forEach(btn => {
@@ -35,23 +45,18 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             e.stopPropagation();
 
-            // Toggle body class
-            document.body.classList.toggle('dark-mode');
+            // Toggle body class and determine new theme
+            const isDark = document.body.classList.contains('dark-mode');
+            const newTheme = isDark ? 'light' : 'dark';
             
-            // Determine new theme
-            const newTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
-            
-            // Save preference
-            localStorage.setItem('theme', newTheme);
+            // Apply theme globally
+            window.applyTheme(newTheme);
             
             // Sync with backend if logged in
             const token = localStorage.getItem('learnx_token');
             if (token && typeof window.updateSettings === 'function') {
                 window.updateSettings({ theme: newTheme });
             }
-            
-            // Update all icons
-            syncIcons(newTheme);
         });
     });
 });

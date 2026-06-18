@@ -286,12 +286,22 @@ async function submitAssignment(assignmentId) {
             headers: { "Authorization": `Bearer ${token}` }
         });
         if(response.ok) {
-            alert("Assignment Submitted successfully!");
+            Swal.fire({
+                title: 'Success!',
+                text: 'Assignment Submitted successfully!',
+                icon: 'success',
+                confirmButtonColor: '#6366f1'
+            });
             fetchDashboardData(); // Refresh data
         }
     } catch(err) {
         console.error(err);
-        alert("Failed to submit assignment.");
+        Swal.fire({
+            title: 'Error',
+            text: 'Failed to submit assignment.',
+            icon: 'error',
+            confirmButtonColor: '#ef4444'
+        });
     }
 }
 
@@ -445,14 +455,39 @@ if (editForm) {
         });
 
         if(res.ok) {
-            alert("Profile Updated!");
+            const updatedUser = await res.json();
+            localStorage.setItem("learnx_user", JSON.stringify({
+                id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                phone: updatedUser.phone,
+                education: updatedUser.education
+            }));
+
+            Swal.fire({
+                title: 'Success!',
+                text: 'Profile Updated successfully!',
+                icon: 'success',
+                confirmButtonColor: '#6366f1'
+            });
             modal.classList.remove('active');
             fetchDashboardData();
         } else {
-            alert("Failed to update profile.");
+            Swal.fire({
+                title: 'Error',
+                text: 'Failed to update profile.',
+                icon: 'error',
+                confirmButtonColor: '#ef4444'
+            });
         }
     } catch(err) {
         console.error(err);
+        Swal.fire({
+            title: 'Error',
+            text: 'Connection error.',
+            icon: 'error',
+            confirmButtonColor: '#ef4444'
+        });
     }
   });
 }
@@ -468,41 +503,31 @@ function toBase64(file) {
 
 // Settings Logic
 function setupSettings(settings) {
-    if(!settings) return;
+    const s = settings || { emailNotif: true, pushNotif: false, theme: 'light' };
 
     const emailToggle = document.getElementById('emailNotifToggle');
     const pushToggle = document.getElementById('pushNotifToggle');
     const settingsThemeToggle = document.getElementById('settingsThemeToggle');
 
     if (emailToggle) {
-        emailToggle.checked = settings.emailNotif;
+        emailToggle.checked = !!s.emailNotif;
         emailToggle.onchange = (e) => updateSettings({ emailNotif: e.target.checked });
     }
 
     if (pushToggle) {
-        pushToggle.checked = settings.pushNotif;
+        pushToggle.checked = !!s.pushNotif;
         pushToggle.onchange = (e) => updateSettings({ pushNotif: e.target.checked });
     }
 
-    if(settingsThemeToggle) {
-        settingsThemeToggle.checked = settings.theme === 'dark';
-        
-        // Sync body theme & localStorage to prevent flickering
-        localStorage.setItem('theme', settings.theme || 'light');
-        if(settings.theme === 'dark') {
-            document.body.classList.add('dark-mode');
-        } else {
-            document.body.classList.remove('dark-mode');
+    if (settingsThemeToggle) {
+        // Sync theme setting from backend/DB
+        if (s.theme) {
+            window.applyTheme(s.theme);
         }
 
         settingsThemeToggle.onchange = (e) => {
             const theme = e.target.checked ? 'dark' : 'light';
-            localStorage.setItem('theme', theme);
-            if(e.target.checked) {
-                document.body.classList.add('dark-mode');
-            } else {
-                document.body.classList.remove('dark-mode');
-            }
+            window.applyTheme(theme);
             updateSettings({ theme });
         };
     }
@@ -577,7 +602,6 @@ function openCoursePlayer(courseId) {
   document.getElementById('playerInstructor').innerText = course.instructor || 'LearnX Instructor';
   
   const playerVideo = document.getElementById('playerVideo');
-  const playerVideoSource = document.getElementById('playerVideoSource');
   if (playerVideo) {
     playerVideo.poster = course.img || 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=500';
   }
@@ -657,8 +681,8 @@ function openCoursePlayer(courseId) {
         document.getElementById('playerLectureTitle').innerText = lectures[idx].title.split('. ')[1];
         
         // Update video source and play
-        if (playerVideoSource && playerVideo) {
-          playerVideoSource.src = lectures[idx].videoUrl;
+        if (playerVideo) {
+          playerVideo.src = lectures[idx].videoUrl;
           playerVideo.load();
           playerVideo.play().catch(err => console.log("Playback prevented:", err));
         }
@@ -672,8 +696,8 @@ function openCoursePlayer(courseId) {
   document.getElementById('playerActiveLecture').innerText = `Lecture ${activeLectureIndex+1}: ${lectures[activeLectureIndex].title.split('. ')[1]}`;
   document.getElementById('playerLectureTitle').innerText = lectures[activeLectureIndex].title.split('. ')[1];
   
-  if (playerVideoSource && playerVideo) {
-    playerVideoSource.src = lectures[activeLectureIndex].videoUrl;
+  if (playerVideo) {
+    playerVideo.src = lectures[activeLectureIndex].videoUrl;
     playerVideo.load();
   }
 
@@ -759,13 +783,23 @@ if (markCompleteBtn) {
           openCoursePlayer(activeCourseId);
         }, 300);
       } else {
-        alert("Failed to update progress.");
+        Swal.fire({
+          title: 'Error',
+          text: 'Failed to update progress.',
+          icon: 'error',
+          confirmButtonColor: '#ef4444'
+        });
         markCompleteBtn.disabled = false;
         markCompleteBtn.innerText = 'Complete Lesson';
       }
     } catch (error) {
       console.error(error);
-      alert("Connection error.");
+      Swal.fire({
+        title: 'Error',
+        text: 'Connection error.',
+        icon: 'error',
+        confirmButtonColor: '#ef4444'
+      });
       markCompleteBtn.disabled = false;
       markCompleteBtn.innerText = 'Complete Lesson';
     }
@@ -879,14 +913,76 @@ if (submitAssignmentForm) {
         });
         fetchDashboardData(); // Refresh data
       } else {
-        alert("Failed to submit assignment.");
+        Swal.fire({
+          title: 'Error',
+          text: 'Failed to submit assignment.',
+          icon: 'error',
+          confirmButtonColor: '#ef4444'
+        });
       }
     } catch (err) {
       console.error(err);
-      alert("Server error.");
+      Swal.fire({
+        title: 'Error',
+        text: 'Server error.',
+        icon: 'error',
+        confirmButtonColor: '#ef4444'
+      });
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerText = oldBtnText;
+    }
+  });
+}
+
+// Reset Dashboard Data
+const resetBtn = document.getElementById('resetData');
+if (resetBtn) {
+  resetBtn.addEventListener('click', async () => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "This will reset all your courses progress, assignments, and settings back to default. This cannot be undone!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#6366f1',
+      confirmButtonText: 'Yes, reset it!'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/dashboard/reset`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          Swal.fire({
+            title: 'Reset Success!',
+            text: 'Your dashboard data has been reset to default.',
+            icon: 'success',
+            confirmButtonColor: '#6366f1'
+          });
+          fetchDashboardData();
+        } else {
+          Swal.fire({
+            title: 'Error',
+            text: 'Failed to reset dashboard data.',
+            icon: 'error',
+            confirmButtonColor: '#ef4444'
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        Swal.fire({
+          title: 'Error',
+          text: 'Connection error.',
+          icon: 'error',
+          confirmButtonColor: '#ef4444'
+        });
+      }
     }
   });
 }
