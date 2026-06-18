@@ -37,7 +37,7 @@ LearnX is a state-of-the-art, responsive, and gamified **Learning Management Sys
 
 ### ⚙️ Backend API (`/backend`)
 - **JWT Authentication:** Password hashing using `bcryptjs` and session tokens using `jsonwebtoken`.
-- **Auto-Enrollment Sync:** Automatically enrolls new signups in default courses, and retroactively syncs old accounts on dashboard load so they immediately have all 5 default courses.
+- **Auto-Enrollment Sync:** Automatically enrolls new signups in default courses, and retroactively syncs old accounts on dashboard load so they immediately have all 11 default courses.
 - **Nodemailer Alerts:** Dispatches beautiful HTML email templates for:
   - **Welcome Email:** Sent upon student registration.
   - **Assignment Submitted:** Confirms project uploads.
